@@ -55,7 +55,8 @@ export default class MyProfilePage {
         this.auditLogModal = page.getByRole('dialog', { name: 'CV Data Audit Log' });
         this.closeButton = page.getByRole('button', { name: 'Close' });
         this.uploadImageButton = page.getByRole('button', { name: 'Upload Image' });
-        this.imageSection = page.locator("(//div[@data-component-file='ProfileImagePreview.tsx'])[3]");
+        //this.imageSection = page.locator("(//div[@data-component-file='ProfileImagePreview.tsx'])[3]");  //NC
+        this.imageSection = page.locator("//div[@class='flex flex-col items-center space-y-6']");//C
         this.fullNameInput = page.getByRole('textbox', { name: 'Full Name' });
         this.professionalBioInput = page.getByRole('textbox', { name: 'Professional Biography' });
         this.skillsSection = page.getByRole('tab', { name: 'Skills' });
@@ -63,7 +64,8 @@ export default class MyProfilePage {
         this.technicalSkillsAddSection = page.getByText('Technical SkillsAdd Technical');
         this.experienceSection = page.getByRole('tab', { name: 'Experience' });
         this.addExperienceButton = page.getByRole('button', { name: 'Add Experience' });
-        this.experienceSectionItem = page.locator("(//div[@data-component-file='ExperienceGroupedTab.tsx'])[1]");
+        //this.experienceSectionItem = page.locator("(//div[@data-component-file='ExperienceGroupedTab.tsx'])[1]");
+        this.experienceSectionItem = page.locator("//span[normalize-space()='Experience']");
         this.educationTab = page.getByRole('tab', { name: 'Education' });
         this.addEducationButton = page.getByRole('button', { name: 'Add Education' });
         this.trainingTab = page.getByRole('tab', { name: 'Training' });
@@ -73,10 +75,10 @@ export default class MyProfilePage {
         this.addTrainingButton = page.getByRole('button', { name: 'Add Training' });
         this.trainingListItem = page.locator("div[data-state='active']");
         this.addAchievementButton = page.getByRole('button', { name: 'Add Achievement' });
-        this.achievementListItem = page.locator("div[data-lov-name='Card']");
+        this.achievementListItem = page.locator("//div[@class='space-y-4']");
         this.searchProjectInput = page.getByRole('textbox', { name: 'Search projects...' });
         this.addProjectButton = page.getByRole('button', { name: 'Add Project' });
-        this.projectListItem = page.locator("div[data-lov-name='Card']");
+        this.projectListItem = page.locator("//div[@class='space-y-4']//parent::div[@class='p-6 pt-0']");
     }
     //#endregion
 

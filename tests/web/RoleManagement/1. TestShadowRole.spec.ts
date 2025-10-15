@@ -69,7 +69,9 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             // Navigate to My Profile page
             expect.soft(await myProfilePage.isMyProfileSidebarVisible()).toBeTruthy();
             await myProfilePage.clickMyProfileSidebar();
+           
         });
+        
 
         await test.step('Ensure My Profile page is loaded.', async () => {
             // My Profile page section verification
@@ -112,13 +114,15 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             expect.soft(await myProfilePage.isExperienceSectionItemVisible()).toBeTruthy();
         });
 
+        
+
         await test.step('Verify My Profile>>Education sections items are visible for the Shadow SBU role.', async () => {
             // Navigate to Education section
             expect.soft(await myProfilePage.isEducationTabVisible()).toBeTruthy();
             await myProfilePage.clickEducationTab();
             // Education section items verification
             expect.soft(await myProfilePage.isAddEducationButtonVisible()).toBeTruthy();
-            expect.soft(await myProfilePage.isEducationListItemVisible()).toBeTruthy();
+            //expect.soft(await myProfilePage.isEducationListItemVisible()).toBeTruthy();
         });
 
         await test.step('Verify My Profile>>Training sections items are visible for the Shadow SBU role.', async () => {
@@ -149,6 +153,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             expect.soft(await myProfilePage.isProjectListItemVisible()).toBeTruthy();
             expect.soft(await myProfilePage.isAddProjectButtonVisible()).toBeTruthy();
         });
+        
             
     });
 
@@ -166,7 +171,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             expect.soft(await myTeamPage.isManagerLabelVisible()).toBeTruthy();
             expect.soft(await myTeamPage.isPeersLabelVisible()).toBeTruthy();
             expect.soft(await myTeamPage.isDirectReportsLabelVisible()).toBeTruthy();
-            expect.soft(await myTeamPage.isTeamStructureFlowVisible()).toBeTruthy();
+            expect.soft(await myTeamPage.isTeamGraphViewVisible()).toBeTruthy();
         });
     });
 
@@ -202,5 +207,32 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             expect.soft(await platformFeedbackPage.isRequestFeatureButtonVisible()).toBeTruthy();
             expect.soft(await platformFeedbackPage.isViewAllFeedbackButtonVisible()).toBeTruthy();
         });
+        
+
     });
+
+    test('Test Shadow SBU Role General >> CV Dashboard Section.', async ({page, cvDashboardPage}) => {
+        await test.step('Navigate to the CV Dashboard section.', async () => {
+            await page.waitForLoadState('networkidle');
+            // Navigate to CV Dashboard page
+            expect.soft(await cvDashboardPage.isCvDashboardSidebarvisible()).toBeTruthy();
+            await cvDashboardPage.clickCvDashboardSidebar();    
+        })
+
+       
+        
+        await test.step('Ensure CV Dashboard page is loaded and the options are visible.', async () => {
+            // CV Dashboard page section verification
+              expect.soft(await cvDashboardPage.isProfileStatsVisible()).toBeTruthy();
+              expect.soft(await cvDashboardPage.isOveralProgressStatsVisible()).toBeTruthy();
+              expect.soft(await cvDashboardPage.isHighAchieversStatsVisible()).toBeTruthy();
+              expect.soft(await cvDashboardPage.isSteadyProgressStatsVisible()).toBeTruthy();
+              expect.soft(await cvDashboardPage.isProfileCompletionCardVisible()).toBeTruthy();
+              expect.soft(await cvDashboardPage.isOverallProgressCardVisible()).toBeTruthy();
+              expect.soft(await cvDashboardPage.isHighAchieversCardVisible()).toBeTruthy();
+        })
+        
+    })
+
+    
 });

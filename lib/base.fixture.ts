@@ -10,6 +10,7 @@ import MyProfilePage from '../pages/myProfile.page';
 import MyTeamPage from '../pages/myTeam.page';
 import SecurityPage from '../pages/security.page';
 import PlatformFeedbackPage from '../pages/platformFeedback.page';
+import CvDashboardPage from '../pages/cvDashbroard.page';
 
 
 type pages = {
@@ -21,6 +22,7 @@ type pages = {
     myTeamPage: MyTeamPage;
     securityPage: SecurityPage;
     platformFeedbackPage: PlatformFeedbackPage;
+    cvDashboardPage: CvDashboardPage;
 }
     
 const testPages = base.extend<pages>({
@@ -48,6 +50,9 @@ const testPages = base.extend<pages>({
     },
     platformFeedbackPage: async({page},use)=>{
         await use(new PlatformFeedbackPage(page));
+    },
+    cvDashboardPage:async({page},use)=>{
+        await use(new CvDashboardPage(page));
     }
 })
 
