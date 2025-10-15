@@ -1,0 +1,28 @@
+{
+  "name": "e2e-automation-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+
+  "scripts": {
+    "env:local": "cross-env test_env=local npx playwright test",
+    "env:prod": "cross-env test_env=prod npx playwright test",
+    "env:local:cov": "cross-env ENABLE_COVERAGE=true test_env=local npx playwright test",
+    "env:prod:cov": "cross-env ENABLE_COVERAGE=true test_env=prod npx playwright test",
+    "coverage:report": "node scripts/render-coverage.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^9.9.0",
+    "@playwright/test": "^1.54.1",
+    "@skilbourn/playwright-report-summary": "^1.1.1",
+    "@types/node": "^24.1.0",
+    "cross-env": "^10.0.0",
+    "v8-to-istanbul": "^9.3.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1"
+  }
+}
