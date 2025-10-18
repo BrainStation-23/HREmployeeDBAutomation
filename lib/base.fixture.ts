@@ -11,6 +11,27 @@ import MyTeamPage from '../pages/myTeam.page';
 import SecurityPage from '../pages/security.page';
 import PlatformFeedbackPage from '../pages/platformFeedback.page';
 import CvDashboardPage from '../pages/cvDashbroard.page';
+import CvSearchPage from '../pages/cvSearch.page';
+import TrainingCertificatePage from '../pages/trainingCertification.page';
+import CvCompletionPage from '../pages/cvCompletion.page';
+import CvTemplatesPage from '../pages/cvTemplates.page';
+import CvSettingPage from '../pages/cvSettings.page';
+import ResourceDashboard from '../pages/resourceDashboard.page';
+import planningPage from '../pages/Planning.page';
+import ResourceSettingPage from '../pages/resourceSettings.page';
+import CalendarViewPage from '../pages/calendarView.page';
+import HrleaderboardPage from '../pages/hrLeaderboard.page';
+import NonBilledDashboardPage from '../pages/nonBilledDashboard.page';
+import NonBilledReportPage from '../pages/nonBilledReport.page';
+import NonBilledSettingsPage from '../pages/nonBilledSettings.page';
+import UserManagementPage from '../pages/userManagement.page';
+import ProjectPage from '../pages/project.page';
+import SystemsettingPage from '../pages/Systemsetting.page';
+import RoleManagementPage from '../pages/roleManagement.page';
+import ModuleManagementPage from '../pages/modulemanagement.page';
+import AdmindashboardPage from '../pages/adminDashboard.page';
+import EventFlagPage from '../pages/eventflag.page';
+
 
 
 type pages = {
@@ -23,6 +44,30 @@ type pages = {
     securityPage: SecurityPage;
     platformFeedbackPage: PlatformFeedbackPage;
     cvDashboardPage: CvDashboardPage;
+    cvSearchPage:CvSearchPage;
+    trainingCertificatePage:TrainingCertificatePage;
+    cvCompletionPage:CvCompletionPage;
+    cvTemplatesPage:CvTemplatesPage;
+    cvsettingPage:CvSettingPage;
+    resourceDashboardPage:ResourceDashboard;
+    planningPage:planningPage;
+    resourceSettingPage:ResourceSettingPage;
+    calendarViewPage:CalendarViewPage;
+    hrleaderbroadPage:HrleaderboardPage;
+    nonBilledDashboardPage:NonBilledDashboardPage;
+    nonBilledReportPage:NonBilledReportPage;
+    nonBilledSettingPage:NonBilledSettingsPage;
+    userManagementPage:UserManagementPage;
+    projectPage:ProjectPage;
+    systemsettingPage:SystemsettingPage;
+    roleManagementPage:RoleManagementPage;
+    moduleManagementPage:ModuleManagementPage;
+    adminDashboardPage:AdmindashboardPage;
+    eventflagPage:EventFlagPage;
+    
+
+    
+
 }
     
 const testPages = base.extend<pages>({
@@ -53,7 +98,68 @@ const testPages = base.extend<pages>({
     },
     cvDashboardPage:async({page},use)=>{
         await use(new CvDashboardPage(page));
+    },
+    cvSearchPage:async({page},use)=>{
+        await use(new CvSearchPage(page))
+    },
+    trainingCertificatePage:async({page},use)=>{
+        await use(new TrainingCertificatePage(page))
+    },
+    cvCompletionPage:async({page},use)=>{
+      await use(new CvCompletionPage(page))
+    },
+    cvTemplatesPage:async({page},use)=>{
+        await use(new CvTemplatesPage(page))
+    },
+    cvsettingPage:async({page},use)=>{
+        await use(new CvSettingPage(page))
+    },
+    resourceDashboardPage:async({page},use)=>{
+        await use(new ResourceDashboard(page))
+    },
+    planningPage:async({page},use)=>{
+        await use(new planningPage(page))
+    },
+    resourceSettingPage:async({page},use)=>{
+        await use(new ResourceSettingPage(page))
+    },
+    calendarViewPage:async({page},use)=>{
+        await use(new CalendarViewPage(page))
+    },
+    hrleaderbroadPage:async({page},use)=>{
+        await use(new HrleaderboardPage(page))
+    },
+    nonBilledDashboardPage:async({page},use)=>{
+        await use(new NonBilledDashboardPage(page))
+    },
+    nonBilledReportPage:async({page},use)=>{
+        await use(new NonBilledReportPage(page))
+    },
+    nonBilledSettingPage:async({page},use)=>{
+        await use(new NonBilledSettingsPage(page))
+    },
+    userManagementPage:async({page},use)=>{
+        await use(new UserManagementPage(page))
+    },
+    projectPage:async({page},use)=>{
+        await use(new ProjectPage(page))
+    },
+    systemsettingPage:async({page},use)=>{
+        await use(new SystemsettingPage(page))
+    },
+    roleManagementPage:async({page},use)=>{
+        await use(new RoleManagementPage(page))
+    },
+    moduleManagementPage:async({page},use)=>{
+        await use(new ModuleManagementPage(page))
+    },
+    adminDashboardPage:async({page},use)=>{
+        await use(new AdmindashboardPage(page))
+    },
+    eventflagPage:async({page},use)=>{
+        await use(new EventFlagPage(page))
     }
+
 })
 
 export const test = testPages;

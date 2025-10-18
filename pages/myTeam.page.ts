@@ -7,6 +7,7 @@ export default class MyTeamPage {
     readonly peersLabel: Locator;
     readonly directReportsLabel: Locator;
     readonly teamGraphView: Locator;
+    readonly teamstructureView:Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -17,6 +18,8 @@ export default class MyTeamPage {
         this.directReportsLabel = page.locator("(//div[@data-lov-name='CardContent'])[3]");
         this.directReportsLabel = page.locator("//div[h3[contains(normalize-space(.), 'Direct Reports')]]");
         this.teamGraphView = page.locator('//button[normalize-space(.)="Graph View"]');
+        this.teamstructureView=page.locator("//h3[normalize-space()='Team Structure']");
+
 
     }
 
@@ -42,7 +45,18 @@ export default class MyTeamPage {
     async isTeamGraphViewVisible() {
         await this.teamGraphView.waitFor({ state: 'visible', timeout: 15000 });
         return await this.teamGraphView.isVisible({ timeout: 5000 });   
-    }    
+    }   
+    
+    async ClickTeamGraph(){
+        await this.teamGraphView.click();
+
+    }
+
+    async isTeamStructureViewVisible(){
+        //await this.teamstructureView.waitFor({ state: 'visible', timeout: 15000 });
+        return await this.teamstructureView.isVisible({ timeout: 5000 }); 
+
+    }
 
 
 }

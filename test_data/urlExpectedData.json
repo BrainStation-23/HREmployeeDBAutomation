@@ -1,0 +1,16 @@
+{
+    "cvtemplates":"/cv-database/cv-templates",
+    "cvsettings":"/cv-database/cv-template-settings",
+    "resourcesettings":"/resource-calendar/settings",
+    "hrleaderboard":"/resource-calendar/leaderboard",
+    "nonbilledpage":"/non-billed/dashboard",
+    "nonbilledsettingpage":"/non-billed/settings",
+    "usermanagementpage":"/users",
+    "projectpage":"/projects",
+    "systemsettingpage":"/system-settings",
+    "rolemanagementpage":"/admin/roles",
+    "modulemanagementpage":"/admin/modules",
+    "dashboardpage":"/audit/dashboard",
+    "flageventpage":"/audit/flagged-events"
+
+}
