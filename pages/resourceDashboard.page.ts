@@ -54,7 +54,7 @@ export default class ResourceDashboard{
         this.exprtiseField=page.getByText('Expertise', { exact: true })
         this.weeklyScoreCardInfoTab=page.getByRole('tab', { name: 'Weekly Score Card' })
         //weekly field
-        this.weeklycardFilterdropdown=page.locator("//h3[@class='font-semibold tracking-tight flex items-center justify-between text-base']//*[name()='svg']").nth(1)
+        this.weeklycardFilterdropdown=page.locator("//div[@class='flex flex-col space-y-1.5 p-6 cursor-pointer hover:bg-muted/50 transition-colors']")
         this.startdateField=page.getByRole('button', { name: 'Select start date' })
         this.enddateField=page.getByRole('button', { name: 'Select end date' })
         this.clearField=page.getByRole('button', { name: 'Clear Filters' })
@@ -129,7 +129,7 @@ export default class ResourceDashboard{
     async isWeeklyScorecardVisible(){
         return await this.weeklyScoreCardInfoTab.isVisible({timeout:5000});
     }
-    async ClickWeeklyCardFilters(){
+    async ClickWeeklyCardFiltersdropwon(){
         await this.weeklycardFilterdropdown.click();
     }
     async isStartDateFieldVisible(){

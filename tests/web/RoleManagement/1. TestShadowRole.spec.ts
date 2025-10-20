@@ -313,7 +313,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             await page.goto(cvTemplatesRestrictedUrl);
             await expect(page).toHaveURL(/unauthorized/);
         })
-
         await test.step("verify unauthorized text for Cv Templates page ", async () => {
             await cvTemplatesPage.verifyUnauthorizedText();
         })
@@ -369,34 +368,37 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step('Verify Resource Dashboard >>Weekly score card >> sections items are visible for the Shadow SBU role.', async () => {
             expect.soft(await resourceDashboardPage.isWeeklyScorecardVisible()).toBeTruthy();
             await resourceDashboardPage.ClickWeeklyScoreCardInfoTab()
-            await resourceDashboardPage.ClickWeeklyCardFilters();
+            await resourceDashboardPage.ClickWeeklyCardFiltersdropwon();
             //weekly score card section items verification
             expect.soft(await resourceDashboardPage.isStartDateFieldVisible()).toBeTruthy();
             expect.soft(await resourceDashboardPage.isEndDateFieldVisible()).toBeTruthy();
             expect.soft(await resourceDashboardPage.isClearField()).toBeTruthy();
             expect.soft(await resourceDashboardPage.isCalculateField()).toBeTruthy();
+            
         })
 
         await test.step('Verify Resource Dashboard >>Billing type >> sections items are visible for the Shadow SBU role.', async () => {
             expect.soft(await resourceDashboardPage.isClickBillTypeChangesInfoTabvisible()).toBeTruthy();
-            await resourceDashboardPage.ClickBillTypeChangesInfoTab()
-            // await page.waitForTimeout(2000)
-            //await page.locator('div').filter({ hasText: /^Bill Type Changes FiltersClear all$/ }).nth(2).click()
-            // await page.waitForTimeout(1000)
-            //await resourceDashboardPage.ClickBillTypeChangesdropwon()
-            //To bill type section items verification
+            await resourceDashboardPage.ClickBillTypeChangesInfoTab();
+            await page.waitForTimeout(2000);
+            // await page.locator('div').filter({ hasText: /^Bill Type Changes FiltersClear all$/ }).nth(2).click();
+            // await page.pause();
+            // //To bill type section items verification
             // expect.soft(await resourceDashboardPage.isDataFieldVisible()).toBeTruthy();
             // expect.soft(await resourceDashboardPage.isBillTypeChangesInfoTabVisible()).toBeTruthy();
             // expect.soft(await resourceDashboardPage.isDateFieldVisible()).toBeTruthy();
             // expect.soft(await resourceDashboardPage.isFromBillTypesFieldVisible()).toBeTruthy();
             // expect.soft(await resourceDashboardPage.isBillSbuFieldVisible()).toBeTruthy();
-            expect.soft(await resourceDashboardPage.isExportFieldVisible()).toBeTruthy();
+            expect.soft(await resourceDashboardPage.isExportFieldVisible()).toBeTruthy();   
         })
 
         await test.step('Verify Resource Dashboard >>SBU change  >> sections items are visible for the Shadow SBU role.', async () => {
             expect.soft(await resourceDashboardPage.isSbuchangesInfoTabVisible()).toBeTruthy();
             await resourceDashboardPage.ClickSbuchangesInfoTab();
+            await page.getByRole('tabpanel', { name: 'SBU Changes' }).getByRole('img').nth(2).click();
             expect.soft(await resourceDashboardPage.isSbuChangeExportField()).toBeTruthy();
+
+            
         })
     });
     test('Test Shadow Sbu Role Resource Calendar >> planningPage ', async ({ page, planningpage }) => {
