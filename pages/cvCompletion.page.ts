@@ -7,6 +7,8 @@ export default class CvCompletionPage {
   readonly SearchBox:Locator;
   readonly ResourcesField:Locator;
   readonly EditBtn:Locator;
+  readonly unauthorizedText:Locator;
+
 
   constructor(page: Page) {
     this.page = page;
@@ -14,9 +16,10 @@ export default class CvCompletionPage {
     this.SearchBox=page.locator("//input[@placeholder='Search employees...']")
     this.ResourcesField=page.locator("//button[@role='combobox']")
     this.EditBtn=page.locator("(//div[contains(@class, 'flex items-center gap-3')]//button[normalize-space(text())='Edit'])[1]")
+    this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' })
   }
   async isCvCompletionSidebarVisible(){
-    await this.CvCompletionSidebar.waitFor({ state: 'visible', timeout: 15000 });
+     await this.CvCompletionSidebar.waitFor({ state: 'visible', timeout: 15000 });
     return await this.CvCompletionSidebar.isVisible();
   }
   async clickCvCompletionSidebarr(){
@@ -35,5 +38,10 @@ export default class CvCompletionPage {
     await this.EditBtn.waitFor({ state: 'visible', timeout: 15000 });
     return await this.EditBtn.isVisible();
   }
+  // #verify unauthorized text restiatcted url access
+ async verifyUnauthorizedText(){
+   return await this.unauthorizedText.isVisible({timeout:5000});
+
+ }
 
 }

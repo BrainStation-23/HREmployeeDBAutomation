@@ -17,7 +17,7 @@ import CvCompletionPage from '../pages/cvCompletion.page';
 import CvTemplatesPage from '../pages/cvTemplates.page';
 import CvSettingPage from '../pages/cvSettings.page';
 import ResourceDashboard from '../pages/resourceDashboard.page';
-import planningPage from '../pages/Planning.page';
+import Planning from '../pages/planningPage.page';
 import ResourceSettingPage from '../pages/resourceSettings.page';
 import CalendarViewPage from '../pages/calendarView.page';
 import HrleaderboardPage from '../pages/hrLeaderboard.page';
@@ -31,6 +31,7 @@ import RoleManagementPage from '../pages/roleManagement.page';
 import ModuleManagementPage from '../pages/modulemanagement.page';
 import AdmindashboardPage from '../pages/adminDashboard.page';
 import EventFlagPage from '../pages/eventflag.page';
+
 
 
 
@@ -50,7 +51,7 @@ type pages = {
     cvTemplatesPage:CvTemplatesPage;
     cvsettingPage:CvSettingPage;
     resourceDashboardPage:ResourceDashboard;
-    planningPage:planningPage;
+    //planningPage:PlanningPage;
     resourceSettingPage:ResourceSettingPage;
     calendarViewPage:CalendarViewPage;
     hrleaderbroadPage:HrleaderboardPage;
@@ -64,6 +65,7 @@ type pages = {
     moduleManagementPage:ModuleManagementPage;
     adminDashboardPage:AdmindashboardPage;
     eventflagPage:EventFlagPage;
+    planningpage:Planning
     
 
     
@@ -117,9 +119,9 @@ const testPages = base.extend<pages>({
     resourceDashboardPage:async({page},use)=>{
         await use(new ResourceDashboard(page))
     },
-    planningPage:async({page},use)=>{
-        await use(new planningPage(page))
-    },
+    // planningPage:async({page},use)=>{
+    //     await use(new PlanningPage(page))
+    // },
     resourceSettingPage:async({page},use)=>{
         await use(new ResourceSettingPage(page))
     },
@@ -158,6 +160,9 @@ const testPages = base.extend<pages>({
     },
     eventflagPage:async({page},use)=>{
         await use(new EventFlagPage(page))
+    },
+    planningpage:async({page},use)=>{
+        await use(new Planning(page))
     }
 
 })

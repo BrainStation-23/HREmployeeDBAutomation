@@ -6,24 +6,25 @@ export default class CvSearchPage {
   readonly bulkImportData:Locator;
   readonly bulkImportImage:Locator;
   readonly searchBtn:Locator;
+  readonly unauthorizedText:Locator;
   constructor(page: Page) {
     this.page = page;
     this.cvSearchSidebar = page.getByRole('link', { name: 'CV Search' });
     this.bulkImportData=page.getByRole('button', { name: 'Bulk Import Data' })
     this.bulkImportImage=page.getByRole('button', { name: 'Bulk Import Images' })
     this.searchBtn=page.getByRole('button', { name: 'Search' })
+    this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' })
   }
+  //#region CV Search Page Common Sections
   async isCvSearchSidebarvisible() {
-    await this.cvSearchSidebar.waitFor({ state: 'visible', timeout: 15000 });
-    return await this.cvSearchSidebar.isVisible();
+     return await this.cvSearchSidebar.isVisible({timeout:5000});
   }
 
   async clickCvSearchSidebar() {
     await this.cvSearchSidebar.click()
   }
   async isSearchBtnVisible(){
-    await this.searchBtn.waitFor({state:'visible',timeout:15000});
-    return await this.searchBtn.isVisible();
+   return await this.cvSearchSidebar.isVisible({timeout:5000});
   }
   async isBulkImportDataVisible(){
     await this.bulkImportData.waitFor({ state: 'visible', timeout: 15000 });
@@ -33,5 +34,10 @@ export default class CvSearchPage {
     await this.bulkImportImage.waitFor({state:'visible',timeout:15000});
     return await this.bulkImportImage.isVisible();
   }
+  // #verify unauthorized text restiatcted url access
+ async verifyUnauthorizedText(){
+   return await this.unauthorizedText.isVisible({timeout:5000});
+
+ }
 
 }

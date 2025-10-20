@@ -9,11 +9,10 @@ export default class CvTemplatesPage {
     this.cvTemplatesSidebar=page.getByRole('link', { name: 'CV Templates' })
     this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' })
  }
-
  async isCvTemplatesSidebar(){
     return await this.cvTemplatesSidebar.isVisible({timeout:5000});
  }
-
+ // #verify unauthorized text restiatcted url access
  async verifyUnauthorizedText(){
    return await this.unauthorizedText.isVisible({timeout:5000});
 

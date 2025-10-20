@@ -14,6 +14,7 @@ export default class CvSettingPage {
   async isCvSettingSideBarVisible(){
     return await this.cvSettingSideBar.isVisible({timeout:5000});
   }
+  // #verify unauthorized text restiatcted url access
   async verifyUnauthorizedText(){
     return await this.unauthorizedText.isVisible({timeout:5000});
   }

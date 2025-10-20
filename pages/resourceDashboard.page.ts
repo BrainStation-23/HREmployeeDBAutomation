@@ -32,14 +32,10 @@ export default class ResourceDashboard{
     readonly billsbuField:Locator;
     readonly profileField:Locator;
     readonly exportField:Locator;
-
     //sbu changes area
-
     readonly sbuchangeexportField:Locator;
-    
-
-
-
+    //unauthorized
+    readonly unauthorizedText:Locator
 
     constructor(page:Page){
         this.page=page;
@@ -73,19 +69,20 @@ export default class ResourceDashboard{
         this.profileField=page.getByText('Profile', { exact: true });
         this.exportField=page.getByRole('button', { name: 'Export' });
          //sbu change
-        this.sbuchangesInfoTab=page.getByRole('tab', { name: 'SBU Changes' })
-        this.sbuchangeexportField=page.getByRole('button', { name: 'Export' })
-        
-
+        this.sbuchangesInfoTab=page.getByRole('tab', { name: 'SBU Changes' });
+        this.sbuchangeexportField=page.getByRole('button', { name: 'Export' });
+        //unauthorized
+         this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' });
     }
     async clickResourceDashboardSidebar(){
         await this.resourceDashboardSidebar.click();
     }
     async isResourceDashbroadVisible(){
-        return await this.resourceDashboardSidebar.isVisible({timeout:5000})
+        return await this.resourceDashboardSidebar.isVisible({timeout:5000});
     }
+    //#region overview Page Common Sections
     async isOverviewInfoTabvisible(){
-        return await this.overviewInfoTab.isVisible({timeout:5000})
+        return await this.overviewInfoTab.isVisible({timeout:5000});
     }
      async ClickOverviewInfoTab(){
         await this.overviewInfoTab.click();
@@ -94,34 +91,29 @@ export default class ResourceDashboard{
         await this.totalBillableCard.waitFor({ state: 'visible', timeout: 15000 });
         return await this.totalBillableCard.isVisible({ timeout: 5000 });
     }
-
     async isTotalBillCardVisible(){
         await this.totalBilledCard.waitFor({ state: 'visible', timeout: 15000 });
         return await this.totalBilledCard.isVisible({ timeout: 5000 });
     }
-
     async isTotalActualBillCardVisible(){
         await this.totalActualBillCard.waitFor({ state: 'visible', timeout: 15000 });
         return await this.totalActualBillCard.isVisible({ timeout: 5000 });
     }
-
+    //#region pivot analysis Page Common Sections
     async ClickPivotAnalysisInfoTab(){
         await this.pivotAnalysisInfoTab.click();
     }
-
     async isPivotAnalysisInfoTabvisible(){
-        return await this.pivotAnalysisInfoTab.isVisible({timeout:5000})
+        return await this.pivotAnalysisInfoTab.isVisible({timeout:5000});
     }
     async isSbuFieldVisible(){
         await this.sbuField.waitFor({ state: 'visible', timeout: 15000 });
         return await this.sbuField.isVisible({ timeout: 5000 });
-
     }
     async isResourceFieldVisible(){
         await this.resourceField.waitFor({ state: 'visible', timeout: 15000 });
         return await this.resourceField.isVisible({ timeout: 5000 });
     }
-
     async isBillFieldVisible(){
         await this.billField.waitFor({ state: 'visible', timeout: 15000 });
         return await this.billField.isVisible({ timeout: 5000 });
@@ -130,11 +122,12 @@ export default class ResourceDashboard{
         await this.exprtiseField.waitFor({ state: 'visible', timeout: 15000 });
         return await this.exprtiseField.isVisible({ timeout: 5000 });
     }
+    //#region weekly score card Page Common Sections
     async ClickWeeklyScoreCardInfoTab(){
         await this.weeklyScoreCardInfoTab.click();
     }
     async isWeeklyScorecardVisible(){
-        return await this.weeklyScoreCardInfoTab.isVisible({timeout:5000})
+        return await this.weeklyScoreCardInfoTab.isVisible({timeout:5000});
     }
     async ClickWeeklyCardFilters(){
         await this.weeklycardFilterdropdown.click();
@@ -146,20 +139,15 @@ export default class ResourceDashboard{
     async isEndDateFieldVisible(){
        await this.enddateField.waitFor({ state: 'visible', timeout: 15000 });
        return await this.enddateField.isVisible({ timeout: 5000 });
-
     }
-
     async isClearField(){
         await this.clearField.waitFor({ state: 'visible', timeout: 15000 });
         return await this.clearField.isVisible({ timeout: 5000 });  
-
     }
     async isCalculateField(){
         await this.calculateField.waitFor({ state: 'visible', timeout: 15000 });
         return await this.calculateField.isVisible({ timeout: 5000 }); 
-
     }
-
     async ClickBillTypeChangesInfoTab(){
         await this.billTypeChangesInfoTab.click();
     }
@@ -167,7 +155,7 @@ export default class ResourceDashboard{
         await this.billTypeChangesInfoTab.waitFor({ state: 'visible', timeout: 15000 });
         return await this.billTypeChangesInfoTab.isVisible({ timeout: 5000 });
     }
-
+    //#region Bill Type Page Common Sections
     async ClickBillTypeChangesdropwon(){
         await this.BillTypeChangesdropwon.click();
     }
@@ -196,16 +184,20 @@ export default class ResourceDashboard{
         await this.exportField.waitFor({ state: 'visible', timeout: 15000 });
         return await this.exportField.isVisible({ timeout: 5000 });
     }
+    //#region sbu change Page Common Sections
     async ClickSbuchangesInfoTab(){
         await this.sbuchangesInfoTab.click();
     }
-
     async isSbuchangesInfoTabVisible(){
-        return await this.weeklyScoreCardInfoTab.isVisible({timeout:5000})
+        return await this.weeklyScoreCardInfoTab.isVisible({timeout:5000});
     }
-
     async isSbuChangeExportField(){
          await this.sbuchangeexportField.waitFor({ state: 'visible', timeout: 15000 });
         return await this.sbuField.isVisible({ timeout: 5000 });
     }
+    // #verify unauthorized text restiatcted url access
+    async verifyUnauthorizedText(){
+    return await this.unauthorizedText.isVisible({timeout:5000});
+  }
+
 }

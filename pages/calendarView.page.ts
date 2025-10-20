@@ -6,7 +6,7 @@ export default class CalendarViewPage {
     readonly searchemployeeBox:Locator;
     readonly filterbySbu:Locator;
     readonly fillterbyManager:Locator;
-
+     readonly unauthorizedText:Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -14,11 +14,11 @@ export default class CalendarViewPage {
         this.searchemployeeBox=page.getByRole('textbox', { name: 'Search' })
         this.filterbySbu=page.getByText('Select SBU...')
         this.fillterbyManager=page.getByText('Select manager...')
+        this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' })
     }
-
     async isCalendarViewSidebarVisible(){
-        await this.calendarViewSidebar.waitFor({ state: 'visible', timeout: 15000 });
-         return await this.calendarViewSidebar.isVisible();
+         //await this.calendarViewSidebar.waitFor({ state: 'visible', timeout: 15000 });
+         return await this.calendarViewSidebar.isVisible({timeout:5000});
     }
     async ClickCalendarViewSidebar(){
         await this.calendarViewSidebar.click();
@@ -36,6 +36,11 @@ export default class CalendarViewPage {
         await this.fillterbyManager.waitFor({ state: 'visible', timeout: 15000 });
         return await this.fillterbyManager.isVisible();
     }
+      // #verify unauthorized text restiatcted url access
+    async verifyUnauthorizedText(){
+    return await this.unauthorizedText.isVisible({timeout:5000});
+  }
+
 
 
 

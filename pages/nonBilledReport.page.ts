@@ -9,6 +9,7 @@ export default class NonBilledReportPage{
     readonly billTypeField:Locator;
     readonly syncnowButton:Locator;
     readonly exportcsvButton:Locator
+    readonly unauthorizedText:Locator;
     constructor(page:Page){
         this.page = page;
         this.nonbilledReportSidebar=page.getByRole('link', { name: 'Non-Billed Report' });
@@ -18,10 +19,9 @@ export default class NonBilledReportPage{
         this.billTypeField= page.getByText('Filter by Bill Type');
         this.syncnowButton=page.getByRole('button', { name: 'Sync Now' });
         this.exportcsvButton=page.getByRole('button', { name: 'Export CSV' });
+        this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' })
     }
-
     async isNonBilledReportsidebarVisible(){
-        await this.nonbilledReportSidebar.waitFor({ state: 'visible', timeout: 15000 });
         return await this.nonbilledReportSidebar.isVisible({ timeout: 5000 });
     }
     async ClickNonBilledReportsidebar(){
@@ -53,6 +53,10 @@ export default class NonBilledReportPage{
     async isExportbuttonVisible(){
         return await this.exportcsvButton.isVisible({ timeout: 5000 });
     }
+    // #verify unauthorized text restiatcted url access
+    async verifyUnauthorizedText(){
+         return await this.unauthorizedText.isVisible({timeout:5000});
+   }
 
 
    

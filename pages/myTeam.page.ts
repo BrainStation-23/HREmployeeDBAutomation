@@ -19,8 +19,6 @@ export default class MyTeamPage {
         this.directReportsLabel = page.locator("//div[h3[contains(normalize-space(.), 'Direct Reports')]]");
         this.teamGraphView = page.locator('//button[normalize-space(.)="Graph View"]');
         this.teamstructureView=page.locator("//h3[normalize-space()='Team Structure']");
-
-
     }
 
     async clickMyTeamSidebar() {
@@ -51,11 +49,8 @@ export default class MyTeamPage {
         await this.teamGraphView.click();
 
     }
-
     async isTeamStructureViewVisible(){
-        //await this.teamstructureView.waitFor({ state: 'visible', timeout: 15000 });
         return await this.teamstructureView.isVisible({ timeout: 5000 }); 
-
     }
 
 
