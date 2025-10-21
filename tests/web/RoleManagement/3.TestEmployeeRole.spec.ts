@@ -566,4 +566,24 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     })
 
+       test("Test Empolyee Role  Audit >> Profile Image",async({utility, page,profilePage})=>{
+                await test.step("Not able to navigate Event Flag page", async () => {
+                    expect.soft(await profilePage.isProfileImageSidebarVisible()).toBeFalsy();
+                })
+         
+                await test.step("Not able to access Aduit Profile Image page  via url", async () => {
+                    const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { profileimagepage: string };
+                    const profileImageRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.profileimagepage}`;
+                    console.log(profileImageRestrictedURL)
+                    await page.goto(profileImageRestrictedURL);
+                    await expect(page).toHaveURL(/unauthorized/);
+        
+                })
+                await test.step("verify Error Text for profile image page ", async () => {
+                    expect.soft(await profilePage.verifyUnauthorizedText()).toBeTruthy();
+                })
+         
+            })
+    
+
 });
