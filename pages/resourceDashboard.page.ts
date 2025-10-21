@@ -66,7 +66,7 @@ export default class ResourceDashboard{
         this.clearField=page.getByRole('button', { name: 'Clear Filters' })
         this.calculateField=page.getByRole('button', { name: 'Calculate New' })
         //billing type
-        this.BillTypeChangesdropwon = page.locator("//div[@class='flex flex-col space-y-1.5 p-6 cursor-pointer hover:bg-muted/50 transition-colors']")
+        this.BillTypeChangesdropwon = page.locator('div').filter({ hasText: /^Bill Type Changes FiltersClear all$/ }).nth(2)
         this.billTypeChangesInfoTab=page.getByRole('tab', { name: 'Bill Type Changes' });
         this.dateField=page.getByText('Date Range');
         this.frombillTypesField=page.getByText('From Bill Type', { exact: true });

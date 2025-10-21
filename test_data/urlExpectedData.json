@@ -18,6 +18,7 @@
     "rolemanagementpage":"/admin/roles",
     "modulemanagementpage":"/admin/modules",
     "dashboardpage":"/audit/dashboard",
-    "flageventpage":"/audit/flagged-events"
+    "flageventpage":"/audit/flagged-events",
+    "profilepage":"/audit/profile-image-warnings"
 
 }

@@ -15,10 +15,7 @@ export default class CvTemplatesPage {
  // #verify unauthorized text restiatcted url access
  async verifyUnauthorizedText(){
    return await this.unauthorizedText.isVisible({timeout:5000});
-
  }
-
-
 
 }
 

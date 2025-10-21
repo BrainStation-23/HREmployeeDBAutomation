@@ -31,9 +31,9 @@ import RoleManagementPage from '../pages/roleManagement.page';
 import ModuleManagementPage from '../pages/modulemanagement.page';
 import AdmindashboardPage from '../pages/adminDashboard.page';
 import EventFlagPage from '../pages/eventflag.page';
+
 import SignOutPage from '../pages/singOut.page';
-
-
+import ProfilePage from '../pages/profile.page';
 
 type pages = {
     commonPage: CommonPage;
@@ -67,10 +67,7 @@ type pages = {
     eventflagPage:EventFlagPage;
     planningpage:Planning;
     signoutPage:SignOutPage
-    
-
-    
-
+    profilePage:ProfilePage
 }
     
 const testPages = base.extend<pages>({
@@ -120,9 +117,9 @@ const testPages = base.extend<pages>({
     resourceDashboardPage:async({page},use)=>{
         await use(new ResourceDashboard(page))
     },
-    // planningPage:async({page},use)=>{
-    //     await use(new PlanningPage(page))
-    // },
+    planningpage:async({page},use)=>{
+        await use(new Planning(page))
+    },
     resourceSettingPage:async({page},use)=>{
         await use(new ResourceSettingPage(page))
     },
@@ -162,13 +159,12 @@ const testPages = base.extend<pages>({
     eventflagPage:async({page},use)=>{
         await use(new EventFlagPage(page))
     },
-    planningpage:async({page},use)=>{
-        await use(new Planning(page))
-    },
     signoutPage:async({page},use)=>{
          await use(new SignOutPage(page))
+    },
+    profilePage:async({page},use)=>{
+        await use(new ProfilePage(page))
     }
-
 })
 
 export const test = testPages;

@@ -3,10 +3,6 @@ import ENV from '../../../utils/env';
 import fs from 'fs';
 import path from 'path';
 import LoginPage from '../../../pages/login.page';
-
-
-
-
 test.describe('Role Management - Test Employee Role.', () => {
 
     const loginEmail = ENV.TEST_EMPLOYEE_EMAIL as string;

@@ -3,10 +3,6 @@ import ENV from '../../../utils/env';
 import fs from 'fs';
 import path from 'path';
 import LoginPage from '../../../pages/login.page';
-
-
-
-
 test.describe('Role Management - Test Manager Role.', () => {
 
     const loginEmail = ENV.TEST_MANAGER_EMAIL as string;
@@ -258,23 +254,17 @@ test.describe('Role Management - Test Manager Role.', () => {
         })
 
         await test.step("Ensure that progress resource are visbile for manager  role", async () => {
-            await page.waitForTimeout(1000);
-            expect.soft(await cvDashboardPage.isTrainneFieldVisible()).toBeTruthy()
-            await page.waitForTimeout(1000);
-            expect.soft(await cvDashboardPage.isBillableFieldvisible()).toBeTruthy()
-            await page.waitForTimeout(1000);
-            expect.soft(await cvDashboardPage.isContractualFieldVisible()).toBeTruthy()
-            await page.waitForTimeout(1000);
-            expect.soft(await cvDashboardPage.isSupportFieldVisible()).toBeTruthy()
+            expect.soft(await cvDashboardPage.isTrainneFieldVisible()).toBeTruthy();
+            expect.soft(await cvDashboardPage.isBillableFieldvisible()).toBeTruthy();
+            expect.soft(await cvDashboardPage.isContractualFieldVisible()).toBeTruthy();
+            expect.soft(await cvDashboardPage.isSupportFieldVisible()).toBeTruthy();
         })
-
         await test.step("Ensure that progress resource are not visbile for manager  role ", async () => {
             expect.soft(await cvDashboardPage.isGasmFieldVisible()).toBeFalsy()
             expect.soft(await cvDashboardPage.isExitFieldVisible()).toBeFalsy()
         })
 
     })
-
     test("Test Manager Role Database >> CV Search Section.", async ({ page, cvSearchPage }) => {
         await test.step('Navigate to the CV Search section.', async () => {
             await page.waitForLoadState('networkidle');
@@ -620,8 +610,4 @@ test.describe('Role Management - Test Manager Role.', () => {
         await signoutPage.clickSignOut();
     });
 });
-
-  
-
-
 });
