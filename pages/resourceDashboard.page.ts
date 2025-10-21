@@ -10,7 +10,10 @@ export default class ResourceDashboard{
     readonly sbuchangesInfoTab:Locator;
     //overview field data
     readonly totalBillableCard:Locator;
+    readonly totalBillableCardData:Locator
     readonly totalBilledCard:Locator;
+    readonly totalBilledResourceData:Locator;
+    readonly totalActuallBillCardData:Locator;
     readonly totalActualBillCard:Locator;
     //pivotanalysis field data
     readonly sbuField:Locator;
@@ -43,8 +46,11 @@ export default class ResourceDashboard{
         //overview field
         this.overviewInfoTab=page.getByRole('tab', { name: 'Overview' });
         this.totalBillableCard=page.locator("(//div[contains(@class, 'grid grid-cols-1')]/div)[1]")
+        this.totalBillableCardData=page.locator("(//p[@class='text-2xl font-bold'])[1]")
         this.totalBilledCard=page.locator("(//div[contains(@class, 'grid grid-cols-1')]/div)[2]")
+        this.totalBilledResourceData=page.locator("(//p[@class='text-2xl font-bold'])[2]")
         this.totalActualBillCard=page.locator("(//div[contains(@class, 'grid grid-cols-1')]/div)[3]")
+        this.totalActuallBillCardData=page.locator("(//p[@class='text-2xl font-bold'])[3]")
         //pivotanalysis
         this.pivotAnalysisInfoTab=page.getByRole('tab', { name: 'Pivot Analysis' })
         //pivotanalysis field
@@ -60,7 +66,7 @@ export default class ResourceDashboard{
         this.clearField=page.getByRole('button', { name: 'Clear Filters' })
         this.calculateField=page.getByRole('button', { name: 'Calculate New' })
         //billing type
-        this.BillTypeChangesdropwon = page.getByRole('heading', { name: 'Bill Type Changes Filters' }).getByRole('img').nth(2);
+        this.BillTypeChangesdropwon = page.locator("//div[@class='flex flex-col space-y-1.5 p-6 cursor-pointer hover:bg-muted/50 transition-colors']")
         this.billTypeChangesInfoTab=page.getByRole('tab', { name: 'Bill Type Changes' });
         this.dateField=page.getByText('Date Range');
         this.frombillTypesField=page.getByText('From Bill Type', { exact: true });

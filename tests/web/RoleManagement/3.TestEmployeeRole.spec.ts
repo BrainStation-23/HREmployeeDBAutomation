@@ -36,7 +36,7 @@ test.describe('Role Management - Test Employee Role.', () => {
         await page.waitForLoadState('networkidle');
         // Optional: if expected profile name is available in env, wait until it appears somewhere on the page
         try {
-            if ((ENV as any).TEST_MANAGER_NAME) {
+            if ((ENV as any).TEST_EMPLOYEE_NAME) {
                 await page.getByText((ENV as any).TEST_EMPLOYEE_NAME as string, { exact: false }).first().waitFor({ state: 'visible', timeout: 5000 });
             }
         } catch { /* ignore if not found; storage will still be saved */ }
@@ -69,6 +69,7 @@ test.describe('Role Management - Test Employee Role.', () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             // Navigate to My Profile page
+            await page.waitForTimeout(3000);
             expect.soft(await myProfilePage.isMyProfileSidebarVisible()).toBeTruthy();
             await myProfilePage.clickMyProfileSidebar();
 
@@ -146,7 +147,6 @@ test.describe('Role Management - Test Employee Role.', () => {
             expect.soft(await myProfilePage.isProjectsTabVisible()).toBeTruthy();
             await myProfilePage.clickProjectsTab();
             // Projects section items verification
-            // No Add Project button for Shadow SBU role
             expect.soft(await myProfilePage.isProjectSearchInputVisible()).toBeTruthy();
             expect.soft(await myProfilePage.isProjectListItemVisible()).toBeTruthy();
             expect.soft(await myProfilePage.isAddProjectButtonVisible()).toBeTruthy();
@@ -186,6 +186,7 @@ test.describe('Role Management - Test Employee Role.', () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             // Navigate to Security page
+            await page.waitForTimeout(2000);
             expect.soft(await securityPage.isSecuritySidebarVisible()).toBeTruthy();
             await securityPage.clickSecuritySidebar();
         });
@@ -251,7 +252,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     test("Test Empolyee Role Database >> Traininng and certificate.", async ({ page, trainingCertificatePage, utility }) => {
         await test.step("Not able to navigate traininng and certificate", async () => {
-            expect.soft(await trainingCertificatePage.isTrainningCertificateSiderVisible()).toBeFalsy();
+            expect.soft(await trainingCertificatePage.isTrainningCertificateSiderVisibleForEmployee()).toBeFalsy();
         })
 
         await test.step("Not able to access Traininng and Certificate page via url", async () => {
@@ -320,6 +321,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     test("Test Empolyee Role Resource Calendar >> Resource Dashbroard.", async ({ page, resourceDashboardPage, utility }) => {
         await test.step("Not able to navigate Resource Dashbroard", async () => {
+            await page.waitForTimeout(3000);
             expect.soft(await resourceDashboardPage.isResourceDashbroadVisible()).toBeFalsy();
         })
 

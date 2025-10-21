@@ -18,7 +18,11 @@
      }
 
     async isTrainningCertificateSiderVisible(){
+         await this.trainningCertificateSidebar.waitFor({ state: 'visible', timeout: 15000 });
        return await this.trainningCertificateSidebar.isVisible({ timeout: 5000 });
+    }
+    async isTrainningCertificateSiderVisibleForEmployee(){
+        return await this.trainningCertificateSidebar.isVisible({ timeout: 5000 });
     }
     async ClickTrainningCertificateSidebar(){
         await this.trainningCertificateSidebar.click()

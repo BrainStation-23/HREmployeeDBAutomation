@@ -31,7 +31,7 @@ import RoleManagementPage from '../pages/roleManagement.page';
 import ModuleManagementPage from '../pages/modulemanagement.page';
 import AdmindashboardPage from '../pages/adminDashboard.page';
 import EventFlagPage from '../pages/eventflag.page';
-
+import SignOutPage from '../pages/singOut.page';
 
 
 
@@ -65,7 +65,8 @@ type pages = {
     moduleManagementPage:ModuleManagementPage;
     adminDashboardPage:AdmindashboardPage;
     eventflagPage:EventFlagPage;
-    planningpage:Planning
+    planningpage:Planning;
+    signoutPage:SignOutPage
     
 
     
@@ -163,6 +164,9 @@ const testPages = base.extend<pages>({
     },
     planningpage:async({page},use)=>{
         await use(new Planning(page))
+    },
+    signoutPage:async({page},use)=>{
+         await use(new SignOutPage(page))
     }
 
 })

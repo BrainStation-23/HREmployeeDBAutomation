@@ -3,11 +3,15 @@ import { Locator, Page } from "@playwright/test";
 export default class CvDashboardPage {
     readonly page: Page;
     // progress statistics
-    readonly cvDashboardSidebar: Locator
-    readonly profileStats: Locator
-    readonly overalProgressStats: Locator
-    readonly highAchieversStats: Locator
-    readonly steadyProgressStats: Locator
+    readonly cvDashboardSidebar: Locator;
+    readonly profileStats: Locator;
+    readonly profieStatsData:Locator;
+    readonly overallProgressStats: Locator;
+    readonly overallProgressData:Locator;
+    readonly highAchieversStats: Locator;
+    readonly highAchieversData:Locator
+    readonly steadyProgressStats: Locator;
+    readonly steadyProgressData:Locator;
     //progress resource
     readonly traineefield: Locator;
     readonly gasmField: Locator;
@@ -22,9 +26,14 @@ export default class CvDashboardPage {
         this.page = page;
         this.cvDashboardSidebar = page.getByRole('link', { name: 'CV Dashboard' })
         this.profileStats = page.locator("(//div[@class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6']//div[@class='rounded-lg border bg-card text-card-foreground shadow-sm relative overflow-hidden'])[1]")
-        this.overalProgressStats = page.locator("(//div[@class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6']//div[@class='rounded-lg border bg-card text-card-foreground shadow-sm relative overflow-hidden'])[2]")
+        this.profieStatsData=page.locator("//div[@class='flex items-center justify-between']//p[2]").nth(0)
+        this.overallProgressStats = page.locator("(//div[@class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6']//div[@class='rounded-lg border bg-card text-card-foreground shadow-sm relative overflow-hidden'])[2]")
+        this.overallProgressData=page.locator("//div[@class='flex items-center justify-between']//p[2]").nth(1);
         this.highAchieversStats = page.locator("(//div[@class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6']//div[@class='rounded-lg border bg-card text-card-foreground shadow-sm relative overflow-hidden'])[3]")
+        this.highAchieversData=page.locator("//div[@class='flex items-center justify-between']//p[2]").nth(3);
+        
         this.steadyProgressStats = page.locator("(//div[@class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6']//div[@class='rounded-lg border bg-card text-card-foreground shadow-sm relative overflow-hidden'])[4]")
+        this.steadyProgressData=page.locator("//div[@class='flex items-center justify-between']//p[2]").nth(3);
         this.traineefield = page.locator("//h4[normalize-space()='Trainee']")
         this.gasmField = page.locator(" //h4[normalize-space()='GA & SM']")
         this.billableField = page.locator("//h4[normalize-space()='Billable']")
@@ -37,10 +46,8 @@ export default class CvDashboardPage {
 
     //#region CV Dashbroad Page Common Sections
     async isCvDashboardSidebarvisible() {
-        return await this.cvDashboardSidebar.isVisible({ timeout: 5000 });
-
+        return await this.cvDashboardSidebar.isVisible();
     }
-
     async clickCvDashboardSidebar() {
         await this.cvDashboardSidebar.click();
     }
@@ -49,9 +56,11 @@ export default class CvDashboardPage {
         await this.profileStats.waitFor({ state: 'visible', timeout: 15000 });
         return await this.profileStats.isVisible();
     }
+
+
     async isOveralProgressStatsVisible() {
-        await this.overalProgressStats.waitFor({ state: 'visible', timeout: 15000 });
-        return await this.overalProgressStats.isVisible();
+        await this.overallProgressStats.waitFor({ state: 'visible', timeout: 15000 });
+        return await this.overallProgressStats.isVisible();
     }
     async isHighAchieversStatsVisible() {
         await this.highAchieversStats.waitFor({ state: 'visible', timeout: 15000 });

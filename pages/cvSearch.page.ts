@@ -17,7 +17,7 @@ export default class CvSearchPage {
   }
   //#region CV Search Page Common Sections
   async isCvSearchSidebarvisible() {
-     return await this.cvSearchSidebar.isVisible({timeout:5000});
+     return await this.cvSearchSidebar.isVisible();
   }
 
   async clickCvSearchSidebar() {

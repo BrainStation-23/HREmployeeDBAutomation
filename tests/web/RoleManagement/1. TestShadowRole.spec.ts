@@ -70,6 +70,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             // Navigate to My Profile page
+            await page.waitForTimeout(3000);
             expect.soft(await myProfilePage.isMyProfileSidebarVisible()).toBeTruthy();
             await myProfilePage.clickMyProfileSidebar();
 
@@ -189,6 +190,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             // Navigate to Security page
+            await page.waitForTimeout(3000);
             expect.soft(await securityPage.isSecuritySidebarVisible()).toBeTruthy();
             await securityPage.clickSecuritySidebar();
         });
@@ -206,6 +208,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             // Navigate to Platform Feedback page
+            await page.waitForTimeout(3000);
             expect.soft(await platformFeedbackPage.isPlatformFeedbackSidebarVisible()).toBeTruthy();
             await platformFeedbackPage.clickPlatformFeedbackSidebar();
         });
@@ -222,6 +225,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step('Navigate to the CV Dashboard section.', async () => {
             await page.waitForLoadState('networkidle');
             // Navigate to CV Dashboard page
+            await page.waitForTimeout(3000);
             expect.soft(await cvDashboardPage.isCvDashboardSidebarvisible()).toBeTruthy();
             await cvDashboardPage.clickCvDashboardSidebar();
         })
@@ -229,12 +233,33 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("Ensure progress stats are visible", async () => {
             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isProfileStatsVisible()).toBeTruthy();
+            //employee data can't be 0
+            const activeEmployeesText  = await cvDashboardPage.profieStatsData.textContent()
+            const activeEmployeesCount = parseInt(activeEmployeesText?.trim() || '0', 10);
+            expect(activeEmployeesCount).toBeGreaterThan(0);
+            console.log(activeEmployeesCount);
             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isOveralProgressStatsVisible()).toBeTruthy();
+            //progress data can't be 0
+            const overallProgressText = await cvDashboardPage.overallProgressData.textContent()
+            const overallProgressCount = parseInt(overallProgressText?.trim() || '0', 10);
+            // Assert that it is not 0
+            expect(overallProgressCount).toBeGreaterThan(0);
             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isHighAchieversStatsVisible()).toBeTruthy();
+            //High Achievers data can't be 0
+            const highAchieverText = await cvDashboardPage.highAchieversData.textContent()
+            const highAchieverCount = parseInt(highAchieverText ?.trim() || '0', 10);
+            // Assert that it is not 0
+            expect(highAchieverCount ).toBeGreaterThan(0);
             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isSteadyProgressStatsVisible()).toBeTruthy();
+            //Steady Progress data can't be 0
+            const steadyProgressText = await cvDashboardPage.steadyProgressData.textContent()
+            const steadyProgressCount = parseInt(steadyProgressText ?.trim() || '0', 10);
+            // Assert that it is not 0
+            expect(steadyProgressCount).toBeGreaterThan(0);
+           
         })
 
         await test.step("Ensure that progress resource are visbile for shawdow sbu role", async () => {
@@ -259,6 +284,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step('Navigate to the CV Search section.', async () => {
             await page.waitForLoadState('networkidle');
             // Navigate to CV Search page
+            await page.waitForTimeout(3000);
             expect.soft(await cvSearchPage.isCvSearchSidebarvisible()).toBeTruthy();
             await cvSearchPage.clickCvSearchSidebar();
         })
@@ -291,6 +317,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
     test("Test Shadow SBU Role Database >> CV Completion.", async ({ page, cvCompletionPage }) => {
         await test.step("Navigate to  CV Completion", async () => {
             // Navigate to CV Completion and certificate page
+            await page.waitForTimeout(3000);
             expect.soft(await cvCompletionPage.isCvCompletionSidebarVisible()).toBeTruthy();
             await cvCompletionPage.clickCvCompletionSidebarr();
         })
@@ -321,6 +348,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
     test("Test Shadow SBU Role Database >> CV Settings.", async ({ page, cvsettingPage, utility }) => {
         await test.step("Not able to navigate CV Settings", async () => {
             // Not able navigate to CV Settings and certificate page
+            await page.waitForTimeout(3000);
             expect.soft(await cvsettingPage.isCvSettingSideBarVisible()).toBeFalsy();
         })
 
@@ -341,17 +369,27 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             await page.waitForLoadState('networkidle');
             expect.soft(await resourceDashboardPage.isResourceDashbroadVisible()).toBeTruthy();
             await resourceDashboardPage.clickResourceDashboardSidebar();
-            //await page.pause();
+            
         })
-
         await test.step('Verify Resource Dashboard >>overview >> sections items are visible for the Shadow SBU role.', async () => {
             // Navigate to overview section
             expect.soft(await resourceDashboardPage.isOverviewInfoTabvisible()).toBeTruthy();
-            // overview section items verification
-            expect.soft(await resourceDashboardPage.isTotalBillableCardVisible()).toBeTruthy();
-            expect.soft(await resourceDashboardPage.isTotalBillCardVisible()).toBeTruthy();
-            expect.soft(await resourceDashboardPage.isTotalActualBillCardVisible()).toBeTruthy();
+            const totalBillableText = await resourceDashboardPage.totalBillableCardData.textContent();
+            const totalBillableCount = parseInt(totalBillableText?.trim() || '0', 10);
+            expect(totalBillableCount).toBeGreaterThan(0);
 
+            expect.soft(await resourceDashboardPage.isTotalBillCardVisible()).toBeTruthy();
+            expect.soft(await resourceDashboardPage.isTotalBillableCardVisible()).toBeTruthy();
+            const totalBillableResourceText = await resourceDashboardPage.totalBilledResourceData.textContent();
+            const totalBillableResourceCount = parseInt(totalBillableResourceText?.trim() || '0', 10);
+            expect(totalBillableResourceCount).toBeGreaterThan(0);
+
+            expect.soft(await resourceDashboardPage.isTotalActualBillCardVisible()).toBeTruthy();
+             const actualBilledText= await resourceDashboardPage.totalActuallBillCardData.textContent()
+             const  actualBilledCount = parseInt( actualBilledText?.trim() || '0', 10);
+             expect(actualBilledCount).toBeGreaterThan(0);
+            
+        
         });
 
         await test.step('Verify Resource Dashboard >>pivot analysis>> sections items are visible for the Shadow SBU role.', async () => {
@@ -380,7 +418,8 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step('Verify Resource Dashboard >>Billing type >> sections items are visible for the Shadow SBU role.', async () => {
             expect.soft(await resourceDashboardPage.isClickBillTypeChangesInfoTabvisible()).toBeTruthy();
             await resourceDashboardPage.ClickBillTypeChangesInfoTab();
-            await page.waitForTimeout(2000);
+            await resourceDashboardPage.ClickBillTypeChangesdropwon();
+            //await page.pause();
             // await page.locator('div').filter({ hasText: /^Bill Type Changes FiltersClear all$/ }).nth(2).click();
             // await page.pause();
             // //To bill type section items verification
@@ -397,16 +436,18 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             await resourceDashboardPage.ClickSbuchangesInfoTab();
             await page.getByRole('tabpanel', { name: 'SBU Changes' }).getByRole('img').nth(2).click();
             expect.soft(await resourceDashboardPage.isSbuChangeExportField()).toBeTruthy();
-
-            
+   
         })
     });
+
     test('Test Shadow Sbu Role Resource Calendar >> planningPage ', async ({ page, planningpage }) => {
         await test.step("Navigate to the planningPage ", async () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             expect.soft(await planningpage.isClickplanningPageSidebarVisible()).toBeTruthy();
             await planningpage.ClickplanningPageSidebar();
+            
+
         })
         await test.step("Ensure that required options are visible.", async () => {
             expect.soft(await planningpage.isUpdateBtnVisible()).toBeTruthy();
@@ -487,6 +528,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("Navigate to the non billed report page ", async () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
+            await page.waitForTimeout(3000);
             expect.soft(await nonBilledReportPage.isNonBilledReportsidebarVisible()).toBeTruthy();
             await page.waitForTimeout(1000)
             await nonBilledReportPage.ClickNonBilledReportsidebar();
@@ -639,8 +681,14 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
 
     })
 
-    test("singout",async({page})=>{
-        await page.locator("//button[.//span[normalize-space()='Sign Out']]").click();
-    })
+   test("Test Manager Role Sign out >> Sign out", async ({ signoutPage,page }) => {
+    await test.step("Navigate to CV Completion", async () => {
+        await page.waitForTimeout(3000);
+        // Check if Sign out button is visible
+        expect.soft(await signoutPage.isSignoutVisible()).toBeTruthy();
+        // Click on Sign out
+        await signoutPage.clickSignOut();
+    });
+   });
 
 });

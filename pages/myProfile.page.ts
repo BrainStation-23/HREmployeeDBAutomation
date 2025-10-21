@@ -89,7 +89,7 @@ export default class MyProfilePage {
 
     async clickMyProfileSidebar() {
         await this.myProfileSidebar.click();
-        await this.myProfileHeader.waitFor({ state: 'visible', timeout: 5000 });
+        
     }
 
     async isGeneralInfoSectionVisible() {

@@ -10,7 +10,7 @@ export default class CvTemplatesPage {
     this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' })
  }
  async isCvTemplatesSidebar(){
-    return await this.cvTemplatesSidebar.isVisible({timeout:5000});
+    return await this.cvTemplatesSidebar.isVisible();
  }
  // #verify unauthorized text restiatcted url access
  async verifyUnauthorizedText(){

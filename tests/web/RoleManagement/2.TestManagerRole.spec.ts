@@ -52,7 +52,7 @@ test.describe('Role Management - Test Manager Role.', () => {
             await page.waitForLoadState('networkidle');
         });
 
-        await test.step('Verify Dashboard page sections for Shadow SBU role.', async () => {
+        await test.step('Verify Dashboard page sections for manager role.', async () => {
             // Dashboard page section user name verification
             const profileName = (await dashboardPage.getUserProfileNameText()) ?? '';
             expect.soft(profileName.trim()).toContain(ENV.TEST_MANAGER_NAME as string);
@@ -68,6 +68,7 @@ test.describe('Role Management - Test Manager Role.', () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             // Navigate to My Profile page
+            await page.waitForTimeout(3000);
             expect.soft(await myProfilePage.isMyProfileSidebarVisible()).toBeTruthy();
             await myProfilePage.clickMyProfileSidebar();
         });
@@ -145,7 +146,6 @@ test.describe('Role Management - Test Manager Role.', () => {
             expect.soft(await myProfilePage.isProjectsTabVisible()).toBeTruthy();
             await myProfilePage.clickProjectsTab();
             // Projects section items verification
-            // No Add Project button for Shadow SBU role
             expect.soft(await myProfilePage.isProjectSearchInputVisible()).toBeTruthy();
             expect.soft(await myProfilePage.isProjectListItemVisible()).toBeTruthy();
             expect.soft(await myProfilePage.isAddProjectButtonVisible()).toBeTruthy();
@@ -158,6 +158,7 @@ test.describe('Role Management - Test Manager Role.', () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             // Navigate to My Team page
+            await page.waitForTimeout(3000);
             expect.soft(await myTeamPage.isMyTeamSidebarVisible()).toBeTruthy();
             await myTeamPage.clickMyTeamSidebar();
         });
@@ -186,6 +187,7 @@ test.describe('Role Management - Test Manager Role.', () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             // Navigate to Security page
+            await page.waitForTimeout(3000);
             expect.soft(await securityPage.isSecuritySidebarVisible()).toBeTruthy();
             await securityPage.clickSecuritySidebar();
         });
@@ -203,6 +205,7 @@ test.describe('Role Management - Test Manager Role.', () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             // Navigate to Platform Feedback page
+            await page.waitForTimeout(3000);
             expect.soft(await platformFeedbackPage.isPlatformFeedbackSidebarVisible()).toBeTruthy();
             await platformFeedbackPage.clickPlatformFeedbackSidebar();
         });
@@ -219,20 +222,42 @@ test.describe('Role Management - Test Manager Role.', () => {
         await test.step('Navigate to the CV Dashboard section.', async () => {
             await page.waitForLoadState('networkidle');
             // Navigate to CV Dashboard page
+            await page.waitForTimeout(3000);
             expect.soft(await cvDashboardPage.isCvDashboardSidebarvisible()).toBeTruthy();
             await cvDashboardPage.clickCvDashboardSidebar();
         })
+
         await test.step("Ensure progress stats are visible", async () => {
             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isProfileStatsVisible()).toBeTruthy();
+            //employee data can't be 0
+            const activeEmployeesText  = await cvDashboardPage.profieStatsData.textContent()
+            const activeEmployeesCount = parseInt(activeEmployeesText?.trim() || '0', 10);
+            expect(activeEmployeesCount).toBeGreaterThan(0);
             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isOveralProgressStatsVisible()).toBeTruthy();
+            //progress data can't be 0
+            const overallProgressText = await cvDashboardPage.overallProgressData.textContent()
+            const overallProgressCount = parseInt(overallProgressText?.trim() || '0', 10);
+            // Assert that it is not 0
+            expect(overallProgressCount).toBeGreaterThan(0);
             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isHighAchieversStatsVisible()).toBeTruthy();
+            //High Achievers data can't be 0
+            const highAchieverText = await cvDashboardPage.highAchieversData.textContent()
+            const highAchieverCount = parseInt(highAchieverText ?.trim() || '0', 10);
+            // Assert that it is not 0
+            expect(highAchieverCount ).toBeGreaterThan(0);
             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isSteadyProgressStatsVisible()).toBeTruthy();
+            //Steady Progress data can't be 0
+            const steadyProgressText = await cvDashboardPage.steadyProgressData.textContent()
+            const steadyProgressCount = parseInt(steadyProgressText ?.trim() || '0', 10);
+            // Assert that it is not 0
+            expect(steadyProgressCount).toBeGreaterThan(0);
         })
-        await test.step("Ensure that progress resource are visbile for shawdow sbu role", async () => {
+
+        await test.step("Ensure that progress resource are visbile for manager  role", async () => {
             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isTrainneFieldVisible()).toBeTruthy()
             await page.waitForTimeout(1000);
@@ -243,8 +268,7 @@ test.describe('Role Management - Test Manager Role.', () => {
             expect.soft(await cvDashboardPage.isSupportFieldVisible()).toBeTruthy()
         })
 
-
-        await test.step("Ensure that progress resource are not visbile for shawdow sbu role ", async () => {
+        await test.step("Ensure that progress resource are not visbile for manager  role ", async () => {
             expect.soft(await cvDashboardPage.isGasmFieldVisible()).toBeFalsy()
             expect.soft(await cvDashboardPage.isExitFieldVisible()).toBeFalsy()
         })
@@ -255,6 +279,7 @@ test.describe('Role Management - Test Manager Role.', () => {
         await test.step('Navigate to the CV Search section.', async () => {
             await page.waitForLoadState('networkidle');
             // Navigate to CV Search page
+            await page.waitForTimeout(3000);
             expect.soft(await cvSearchPage.isCvSearchSidebarvisible()).toBeTruthy();
             await cvSearchPage.clickCvSearchSidebar();
         })
@@ -287,6 +312,7 @@ test.describe('Role Management - Test Manager Role.', () => {
     test("Test Manager Role Database >> CV Completion.", async ({ page, cvCompletionPage }) => {
         await test.step("Navigate to  CV Completion", async () => {
             // Navigate to CV Completion and certificate page
+            await page.waitForTimeout(3000);
             
             expect.soft(await cvCompletionPage.isCvCompletionSidebarVisible()).toBeTruthy();
             await cvCompletionPage.clickCvCompletionSidebarr();
@@ -335,6 +361,7 @@ test.describe('Role Management - Test Manager Role.', () => {
 
     test("Test Manager Role Resource Calendar >> Resource Dashbroard.", async ({ page, resourceDashboardPage, utility }) => {
         await test.step("Not able to navigate Resource Dashbroard", async () => {
+            await page.waitForTimeout(3000);
             expect.soft(await resourceDashboardPage.isResourceDashbroadVisible()).toBeFalsy();
         })
 
@@ -367,6 +394,7 @@ test.describe('Role Management - Test Manager Role.', () => {
 
     test("Test Manager Role Calendar View >> Calendar View.", async ({ page, calendarViewPage, utility }) => {
         await test.step("Not able to navigate Calenda View", async () => {
+            await page.waitForTimeout(3000);
             expect.soft(await calendarViewPage.isCalendarViewSidebarVisible()).toBeFalsy();
         })
 
@@ -583,9 +611,17 @@ test.describe('Role Management - Test Manager Role.', () => {
 
     })
 
-    test("singout",async({page})=>{
-        await page.locator("//button[.//span[normalize-space()='Sign Out']]").click();
-    })
+    test("Test Manager Role Sign out >> Sign out", async ({ signoutPage,page }) => {
+    await test.step("Navigate to CV Completion", async () => {
+        await page.waitForTimeout(3000);
+        // Check if Sign out button is visible
+        expect.soft(await signoutPage.isSignoutVisible()).toBeTruthy();
+        // Click on Sign out
+        await signoutPage.clickSignOut();
+    });
+});
+
+  
 
 
 });

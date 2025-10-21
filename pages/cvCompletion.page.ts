@@ -19,8 +19,7 @@ export default class CvCompletionPage {
     this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' })
   }
   async isCvCompletionSidebarVisible(){
-     await this.CvCompletionSidebar.waitFor({ state: 'visible', timeout: 15000 });
-    return await this.CvCompletionSidebar.isVisible();
+     return await this.CvCompletionSidebar.isVisible({timeout:5000});
   }
   async clickCvCompletionSidebarr(){
     await this.CvCompletionSidebar.click();
