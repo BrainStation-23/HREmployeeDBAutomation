@@ -235,7 +235,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             const activeEmployeesText = await cvDashboardPage.profieStatsData.textContent()
             const activeEmployeesCount = parseInt(activeEmployeesText?.trim() || '0', 10);
             expect(activeEmployeesCount).toBeGreaterThan(0);
-            console.log(activeEmployeesCount);
             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isOveralProgressStatsVisible()).toBeTruthy();
             //progress data can't be 0
