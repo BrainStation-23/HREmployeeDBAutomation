@@ -2,7 +2,7 @@ import { FullConfig } from "@playwright/test";
 import dotenv from "dotenv";
 
 async function globalSetup(config: FullConfig) {
-  const testEnv = process.env.test_env || process.env.TEST_ENV || "local";
+  const testEnv = process.env.test_env || process.env.TEST_ENV || "prod";
 
   if (testEnv) {
     dotenv.config({

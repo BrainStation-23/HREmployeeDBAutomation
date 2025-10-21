@@ -6,7 +6,7 @@ export default class PlatformFeedbackPage {
     readonly reportBugButton: Locator;
     readonly requestFeatureButton: Locator;
     readonly viewAllFeedbackButton: Locator;
-
+    
     constructor(page: Page) {
         this.page = page;
         this.platformFeedbackSidebar = page.getByRole('link', { name: 'Platform Feedback' });
@@ -14,7 +14,6 @@ export default class PlatformFeedbackPage {
         this.requestFeatureButton = page.getByRole('button', { name: 'Request Feature' });
         this.viewAllFeedbackButton = page.getByRole('button', { name: 'View existing feedback and' });
     }
-
     async clickPlatformFeedbackSidebar() {
         await this.platformFeedbackSidebar.click();
     }   

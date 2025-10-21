@@ -10,9 +10,11 @@ export default class ENV {
 
     public static TEST_MANAGER_EMAIL = process.env.TEST_MANAGER_EMAIL
     public static TEST_MANAGER_PASSWORD = process.env.TEST_MANAGER_PASSWORD
+    public static TEST_MANAGER_NAME=process.env.TEST_MANAGER_NAME
 
     public static TEST_EMPLOYEE_EMAIL = process.env.TEST_EMPLOYEE_EMAIL
     public static TEST_EMPLOYEE_PASSWORD = process.env.TEST_EMPLOYEE_PASSWORD
+     public static TEST_EMPLOYEE_NAME=process.env.TEST_EMPLOYEE_NAME
 
     public static TEST_SHADOW_SBU_EMAIL = process.env.TEST_SHADOW_SBU_EMAIL
     public static TEST_SHADOW_SBU_NAME = process.env.TEST_SHADOW_SBU_NAME
