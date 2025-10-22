@@ -12,9 +12,9 @@ export default class LoginPage {
     constructor(page: Page) {
         this.page = page;
         this.signInHeader = page.locator("//h3[@data-lov-name='CardTitle']");
-        this.emailInput = page.getByRole('textbox', { name: 'Email address' });
-        this.passwordInput = page.getByRole('textbox', { name: 'Password' });
-        this.signInButton = page.getByRole('button', { name: 'Sign in' });
+        this.emailInput = page.locator("#email");
+        this.passwordInput = page.locator("#password");
+        this.signInButton = page.locator("//button[@type='submit']");
         this.userProfileName = page.locator("(//div[contains(@class,'flex items-center')]//span)[2]");
 
     }
@@ -32,7 +32,7 @@ export default class LoginPage {
         await this.passwordInput.fill(password);
         await this.signInButton.click();
         await this.userProfileName.waitFor({ state: 'visible', timeout: 5000 });
-        await this.page.waitForLoadState('networkidle');        
+        await this.page.waitForLoadState('networkidle');
     }
     //await page.getByText('Md. Taskinur Rahman', { exact: true }).click();
 

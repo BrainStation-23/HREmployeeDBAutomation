@@ -3,6 +3,7 @@ import ENV from '../../../utils/env';
 import fs from 'fs';
 import path from 'path';
 import LoginPage from '../../../pages/login.page';
+
 test.describe('Role Management - Test Employee Role.', () => {
 
     const loginEmail = ENV.TEST_EMPLOYEE_EMAIL as string;
@@ -212,58 +213,58 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     });
 
-     test("Test Empolyee Role Database >> CV Dashboard", async ({ page,cvDashboardPage, utility }) => {
+    test("Test Employee Role Database >> CV Dashboard", async ({ page, cvDashboardPage, utility }) => {
         await test.step("Not able to navigate CV Dashboard", async () => {
             expect.soft(await cvDashboardPage.isCvDashboardSidebarvisible()).toBeFalsy();
         })
 
         await test.step("Not able to access CV Search page via url", async () => {
-            const cvTemplate = await utility.readJsonFile('test_data/urlExpectedData.json') as {cvsearchpage: string };
+            const cvTemplate = await utility.readJsonFile('test_data/urlExpectedData.json') as { cvsearchpage: string };
             const cvDashboardRestrictedUrl = `${ENV.BASE_URL}${cvTemplate.cvsearchpage}`;
             await page.goto(cvDashboardRestrictedUrl);
             await expect(page).toHaveURL(/unauthorized/);
         })
 
-        await test.step("verify unauthorized text for Traininng and Certificate page ", async () => {
+        await test.step("verify unauthorized text for Training and Certificate page ", async () => {
             await cvDashboardPage.verifyUnauthorizedText();
         })
     });
 
-    test("Test Empolyee Role Database >> CV Search.", async ({ page,cvSearchPage, utility }) => {
+    test("Test Employee Role Database >> CV Search.", async ({ page, cvSearchPage, utility }) => {
         await test.step("Not able to navigate CV Search", async () => {
             expect.soft(await cvSearchPage.isCvSearchSidebarvisible()).toBeFalsy();
         })
 
         await test.step("Not able to access CV Search page via url", async () => {
-            const cvTemplate = await utility.readJsonFile('test_data/urlExpectedData.json') as {cvsearchpage: string };
+            const cvTemplate = await utility.readJsonFile('test_data/urlExpectedData.json') as { cvsearchpage: string };
             const cvSearchRestrictedUrl = `${ENV.BASE_URL}${cvTemplate.cvsearchpage}`;
             await page.goto(cvSearchRestrictedUrl);
             await expect(page).toHaveURL(/unauthorized/);
         })
 
-        await test.step("verify unauthorized text for Traininng and Certificate page ", async () => {
+        await test.step("verify unauthorized text for Training and Certificate page ", async () => {
             await cvSearchPage.verifyUnauthorizedText();
         })
     });
 
-    test("Test Empolyee Role Database >> Traininng and certificate.", async ({ page, trainingCertificatePage, utility }) => {
-        await test.step("Not able to navigate traininng and certificate", async () => {
+    test("Test Employee Role Database >> Training and certificate.", async ({ page, trainingCertificatePage, utility }) => {
+        await test.step("Not able to navigate training and certificate", async () => {
             expect.soft(await trainingCertificatePage.isTrainningCertificateSiderVisibleForEmployee()).toBeFalsy();
         })
 
-        await test.step("Not able to access Traininng and Certificate page via url", async () => {
+        await test.step("Not able to access Training and Certificate page via url", async () => {
             const cvTemplate = await utility.readJsonFile('test_data/urlExpectedData.json') as { traininngandcertificatepage: string };
             const trainingAndCertificateRestrictedUrl = `${ENV.BASE_URL}${cvTemplate.traininngandcertificatepage}`;
             await page.goto(trainingAndCertificateRestrictedUrl);
             await expect(page).toHaveURL(/unauthorized/);
         })
 
-        await test.step("verify unauthorized text for Traininng and Certificate page ", async () => {
+        await test.step("verify unauthorized text for Training and Certificate page ", async () => {
             await trainingCertificatePage.verifyUnauthorizedText();
         })
     });
 
-    test("Test Empolyee Role Database >> CV Completion.", async ({ page, cvCompletionPage, utility }) => {
+    test("Test Employee Role Database >> CV Completion.", async ({ page, cvCompletionPage, utility }) => {
         await test.step("Not able to navigate CV Completion", async () => {
             // Not able navigate to CV Templates and certificate page
             expect.soft(await cvCompletionPage.isCvCompletionSidebarVisible()).toBeFalsy();
@@ -299,7 +300,7 @@ test.describe('Role Management - Test Employee Role.', () => {
         })
     });
 
-    test("Test Empolyee Role Database >> CV Settings.", async ({ page, cvsettingPage, utility }) => {
+    test("Test Employee Role Database >> CV Settings.", async ({ page, cvsettingPage, utility }) => {
         await test.step("Not able to navigate CV Settings", async () => {
             expect.soft(await cvsettingPage.isCvSettingSideBarVisible()).toBeFalsy();
         })
@@ -315,24 +316,24 @@ test.describe('Role Management - Test Employee Role.', () => {
         })
     })
 
-    test("Test Empolyee Role Resource Calendar >> Resource Dashbroard.", async ({ page, resourceDashboardPage, utility }) => {
-        await test.step("Not able to navigate Resource Dashbroard", async () => {
+    test("Test Employee Role Resource Calendar >> Resource Dashboard.", async ({ page, resourceDashboardPage, utility }) => {
+        await test.step("Not able to navigate Resource Dashboard", async () => {
             await page.waitForTimeout(3000);
             expect.soft(await resourceDashboardPage.isResourceDashbroadVisible()).toBeFalsy();
         })
 
-        await test.step("Not able to access Resource Dashbroard page via url", async () => {
+        await test.step("Not able to access Resource Dashboard page via url", async () => {
             const cvsettingsURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { resourcedashboard: string };
             const resourceRestrictedSettingsUrl = `${ENV.BASE_URL}${cvsettingsURL.resourcedashboard}`;
             await page.goto(resourceRestrictedSettingsUrl);
             await expect(page).toHaveURL(/unauthorized/);
         })
-        await test.step("verify unauthorized text for Resource Dashbroard page ", async () => {
+        await test.step("verify unauthorized text for Resource Dashboard page ", async () => {
             expect.soft(await resourceDashboardPage.verifyUnauthorizedText()).toBeTruthy();
         })
     })
 
-    test("Test Empolyee Role Planning >> planning page.", async ({ page, planningpage, utility }) => {
+    test("Test Employee Role Planning >> planning page.", async ({ page, planningpage, utility }) => {
         await test.step("Not able to navigate planning page", async () => {
             expect.soft(await planningpage.isClickplanningPageSidebarVisible()).toBeFalsy();
         })
@@ -348,8 +349,8 @@ test.describe('Role Management - Test Employee Role.', () => {
         })
     })
 
-    test("Test Empolyee Role Calendar View >> Calendar View.", async ({ page, calendarViewPage, utility }) => {
-        await test.step("Not able to navigate Calenda View", async () => {
+    test("Test Employee Role Calendar View >> Calendar View.", async ({ page, calendarViewPage, utility }) => {
+        await test.step("Not able to navigate Calender View", async () => {
             expect.soft(await calendarViewPage.isCalendarViewSidebarVisible()).toBeFalsy();
         })
 
@@ -364,7 +365,7 @@ test.describe('Role Management - Test Employee Role.', () => {
         })
     })
 
-    test("Test Empolyee Role Resource Settings>> Resource Settings", async ({ page, resourceSettingPage, utility }) => {
+    test("Test Employee Role Resource Settings>> Resource Settings", async ({ page, resourceSettingPage, utility }) => {
         await test.step("Not able to navigate Resource Settings page", async () => {
             expect.soft(await resourceSettingPage.isResourceSettingSideBarVisible()).toBeFalsy();
         })
@@ -380,7 +381,7 @@ test.describe('Role Management - Test Employee Role.', () => {
         })
     })
 
-    test("Test Empolyee Role Hr Leaderboard >> Hr Leaderboard", async ({ page, hrleaderbroadPage, utility }) => {
+    test("Test Employee Role Hr Leaderboard >> Hr Leaderboard", async ({ page, hrleaderbroadPage, utility }) => {
         await test.step("Not able to navigate Hr Leaderboard page", async () => {
             expect.soft(await hrleaderbroadPage.isHrLeaderboardideBarVisible()).toBeFalsy();
         })
@@ -396,7 +397,7 @@ test.describe('Role Management - Test Employee Role.', () => {
         })
     })
 
-    test("Test Empolyee Role Non Billed Management>>Non-Billed Dashboard", async ({ utility, page, nonBilledDashboardPage }) => {
+    test("Test Employee Role Non Billed Management>>Non-Billed Dashboard", async ({ utility, page, nonBilledDashboardPage }) => {
         await test.step("Not able to navigate Non-Billed Dashboard", async () => {
             expect.soft(await nonBilledDashboardPage.isNonBilledDashboradSideBarVisible()).toBeFalsy();
         })
@@ -413,7 +414,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     })
 
-    test("Test Empolyee Role Non Billed Report>>Non-Billed Report page", async ({ utility, page, nonBilledReportPage }) => {
+    test("Test Employee Role Non Billed Report>>Non-Billed Report page", async ({ utility, page, nonBilledReportPage }) => {
         await test.step("Not able to navigate Non-Billed Report page", async () => {
             expect.soft(await nonBilledReportPage.isNonBilledReportsidebarVisible()).toBeFalsy();
         })
@@ -430,7 +431,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     })
 
-    test("Test Empolyee Role Non Billed Management>>Non-Billed Setting", async ({ utility, page, nonBilledSettingPage }) => {
+    test("Test Employee Role Non Billed Management>>Non-Billed Setting", async ({ utility, page, nonBilledSettingPage }) => {
         await test.step("Not able to navigate Non-Billed Setting", async () => {
             expect.soft(await nonBilledSettingPage.isNonBilledSettingsSidebarVisible()).toBeFalsy();
         })
@@ -447,7 +448,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     })
 
-    test("Test Empolyee Role Admin Configuration >>User Management", async ({ utility, page, userManagementPage }) => {
+    test("Test Employee Role Admin Configuration >>User Management", async ({ utility, page, userManagementPage }) => {
         await test.step("Not able to navigate User Management", async () => {
             expect.soft(await userManagementPage.isUserManagementVisible()).toBeFalsy();
         })
@@ -464,7 +465,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     })
 
-    test("Test Empolyee Role Admin Configuration >>Project", async ({ utility, page, projectPage }) => {
+    test("Test Employee Role Admin Configuration >>Project", async ({ utility, page, projectPage }) => {
         await test.step("Not able to navigate Project", async () => {
             expect.soft(await projectPage.isProjectVisible()).toBeFalsy();
         })
@@ -481,7 +482,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     })
 
-    test("Test Empolyee Role Admin Configuration >>System setting", async ({ utility, page, systemsettingPage }) => {
+    test("Test Employee Role Admin Configuration >>System setting", async ({ utility, page, systemsettingPage }) => {
         await test.step("Not able to navigate System setting page", async () => {
             expect.soft(await systemsettingPage.isSystemSettingVisible()).toBeFalsy();
         })
@@ -498,7 +499,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     })
 
-    test("Test Empolyee RoleAdmin Configuration >>Role Management", async ({ utility, page, roleManagementPage }) => {
+    test("Test Employee RoleAdmin Configuration >>Role Management", async ({ utility, page, roleManagementPage }) => {
         await test.step("Not able to navigate Role Management page", async () => {
             expect.soft(await roleManagementPage.isRoleManagementVisible()).toBeFalsy();
         })
@@ -515,7 +516,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     })
 
-    test("Test Empolyee Role Admin Configuration >>Module Management", async ({ utility, page, moduleManagementPage }) => {
+    test("Test Employee Role Admin Configuration >>Module Management", async ({ utility, page, moduleManagementPage }) => {
         await test.step("Not able to navigate Module Management page", async () => {
             expect.soft(await moduleManagementPage.isModuleManagementVisible()).toBeFalsy();
         })
@@ -532,7 +533,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     })
 
-    test("Test Empolyee Role Audit >>Dashboard", async ({ utility, page, adminDashboardPage }) => {
+    test("Test Employee Role Audit >>Dashboard", async ({ utility, page, adminDashboardPage }) => {
         await test.step("Not able to navigate Dashboard page", async () => {
             expect.soft(await adminDashboardPage.isDashboardVisible()).toBeFalsy();
         })
@@ -549,7 +550,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     })
 
-    test("Test Empolyee Role Audit >>Event Flag", async ({ utility, page, eventflagPage }) => {
+    test("Test Employee Role Audit >>Event Flag", async ({ utility, page, eventflagPage }) => {
         await test.step("Not able to navigate Event Flag page", async () => {
             expect.soft(await eventflagPage.isEventFlagVisible()).toBeFalsy();
         })

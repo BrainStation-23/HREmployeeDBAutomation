@@ -1,0 +1,39 @@
+{
+    "__note": "Do not use any real user data",
+
+    "users": [
+        {
+        "name": "Test Automation User 1",
+        "email": "test.automation.user1@brainstation-23.com",
+        "password": "Password@123",
+        "employeeId": "TS1100",
+        "role": "Employee",
+        "managerBSID": "BS1229",
+        "sbu": "eCommerce",
+        "expertise": "Automation Testing",
+        "resourceType": "Trainee",
+        "updatedValues":{
+            "name": "Test Automation Updated User 1",
+            "employeeId": "UTS1100",
+            "sbu": "ERP"
+        }
+        },
+
+        {
+        "name": "Test Automation User 2",
+        "email": "test.automation.user2@brainstation-23.com",
+        "password": "Password@123",
+        "employeeId": "TS2200",
+        "role": "Employee",
+        "managerBSID": "BS1229",
+        "sbu": "eCommerce",
+        "expertise": "Automation Testing",
+        "resourceType": "Trainee",
+        "updatedValues":{
+            "name": "Test Automation Updated User 2",
+            "employeeId": "UTS2200",
+            "sbu": "ERP"
+        }
+        }
+    ]
+}
