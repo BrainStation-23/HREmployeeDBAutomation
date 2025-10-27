@@ -2,18 +2,23 @@ import { expect, test } from "../../../lib/base.fixture";
 import ENV from '../../../utils/env';
 import fs from 'fs';
 import path from 'path';
-import LoginPage from '../../../pages/login.page'; import userCreateTestData from '../../../test_data/UserManagementTestData/createTestUserData.json'; // Test data import
+import LoginPage from '../../../pages/login.page';
+import ExcelCsvReader from '../../../utils/ExcelCsvReader';
+import userCreateTestData from '../../../test_data/UserManagementTestData/createTestUserData.json'; // Test data import
 
 test.describe("User Management - User Create, Update, Delete Test", () => {
+
     const loginEmail = ENV.TEST_SUPER_ADMIN_EMAIL as string;
     const loginPassword = ENV.TEST_SUPER_ADMIN_PASSWORD as string;
+    const userName = ENV.TEST_SUPER_ADMIN_NAME as string
 
     // Prepare and apply Playwright authentication storage for all tests in this describe
     const authDir = path.resolve('playwright/.auth');
     const envName = (ENV.ENVIRONMENT_NAME || 'default').toLowerCase();
-    const storageStatePath = path.join(authDir, `superAdmin.${envName}.json`);
+    const storageStatePath = path.join(authDir, `${userName}.${envName}.json`);
 
-    //#region Login Authentication Storage Setup
+    //#region [BeforeAll Hook] Login Authentication Storage Setup
+
     test.use({ storageState: storageStatePath });
 
     test.beforeAll(async ({ browser }) => {
@@ -27,19 +32,25 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
         const login = new LoginPage(page);
         await login.navigateToLoginPage();
         await login.loginToCvSite(loginEmail, loginPassword);
+
         // Ensure post-login is fully settled before persisting storage
         await page.waitForLoadState('domcontentloaded');
         await page.waitForLoadState('networkidle');
+
         // Optional: if expected profile name is available in env, wait until it appears somewhere on the page
         try {
-            if ((ENV as any).TEST_SUPER_ADMIN_NAME) {
-                await page.getByText((ENV as any).TEST_SUPER_ADMIN_NAME as string, { exact: false }).first().waitFor({ state: 'visible', timeout: 5000 });
+            if (userName) {
+                await page.getByText(userName, { exact: false }).first().waitFor({ state: 'visible', timeout: 5000 });
             }
         } catch { /* ignore if not found; storage will still be saved */ }
         await context.storageState({ path: storageStatePath });
         await context.close();
     });
+
     //#endregion
+
+
+    //#region [Test] Create and delete a new user
 
     test('Create and delete a new user from the user management.', async ({ page, userManagementPage, userManagementNewUserPage }) => {
 
@@ -53,6 +64,7 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
         //#region Delete created test user
 
         /**
+         * !@ATTENTION
          * @Do not use any real data as testing purpose.
          * @This test first find the users from test data and delete them.
          * @After that again create the users for testing
@@ -78,15 +90,16 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
                         });
                     } else {
                         await test.step(`No user found for the ${userCreateTestData.users[i].email}`, async () => {
-                            /* Keep it as blank 
-                            @ this only for the reporting purpose
-                            */
+                            /** Keep it as blank 
+                             * @this only for the reporting purpose
+                             */
                         });
 
                     }
                 });
             }
         });
+
         //#endregion
 
         await test.step('Fill in new user details information, create the user and Verify them.', async () => {
@@ -214,9 +227,9 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
                         });
                     } else {
                         await test.step(`No user found for the ${userCreateTestData.users[i].email}`, async () => {
-                            /* Keep it as blank 
-                            @ this only for the reporting purpose
-                            */
+                            /** Keep it as blank 
+                             * @this only for the reporting purpose
+                             */
                         });
 
                     }
@@ -225,6 +238,11 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
         });
 
     });
+
+    //#endregion
+
+
+    //#region [Test] Update and delete user information
 
     test('Update and delete user information from the user management.', async ({ page, userManagementPage, userManagementNewUserPage }) => {
 
@@ -276,9 +294,9 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
                         });
                     } else {
                         await test.step(`User found for the ${userCreateTestData.users[i].email}`, async () => {
-                            /* Keep it as blank 
-                            @ this only for the reporting purpose
-                            */
+                            /** Keep it as blank 
+                             * @this only for the reporting purpose
+                             */
                         });
 
                     }
@@ -286,6 +304,7 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
             }
 
         });
+
         //#endregion
 
         for (let i: number = 0; i < _totalUsers; i++) {
@@ -385,5 +404,304 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
         });
 
     });
+
+    //#endregion
+
+
+    //#region [Test] Create, Update and Delete bulk users
+
+    test('Bulk users (Create, Update and Delete)  from the user management.', async ({ page, userManagementPage }) => {
+
+        let userCreateCsvFilePath: string = 'test_data/UserManagementTestData/user_create.csv';
+        let userDeleteCsvFilePath: string = 'test_data/UserManagementTestData/employee_ids_delete.csv';
+        let userUpdateCsvFilePath: string = 'test_data/UserManagementTestData/user_update.csv';
+        let userExcelReportPath: string = 'test_data/UserManagementTestData/UserExcelReport/excelReport.xlsx';
+
+        let userCreateSheetName: string = 'user_create';
+        let userUpdateSheetName: string = 'user_update';
+        let userReportSheetName: string = 'Users to Delete';
+
+        let userCreateCsvReader = new ExcelCsvReader(userCreateCsvFilePath);
+        let userUpdateCsvReader = new ExcelCsvReader(userUpdateCsvFilePath);
+        let userDeleteCsvReader = new ExcelCsvReader(userDeleteCsvFilePath);
+        let userReportExcelReader = new ExcelCsvReader(userExcelReportPath);
+
+        let _totalCreateUser: number = await userCreateCsvReader.getRowCount() - 1;
+        let _totalUpdateUser: number = await userUpdateCsvReader.getRowCount() - 1;
+        let _totalDeleteUser: number = await userDeleteCsvReader.getRowCount();
+        let _totalUserReport: number = await userReportExcelReader.getRowCount() - 1;
+
+        /**
+         * @CREATE_BULK_USER
+         */
+
+        await test.step(`Create bulk users and verify that the users are created.`, async () => {
+
+            await test.step('Navigate to the user management page.', async () => {
+                await userManagementPage.navigateToUserManagement();
+                await page.waitForLoadState('networkidle');
+            });
+
+            await test.step('Upload the create user file for the bulk upload.', async () => {
+                await userManagementPage.clickBulkCreateButton();
+                await userManagementPage.uploadFile(userCreateCsvFilePath);
+            });
+
+            await test.step('Verify the uploaded create user file is valid.', async () => {
+                let validUserMsg: string = await userManagementPage.getValidUserNumberForFileUpload() ?? '';
+                let validUserNumber: number = parseInt(validUserMsg.replace('\D+', ''));
+
+                let errorMessage: string = await userManagementPage.getErrorNumberForFileUpload() ?? '';
+                let errorNumber: number = parseInt(errorMessage.replace('\D+', ''));
+
+                expect.soft(validUserNumber, `Expected valid users count ${_totalCreateUser}, but we found ${validUserNumber}`).toEqual(_totalCreateUser);
+                expect.soft(errorNumber, `Expected 0 error will be present, but we found ${errorNumber}`).toEqual(0);
+
+            });
+
+            await test.step('Submit the bulk user create and verify that the users are created.', async () => {
+                let buttonUserCountMsg = await userManagementPage.getCreateUpdateUserNumberFromSubmitButton() ?? '';
+                expect.soft(buttonUserCountMsg, `Expected message ${_totalCreateUser} in the submit button, but we found ${buttonUserCountMsg}`).toContain(`Create ${_totalCreateUser} Users`);
+
+                await userManagementPage.clickTheBulkSubmitButton();
+                await userManagementPage.clickToasterCrossButton();
+                await userManagementPage.toasterMessageConfirmation.hover();
+                await page.waitForTimeout(1500);
+
+                expect.soft(await userManagementPage.getToasterMessageConfirmation()).toContain(`Successfully processed ${_totalCreateUser} users`);
+
+                for (let i: number = 2; i <= _totalCreateUser + 1; i++) {
+                    let userEmail: string = await userCreateCsvReader.getCellData("email", i, userCreateSheetName);
+                    let userName: string = await userCreateCsvReader.getCellData("firstName", i, userCreateSheetName);
+                    let userRole: string = await userCreateCsvReader.getCellData("role", i, userCreateSheetName);
+                    let userEmployeeID: string = await userCreateCsvReader.getCellData("employeeId", i, userCreateSheetName);
+                    let userSbuName: string = await userCreateCsvReader.getCellData("sbuName", i, userCreateSheetName);
+                    let userExpertiseName: string = await userCreateCsvReader.getCellData("expertiseName", i, userCreateSheetName);
+                    let userResourceTypeName = await userCreateCsvReader.getCellData("resourceTypeName", i, userCreateSheetName);
+
+                    await test.step(`Search the user and verify the user information for ${userEmail} from the user list.`, async () => {
+
+                        await userManagementPage.fillTheSearchInput(userEmail);
+                        await userManagementPage.clickSearchButton();
+
+                        if (await userManagementPage.isNoUserFound()) {
+                            expect.soft(false, `No user found for ${userEmail}`);
+                            return;
+                        }
+
+                        await userManagementPage.expandUserInfo(userEmail);
+
+                        await test.step('Verify the user name', async () => {
+                            expect.soft(await userManagementPage.getUserName(userEmail)).toContain(userName);
+                        });
+
+                        await test.step('Verify the user employee ID', async () => {
+                            expect.soft(await userManagementPage.getUserEmployeeID(userEmail)).toContain(userEmployeeID);
+                        });
+
+                        await test.step('Verify the user role', async () => {
+                            expect.soft(await userManagementPage.getUserRole(userEmail)).toContain(userRole);
+                        });
+
+                        await test.step('Verify the user SBU', async () => {
+                            expect.soft(await userManagementPage.getUserSBU(userEmail)).toContain(userSbuName);
+                        });
+
+                        await test.step('Verify the user expertise', async () => {
+                            expect.soft(await userManagementPage.getUserExpertiseInfo()).toContain(userExpertiseName);
+                        });
+
+                        await test.step('Verify the user resource type', async () => {
+                            expect.soft(await userManagementPage.getResourceTypeInfo()).toContain(userResourceTypeName);
+                        });
+
+                    });
+
+                }
+
+                await userManagementPage.blankSearch();
+                await page.waitForTimeout(1500);
+
+            });
+        });
+
+
+        /**
+         * @UPDATE_BULK_USER
+         */
+
+        await test.step('Update bulk users and verify that the users are updated', async () => {
+
+            await test.step('Download the user excel report and update user DB Id to the user update csv file', async () => {
+
+                await userManagementPage.clickBulkDeleteButton();
+                await userManagementPage.clickDeleteListedRadioButton();
+                await userManagementPage.uploadFile(userDeleteCsvFilePath);
+                await userManagementPage.clickGeneratePreviewButtonForBulkDelete();
+                await userManagementPage.downloadTheDeletedExcelReport(userExcelReportPath);
+                await userManagementPage.clickCloseBulkPopupButton();
+
+                for (let i: number = 2; i <= _totalDeleteUser + 1; i++) {
+                    const userDBId: string = await userReportExcelReader.getCellData("Database ID", i, userReportSheetName);
+                    await userUpdateCsvReader.setCellData("userId", i, userDBId, userUpdateSheetName);
+                }
+            });
+
+            await test.step('Upload the bulk update file and verify that the file is uploaded.', async () => {
+                await userManagementPage.clickBulkUpdateButton();
+                await userManagementPage.uploadFile(userUpdateCsvFilePath);
+
+                let validUserMsg: string = await userManagementPage.getValidUserNumberForFileUpload() ?? '';
+                let validUserNumber: number = parseInt(validUserMsg.replace('\D+', ''));
+
+                let errorMessage: string = await userManagementPage.getErrorNumberForFileUpload() ?? '';
+                let errorNumber: number = parseInt(errorMessage.replace('\D+', ''));
+
+                expect.soft(validUserNumber, `Expected valid users count ${_totalUpdateUser}, but we found ${validUserNumber}`).toEqual(_totalUpdateUser);
+                expect.soft(errorNumber, `Expected 0 error will be present, but we found ${errorNumber}`).toEqual(0);
+            });
+
+            await test.step('Submit the bulk update user file and verify that the file is submitted.', async () => {
+                let buttonUserCountMsg = await userManagementPage.getCreateUpdateUserNumberFromSubmitButton() ?? '';
+                expect.soft(buttonUserCountMsg, `Expected message ${_totalCreateUser} in the submit button, but we found ${buttonUserCountMsg}`).toContain(`Update ${_totalCreateUser} Users`);
+
+                await userManagementPage.clickTheBulkSubmitButton();
+
+                // await userManagementPage.clickToasterCrossButton();
+                // await userManagementPage.toasterMessageConfirmation.hover();
+
+                await page.waitForTimeout(2000);
+
+                // expect.soft(await userManagementPage.getToasterMessageConfirmation()).toContain(`${_totalCreateUser} users updated`);
+            });
+
+            await test.step('Verify all the users are update successfully.', async () => {
+
+                for (let i: number = 2; i <= _totalUpdateUser + 1; i++) {
+                    let userEmail: string = await userUpdateCsvReader.getCellData("email", i, userUpdateSheetName);
+                    let userName: string = await userUpdateCsvReader.getCellData("firstName", i, userUpdateSheetName);
+                    let userRole: string = await userUpdateCsvReader.getCellData("role", i, userUpdateSheetName);
+                    let userEmployeeID: string = await userUpdateCsvReader.getCellData("employeeId", i, userUpdateSheetName);
+                    let userSbuName: string = await userUpdateCsvReader.getCellData("sbuName", i, userUpdateSheetName);
+                    let userExpertiseName: string = await userUpdateCsvReader.getCellData("expertiseName", i, userUpdateSheetName);
+                    let userResourceTypeName = await userUpdateCsvReader.getCellData("resourceTypeName", i, userUpdateSheetName);
+
+                    await test.step(`Search the user and verify the user information for ${userEmail} from the user list.`, async () => {
+
+                        await userManagementPage.fillTheSearchInput(userEmail);
+                        // await page.waitForTimeout(1500);
+                        await userManagementPage.clickSearchButton();
+
+                        // await page.waitForTimeout(1500);
+
+                        if (await userManagementPage.isNoUserFound()) {
+                            expect.soft(false, `No user found for ${userEmail}`);
+                            return;
+                        }
+
+                        await userManagementPage.expandUserInfo(userEmail);
+                        await userManagementPage.expandUserInfo(userEmail);
+
+                        await test.step('Verify the user name', async () => {
+                            expect.soft(await userManagementPage.getUserName(userEmail)).toContain(userName);
+                        });
+
+                        await test.step('Verify the user employee ID', async () => {
+                            expect.soft(await userManagementPage.getUserEmployeeID(userEmail)).toContain(userEmployeeID);
+                        });
+
+                        await test.step('Verify the user role', async () => {
+                            expect.soft(await userManagementPage.getUserRole(userEmail)).toContain(userRole);
+                        });
+
+                        await test.step('Verify the user SBU', async () => {
+                            expect.soft(await userManagementPage.getUserSBU(userEmail)).toContain(userSbuName);
+                        });
+
+                        await test.step('Verify the user expertise', async () => {
+                            expect.soft(await userManagementPage.getUserExpertiseInfo()).toContain(userExpertiseName);
+                        });
+
+                        await test.step('Verify the user resource type', async () => {
+                            expect.soft(await userManagementPage.getResourceTypeInfo()).toContain(userResourceTypeName);
+                        });
+
+                    });
+
+                }
+
+            });
+
+        });
+
+
+        /**
+         * @DELETE_BULK_USER
+         */
+
+        await test.step('Delete bulk users and verify that delete users are deleted.', async () => {
+
+            await test.step('Click the bulk delete button.', async () => {
+                await userManagementPage.clickBulkDeleteButton();
+                await userManagementPage.clickDeleteListedRadioButton();
+            });
+
+            await test.step('Upload the bulk delete user file.', async () => {
+                await userManagementPage.uploadFile(userDeleteCsvFilePath);
+                await userManagementPage.clickGeneratePreviewButtonForBulkDelete();
+            });
+
+            await test.step('Verify that the users are available.', async () => {
+
+                expect.soft(await userManagementPage.getBulkDeleteWarningMessage()).toContain(`${_totalDeleteUser} users will be permanently deleted`)
+                expect.soft(await userManagementPage.getBulkDeletedUserCount()).toContain(`Users to be deleted (${_totalDeleteUser})`);
+
+                for (let i: number = 1; i <= _totalDeleteUser; i++) {
+
+                    let userEmail: string = await userCreateCsvReader.getCellData("email", i + 1, userCreateSheetName);
+                    let userName: string = await userCreateCsvReader.getCellData("firstName", i + 1, userCreateSheetName);
+                    let userEmployeeID: string = await userCreateCsvReader.getCellData("employeeId", i + 1, userCreateSheetName);
+
+                    expect.soft(
+                        await userManagementPage.getBulkDeletedUserNameFromConfirmList(userEmail),
+                        `User ${userName} (${userEmail}) not found.`
+                    ).toEqual(userName);
+
+                    expect.soft(
+                        await userManagementPage.getBulkDeletedUserEmployeeIdFromConfirmList(userEmail),
+                        `User ${userName} (${userEmail}) Employee ID ${userEmployeeID} not found.`
+                    ).toEqual(userEmployeeID);
+                    await page.waitForTimeout(1000);
+                }
+            });
+
+            await test.step('Click the bulk delete confirm button.', async () => {
+                await userManagementPage.clickBulkDeleteConfirmButton();
+
+                expect.soft(
+                    await userManagementPage.getToasterMessageConfirmation(), `User not delete successfully.`
+                ).toContain(`Successfully deleted ${_totalDeleteUser} users.`);
+            });
+
+            await test.step('Verify that the users are deleted successfully.', async () => {
+
+                for (let i: number = 1; i <= _totalDeleteUser; i++) {
+
+                    let userEmail: string = await userCreateCsvReader.getCellData("email", i + 1, userCreateSheetName);
+
+                    await userManagementPage.fillTheSearchInput(userEmail);
+                    await userManagementPage.clickSearchButton();
+                    await page.waitForTimeout(1500);
+
+                    expect.soft(await userManagementPage.isNoUserFound()).toBeTruthy();
+                }
+
+            });
+
+        });
+
+    });
+
+    //#endregion
 
 });

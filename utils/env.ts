@@ -4,6 +4,7 @@ export default class ENV {
 
     public static TEST_SUPER_ADMIN_EMAIL = process.env.TEST_SUPER_ADMIN_EMAIL
     public static TEST_SUPER_ADMIN_PASSWORD = process.env.TEST_SUPER_ADMIN_PASSWORD
+    public static TEST_SUPER_ADMIN_NAME = process.env.TEST_SUPER_ADMIN_NAME
 
     public static TEST_ADMIN_EMAIL = process.env.TEST_ADMIN_EMAIL
     public static TEST_ADMIN_PASSWORD = process.env.TEST_ADMIN_PASSWORD

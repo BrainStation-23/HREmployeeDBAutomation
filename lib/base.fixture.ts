@@ -69,7 +69,6 @@ type pages = {
     signoutPage:SignOutPage;
     profilePage:ProfilePage;
     userManagementNewUserPage:UserManagementNewUserPage;
-
 }
     
 const testPages = base.extend<pages>({
