@@ -5,6 +5,7 @@ import path from 'path';
 import LoginPage from '../../../pages/login.page';
 import ExcelCsvReader from '../../../utils/ExcelCsvReader';
 import userCreateTestData from '../../../test_data/UserManagementTestData/createTestUserData.json'; // Test data import
+import userSearchTestData from '../../../test_data/UserManagementTestData/userSearchTestData.json';
 
 test.describe("User Management - User Create, Update, Delete Test", () => {
 
@@ -704,4 +705,274 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
 
     //#endregion
 
-});
+
+    //#region [Test] Search, Filter and Export 
+
+    test('Search, Filter and Export test for the user management.', async ({ page, userManagementPage }) => {
+
+        let searchName = userSearchTestData.searchKeyWord.name;
+        let searchEmail = userSearchTestData.searchKeyWord.email;
+        let searchEmployeeID = userSearchTestData.searchKeyWord.employeeID;
+        let searchExpertise = userSearchTestData.searchKeyWord.verification.Expertise;
+        let searchResourceType = userSearchTestData.searchKeyWord.verification.ResourceType;
+        let searchSBU = userSearchTestData.searchKeyWord.verification.SBU;
+
+        let filterByRoles = userSearchTestData.filterKeyWord.filterByRoles;
+        let filterSBU = userSearchTestData.filterKeyWord.advancedFilter.sbu;
+        let filterManagerName = userSearchTestData.filterKeyWord.advancedFilter.managerName;
+        let filterManagerEmployeeID = userSearchTestData.filterKeyWord.advancedFilter.managerEmployeeID;
+        let filterResourceType = userSearchTestData.filterKeyWord.advancedFilter.resourceType;
+        let filterExpertise = userSearchTestData.filterKeyWord.advancedFilter.expertise;
+
+        await userManagementPage.navigateToUserManagementByURL();
+        await page.waitForLoadState("networkidle");
+
+        await test.step('Search by user name and verify the user details.', async () => {
+
+            await test.step('Search by user name.', async () => {
+                await userManagementPage.fillTheSearchInput(searchName);
+                await userManagementPage.clickSearchButton();
+
+                await userManagementPage.expandUserInfo(searchEmail);
+            });
+
+            await test.step('Verify the search result.', async () => {
+                await test.step('Verify the user name', async () => {
+                    expect.soft(await userManagementPage.getUserName(searchEmail)).toEqual(searchName);
+                });
+
+                await test.step('Verify the user BS ID', async () => {
+                    expect.soft(await userManagementPage.getUserEmployeeID(searchEmail)).toEqual(searchEmployeeID);
+                });
+
+                await test.step('Verify the user SBU', async () => {
+                    expect.soft(await userManagementPage.getUserSBU(searchEmail)).toEqual(searchSBU);
+                });
+
+                await test.step('Verify the user Expertise', async () => {
+                    expect.soft(await userManagementPage.getUserExpertiseInfo()).toEqual(searchExpertise);
+                    await page.waitForTimeout(1000);
+                });
+
+                await test.step('Verify the resource type', async () => {
+                    expect.soft(await userManagementPage.getResourceTypeInfo()).toEqual(searchResourceType);
+                });
+            });
+
+        });
+
+        await test.step('Search by employee ID and verify the user details.', async () => {
+
+            await test.step('Search by user name.', async () => {
+                await page.reload();
+                await page.waitForLoadState("networkidle");
+                await userManagementPage.fillTheSearchInput(searchEmployeeID);
+                await userManagementPage.clickSearchButton();
+
+                await userManagementPage.expandUserInfo(searchEmail);
+            });
+
+            await test.step('Verify the search result.', async () => {
+                await test.step('Verify the user name', async () => {
+                    expect.soft(await userManagementPage.getUserName(searchEmail)).toEqual(searchName);
+                });
+
+                await test.step('Verify the user BS ID', async () => {
+                    expect.soft(await userManagementPage.getUserEmployeeID(searchEmail)).toEqual(searchEmployeeID);
+                });
+
+                await test.step('Verify the user SBU', async () => {
+                    expect.soft(await userManagementPage.getUserSBU(searchEmail)).toEqual(searchSBU);
+                });
+
+                await test.step('Verify the user Expertise', async () => {
+                    expect.soft(await userManagementPage.getUserExpertiseInfo()).toEqual(searchExpertise);
+                    await page.waitForTimeout(1000);
+                });
+
+                await test.step('Verify the resource type', async () => {
+                    expect.soft(await userManagementPage.getResourceTypeInfo()).toEqual(searchResourceType);
+                });
+            });
+
+        });
+
+        await test.step('Filter by role and verify the user from the user management page.', async () => {
+
+            await page.reload();
+            await page.waitForLoadState("networkidle");
+
+            let _totalUsers = await userManagementPage.getSearchResultCount();
+
+            await test.step('Select the filter by role.', async () => {
+                await userManagementPage.selectFilterByRole(filterByRoles);
+                await userManagementPage.clickSearchButton();
+            });
+
+            await test.step('Verify that the filter is applied', async () => {
+                let filterSearchResult = await userManagementPage.getSearchResultCount();
+
+                expect.soft(filterSearchResult).toBeLessThan(_totalUsers);
+            });
+
+        });
+
+        await test.step('Advance filter by SBU and verify the user from the user management page.', async () => {
+
+            await page.reload();
+            await page.waitForLoadState("networkidle");
+
+            let _totalUsers = await userManagementPage.getSearchResultCount();
+
+            await test.step('Select the filter by sbu.', async () => {
+
+                await userManagementPage.clickAdvanceFiltersButton();
+                await userManagementPage.selectFilterBySBU(filterSBU);
+                await userManagementPage.clickApplyFilterButton();
+                await page.waitForTimeout(1500);
+            });
+
+            await test.step('Verify that the filter is applied', async () => {
+                let filterSearchResult = await userManagementPage.getSearchResultCount();
+
+                expect.soft(filterSearchResult).toBeLessThan(_totalUsers);
+            });
+
+        });
+
+        await test.step('Advance filter by manager name and verify the user from the user management page.', async () => {
+
+            await page.reload();
+            await page.waitForLoadState("networkidle");
+
+            let _totalUsers = await userManagementPage.getSearchResultCount();
+
+            await test.step('Select the filter by manager name.', async () => {
+
+                await userManagementPage.clickAdvanceFiltersButton();
+                await userManagementPage.selectFilterByManager(filterManagerName);
+                await userManagementPage.clickApplyFilterButton();
+                await page.waitForTimeout(1500);
+            });
+
+            await test.step('Verify that the filter is applied', async () => {
+                let filterSearchResult = await userManagementPage.getSearchResultCount();
+
+                expect.soft(filterSearchResult).toBeLessThan(_totalUsers);
+            });
+
+        });
+
+        await test.step('Advance filter by manager employee ID and verify the user from the user management page.', async () => {
+
+            await page.reload();
+            await page.waitForLoadState("networkidle");
+
+            let _totalUsers = await userManagementPage.getSearchResultCount();
+
+            await test.step('Select the filter by manager employee ID.', async () => {
+
+                await userManagementPage.clickAdvanceFiltersButton();
+                await userManagementPage.selectFilterByManager(filterManagerEmployeeID);
+                await userManagementPage.clickApplyFilterButton();
+                await page.waitForTimeout(1500);
+            });
+
+            await test.step('Verify that the filter is applied', async () => {
+                let filterSearchResult = await userManagementPage.getSearchResultCount();
+
+                expect.soft(filterSearchResult).toBeLessThan(_totalUsers);
+            });
+
+        });
+
+        await test.step('Advance filter by resource type and verify the user from the user management page.', async () => {
+
+            await page.reload();
+            await page.waitForLoadState("networkidle");
+
+            let _totalUsers = await userManagementPage.getSearchResultCount();
+
+            await test.step('Select the filter by resource type.', async () => {
+
+                await userManagementPage.clickAdvanceFiltersButton();
+                await userManagementPage.selectFilterByResourceType(filterResourceType);
+                await userManagementPage.clickApplyFilterButton();
+                await page.waitForTimeout(1500);
+            });
+
+            await test.step('Verify that the filter is applied', async () => {
+                let filterSearchResult = await userManagementPage.getSearchResultCount();
+
+                expect.soft(filterSearchResult).toBeLessThan(_totalUsers);
+            });
+
+        });
+
+        await test.step('Advance filter by expertise and verify the user from the user management page.', async () => {
+
+            await page.reload();
+            await page.waitForLoadState("networkidle");
+
+            let _totalUsers = await userManagementPage.getSearchResultCount();
+
+            await test.step('Select the filter by expertise.', async () => {
+
+                await userManagementPage.clickAdvanceFiltersButton();
+                await userManagementPage.selectFilterByExpertise(filterExpertise);
+                await userManagementPage.clickApplyFilterButton();
+                await page.waitForTimeout(1500);
+            });
+
+            await test.step('Verify that the filter is applied', async () => {
+                let filterSearchResult = await userManagementPage.getSearchResultCount();
+
+                expect.soft(filterSearchResult).toBeLessThan(_totalUsers);
+            });
+
+        });
+
+        await test.step('Verify that the admin can export all the data from the user management page.', async () => {
+
+            await page.reload();
+            await page.waitForLoadState("networkidle");
+
+            let exportedFileFolderPath = 'test_data/UserManagementTestData/ExportData';
+            const _totalUser = await userManagementPage.getSearchResultCount();
+
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            const fileName = `users_export_${formattedDate}.csv`;
+            const filePath = `${exportedFileFolderPath}/${fileName}`;
+
+            await test.step('Download the user details.', async () => {
+                await userManagementPage.downloadExportAllUserData(exportedFileFolderPath, fileName);
+            });
+
+            await test.step('Verify that the file downloaded successfully.', async () => {
+
+                /**
+                 * Verify that the file is present
+                 */
+                expect.soft(fs.existsSync(filePath)).toBeTruthy();
+
+                /**
+                 * Verify that the file size is not less than 0
+                 */
+                const stats = fs.statSync(filePath);
+                expect.soft(stats.size).toBeGreaterThan(0);
+
+                /**
+                 * Verify that the total user are exported or not
+                 */
+                const exportAllUserCSV = new ExcelCsvReader(filePath);
+                const _totalUserOnCSV = await exportAllUserCSV.getRowCount()-1;
+
+                expect.soft(_totalUserOnCSV).toEqual(_totalUser);
+            });
+
+        });
+
+    });
+    //#endregion
+});    

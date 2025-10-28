@@ -10,13 +10,11 @@ export default class UserManagementNewUserPage {
     readonly employeeIdInput: Locator;
     readonly roleDropdown: Locator;
     readonly roleDropdownEmployeeSearch: Locator;
-    //readonly roleDropdownEmployeeOption: Locator;
     readonly managerDropdown: Locator;
     readonly managerDropdownSearchOption: Locator;
     readonly dropdownSearchOptionSelectLast: Locator;
     readonly sbuDropdown: Locator;
     readonly sbuDropdownSearchOption: Locator;
-    //readonly sbuEcommerceOption: Locator;
     readonly expertiseDropdown: Locator;
     readonly expertiseDropdownSearchOption: Locator;
     readonly resourceTypeDropdown: Locator;
@@ -35,16 +33,13 @@ export default class UserManagementNewUserPage {
         this.employeeIdInput = page.locator("#employeeId");
         this.roleDropdown = page.locator("//button[contains(text(),'Select role')]");
         this.roleDropdownEmployeeSearch = page.locator("//input[contains(@placeholder,'Search role')]");
-        //this.roleDropdownEmployeeOption = page.locator("//div[@data-value='Employee']");
         this.managerDropdown = page.locator("//button[contains(text(),'Select manager')]");
         this.managerDropdownSearchOption = page.locator("//input[contains(@placeholder,'Search manager')]");
         this.dropdownSearchOptionSelectLast = page.locator("//div[@role='option'][last()]");
         this.sbuDropdown = page.locator("//label[text()='SBU *']/following-sibling::button");
         this.sbuDropdownSearchOption = page.locator("//input[contains(@placeholder,'Search SBU')]");
-        //button[normalize-space(text())='Select expertise...']
-        this.expertiseDropdown = page.locator("//button[contains(text(),'Select expertise')]");// HERE HAS A ISSUE
+        this.expertiseDropdown = page.locator("//button[contains(text(),'Select expertise')]");
         this.expertiseDropdownSearchOption = page.locator("//input[contains(@placeholder,'Search expertise')]");
-        //input[@placeholder='Search resource type...']
         this.resourceTypeDropdown = page.locator("//button[contains(text(),'Select resource type')]");
         this.resourceTypeDropdownSearchOption = page.locator("//input[contains(@placeholder,'Search resource type')]");
         this.dateOfJoiningInput = page.locator("//button[contains(.,'Select joining date')]");

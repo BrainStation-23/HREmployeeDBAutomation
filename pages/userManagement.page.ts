@@ -1,6 +1,8 @@
 import { Page, Locator } from "@playwright/test";
 import path from "path";
 import * as fs from "fs";
+import ENV from "../utils/env";
+import { promises } from "dns";
 
 export default class UserManagementPage {
   readonly page: Page;
@@ -29,6 +31,24 @@ export default class UserManagementPage {
   readonly downloadExcelReportButton: Locator;
   readonly bulkDeleteConfirmButton: Locator;
   readonly closeBulkPopupButton: Locator;
+  readonly roleFilterDropdownEmployeeSearch: Locator;
+  readonly managerFilterDropdownSearchOption: Locator;
+  readonly sbuFilterDropdownSearchOption: Locator;
+  readonly expertiseFilterDropdownSearchOption: Locator;
+  readonly resourceTypeFilterDropdownSearchOption: Locator;
+  readonly dropdownSearchOptionSelectLast: Locator;
+  readonly resetAllFilterButton: Locator;
+  readonly resetAdvanceButton: Locator;
+  readonly advanceFiltersButton: Locator;
+  readonly applyFilterButton: Locator;
+  readonly searchResultCount: Locator;
+  readonly roleDropdown: Locator;
+  readonly sbuDropdown: Locator;
+  readonly managerDropdown: Locator;
+  readonly expertiseDropdown: Locator;
+  readonly resourceTypeDropdown: Locator;
+  readonly totalUserCountXpath: Locator;
+  readonly exportAllButton: Locator;
 
 
   constructor(page: Page) {
@@ -57,7 +77,25 @@ export default class UserManagementPage {
     this.bulkDeletedUserCount = page.locator("//div[@role='alert']/following-sibling::div/h4");
     this.downloadExcelReportButton = page.locator("//button[text()='Download Excel Report']");
     this.bulkDeleteConfirmButton = page.locator("//button[contains(text(),'Delete')]");
-    this.closeBulkPopupButton = page.locator("//button[contains(.,'Close')]");;
+    this.closeBulkPopupButton = page.locator("//button[contains(.,'Close')]");
+    this.roleFilterDropdownEmployeeSearch = page.locator("//input[contains(@placeholder,'Search role')]");
+    this.managerFilterDropdownSearchOption = page.locator("//input[contains(@placeholder,'Search manager')]");
+    this.sbuFilterDropdownSearchOption = page.locator("//input[contains(@placeholder,'Search SBU')]");
+    this.expertiseFilterDropdownSearchOption = page.locator("//input[contains(@placeholder,'Search expertise')]");
+    this.resourceTypeFilterDropdownSearchOption = page.locator("//input[contains(@placeholder,'Search resource type')]");
+    this.dropdownSearchOptionSelectLast = page.locator("//div[@role='option'][last()]");
+    this.resetAllFilterButton = page.locator("//button[text()='Reset All Filters']");
+    this.resetAdvanceButton = page.locator("//button[text()='Reset Advanced']");
+    this.advanceFiltersButton = page.locator("//button[contains(.,'Advanced Filters')]");
+    this.applyFilterButton = page.locator("//button[text()='Apply Filters']");
+    this.searchResultCount = page.locator("//nav[@role='navigation']/../../div[1]");
+    this.roleDropdown = page.locator("//button[contains(text(),'All Roles')]");
+    this.sbuDropdown = page.locator("//label[text()='SBU']/following-sibling::button");
+    this.managerDropdown = page.locator("//button[contains(text(),'Select manager')]");
+    this.expertiseDropdown = page.locator("//button[contains(text(),'Select expertise')]");
+    this.resourceTypeDropdown = page.locator("//button[contains(text(),'Select resource type')]");
+    this.totalUserCountXpath = page.locator("//div[@class='space-y-3']/div");
+    this.exportAllButton = page.locator("//span[text()='Export All']");
   }
 
   async isUserManagementVisible() {
@@ -69,6 +107,10 @@ export default class UserManagementPage {
 
   async navigateToUserManagement() {
     await this.userManagementSideBar.click();
+  }
+
+  async navigateToUserManagementByURL() {
+    await this.page.goto(`${ENV.BASE_URL}/users`);
   }
 
   async clickOnAddUserButton() {
@@ -237,6 +279,33 @@ export default class UserManagementPage {
     await download.saveAs(targetFilePath);
   }
 
+  async downloadExportAllUserData(targetFolderPath: string, fileName: string) {
+
+    const folderPath = path.resolve(targetFolderPath);
+
+    // Create folder if it doesn't exist
+    fs.mkdirSync(folderPath, { recursive: true });
+
+    // Remove all files inside the folder
+    const files = fs.readdirSync(folderPath);
+    for (const file of files) {
+      const fullPath = path.join(folderPath, file);
+      fs.unlinkSync(fullPath);
+    }
+    console.log(`Cleared all files in: ${folderPath}`);
+
+    // Wait for download after clicking export button
+    const [download] = await Promise.all([
+      this.page.waitForEvent("download"),
+      this.exportAllButton.click(),
+    ]);
+
+    const savePath = path.join(folderPath, fileName);
+    await download.saveAs(savePath);
+
+    console.log(`Downloaded new file: ${savePath}`);
+  }
+
   async clickBulkDeleteConfirmButton() {
     await this.bulkDeleteConfirmButton.click();
   }
@@ -245,4 +314,59 @@ export default class UserManagementPage {
     await this.closeBulkPopupButton.click();
   }
 
+  async clickResetAllFilter() {
+    if (await this.resetAllFilterButton.isVisible() && await this.resetAdvanceButton.isEnabled()) {
+      await this.resetAllFilterButton.clear();
+    }
+  }
+
+  async selectFilterByRole(role: string) {
+    await this.roleDropdown.click();
+    await this.roleFilterDropdownEmployeeSearch.fill(role);
+    await this.dropdownSearchOptionSelectLast.click();
+  }
+
+  async clickAdvanceFiltersButton() {
+    await this.advanceFiltersButton.click();
+  }
+
+  async selectFilterBySBU(sbu: string) {
+    await this.sbuDropdown.click();
+    await this.sbuFilterDropdownSearchOption.fill(sbu);
+    await this.dropdownSearchOptionSelectLast.click();
+  }
+
+  async selectFilterByManager(manager: string) {
+    await this.managerDropdown.click();
+    await this.managerFilterDropdownSearchOption.fill(manager);
+    await this.dropdownSearchOptionSelectLast.click();
+  }
+
+  async selectFilterByResourceType(resourceType: string) {
+    await this.resourceTypeDropdown.click();
+    await this.resourceTypeFilterDropdownSearchOption.fill(resourceType);
+    await this.dropdownSearchOptionSelectLast.click();
+  }
+
+  async selectFilterByExpertise(expertise: string) {
+    await this.expertiseDropdown.click();
+    await this.expertiseFilterDropdownSearchOption.fill(expertise);
+    await this.dropdownSearchOptionSelectLast.click();
+  }
+
+  async clickApplyFilterButton() {
+    await this.applyFilterButton.click();
+  }
+
+  async getSearchResultCount() {
+    if (await this.searchResultCount.isVisible({ timeout: 5000 })) {
+      let mainCount = await this.searchResultCount.textContent() ?? '';
+      let replaceFirstPart = mainCount.replace(/Showing\s*\d+-\d+\s*of\s*(?=\d+)/i, "")
+      let finalCount = replaceFirstPart.replace(/\s*users/i, "").trim();
+      return parseInt(finalCount);
+    }
+    else {
+      return await this.totalUserCountXpath.count();
+    }
+  }
 }
