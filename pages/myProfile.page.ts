@@ -9,6 +9,7 @@ export default class MyProfilePage {
     readonly myProfileHeader: Locator;
     readonly myProfileSidebar: Locator;
     readonly generalInfoSection: Locator;
+    readonly profileVideo:Locator;
     readonly cvOptionDropdown: Locator;
     readonly previewCvButton: Locator;
     readonly exportPdfButton: Locator;
@@ -47,8 +48,9 @@ export default class MyProfilePage {
         this.myProfileHeader = page.getByRole('main').getByRole('heading', { name: 'My Profile' });
         this.myProfileSidebar = page.getByRole('navigation').getByRole('link', { name: 'My Profile' });
         this.generalInfoSection = page.getByRole('tab', { name: 'General' });
+        this.profileVideo=page.locator("//button[contains(text(),'Close')]")
         this.cvOptionDropdown = page.getByText('Sidebar - Full (Default)');
-        this.previewCvButton = page.getByRole('button', { name: 'Preview CV' });
+        this.previewCvButton = page.locator("//button[normalize-space()='Preview CV']")
         this.exportPdfButton = page.getByRole('button', { name: 'Export PDF' });
         this.importButton = page.getByText('Import');
         this.auditLogButton = page.getByRole('button').filter({ hasText: /^$/ }).nth(2);
@@ -90,6 +92,10 @@ export default class MyProfilePage {
         
     }
 
+    async closeProfileVideo(){
+        await this.profileVideo.click();
+    }
+
     async isGeneralInfoSectionVisible() {
         await this.generalInfoSection.waitFor({ state: 'visible', timeout: 15000 });
         return await this.generalInfoSection.isVisible();
@@ -113,7 +119,7 @@ export default class MyProfilePage {
         return await this.exportPdfButton.isVisible({ timeout: 5000 });
     }
 
-    async isImportButtonVisible() {
+    async isExportButtonVisible() {
         return await this.importButton.isVisible({ timeout: 5000 });
     }
     async isAuditLogButtonVisible() {

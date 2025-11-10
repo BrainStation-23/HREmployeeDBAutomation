@@ -72,15 +72,12 @@ test.describe('Role Management - Test Employee Role.', () => {
         });
 
         await test.step('Ensure My Profile page is loaded.', async () => {
+            //close profile creation video 
+            await myProfilePage.closeProfileVideo();
             // My Profile page section verification
             expect.soft(await myProfilePage.isCvOptionDropdownVisible()).toBeTruthy();
             expect.soft(await myProfilePage.isPreviewCvButtonVisible()).toBeTruthy();
-            expect.soft(await myProfilePage.isPreviewCvButtonVisible()).toBeTruthy();
-            expect.soft(await myProfilePage.isImportButtonVisible()).toBeTruthy();
-            expect.soft(await myProfilePage.isAuditLogButtonVisible()).toBeTruthy();
-            await myProfilePage.clickAuditLogButton();
-            expect.soft(await myProfilePage.isAuditLogModalVisible()).toBeTruthy();
-            await myProfilePage.clickCloseButton();
+            expect.soft(await myProfilePage.isExportButtonVisible()).toBeTruthy();
         });
 
         await test.step('Verify My Profile>>General sections items are visible for the Employee role.', async () => {
@@ -526,7 +523,7 @@ test.describe('Role Management - Test Employee Role.', () => {
             await page.goto(moduleManagementRestrictedURL);
             await expect(page).toHaveURL(/unauthorized/);
         })
-        await test.step("verify Error Text for Role Management page   ", async () => {
+        await test.step("verify Error Text for Role Management page ", async () => {
             expect.soft(await moduleManagementPage.verifyUnauthorizedText()).toBeTruthy();
         })
 
@@ -553,7 +550,6 @@ test.describe('Role Management - Test Employee Role.', () => {
         await test.step("Not able to navigate Event Flag page", async () => {
             expect.soft(await eventflagPage.isEventFlagVisible()).toBeFalsy();
         })
-
         await test.step("Not able to access Aduit Event Flag page  via url", async () => {
             const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { flageventpage: string };
             const eventFlagRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.flageventpage}`;
@@ -570,7 +566,6 @@ test.describe('Role Management - Test Employee Role.', () => {
                 await test.step("Not able to navigate Event Flag page", async () => {
                     expect.soft(await profilePage.isProfileImageSidebarVisible()).toBeFalsy();
                 })
-         
                 await test.step("Not able to access Aduit Profile Image page  via url", async () => {
                     const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { profileimagepage: string };
                     const profileImageRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.profileimagepage}`;

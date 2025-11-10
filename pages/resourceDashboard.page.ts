@@ -28,7 +28,7 @@ export default class ResourceDashboard{
     readonly clearField:Locator;
     readonly calculateField:Locator
     //billing type card area
-    readonly BillTypeChangesdropwon:Locator;
+    readonly billTypeChangesdropwon:Locator;
     readonly dateField:Locator;
     readonly frombillTypesField:Locator
     readonly tobillTypeField:Locator;
@@ -36,7 +36,12 @@ export default class ResourceDashboard{
     readonly profileField:Locator;
     readonly exportField:Locator;
     //sbu changes area
-    readonly sbuchangeexportField:Locator;
+     readonly sbuchangeexportField:Locator;
+     readonly sbuchangedropdown:Locator;
+     readonly sbuchangedateField:Locator;
+     readonly fromsbuField:Locator;
+     readonly tosbuField:Locator;
+     readonly sbuprofileField:Locator;
     //unauthorized
     readonly unauthorizedText:Locator
 
@@ -66,7 +71,7 @@ export default class ResourceDashboard{
         this.clearField=page.getByRole('button', { name: 'Clear Filters' })
         this.calculateField=page.getByRole('button', { name: 'Calculate New' })
         //billing type
-        this.BillTypeChangesdropwon = page.locator('div').filter({ hasText: /^Bill Type Changes FiltersClear all$/ }).nth(2)
+        this.billTypeChangesdropwon = page.locator("//h3[@class='font-semibold tracking-tight flex items-center justify-between text-base']")
         this.billTypeChangesInfoTab=page.getByRole('tab', { name: 'Bill Type Changes' });
         this.dateField=page.getByText('Date Range');
         this.frombillTypesField=page.getByText('From Bill Type', { exact: true });
@@ -76,7 +81,13 @@ export default class ResourceDashboard{
         this.exportField=page.getByRole('button', { name: 'Export' });
          //sbu change
         this.sbuchangesInfoTab=page.getByRole('tab', { name: 'SBU Changes' });
-        this.sbuchangeexportField=page.getByRole('button', { name: 'Export' });
+        this.sbuchangedropdown=page.getByRole('tabpanel', { name: 'SBU Changes' }).getByRole('img').nth(2)
+        this.sbuchangedateField=page.locator("//label[normalize-space()='Date Range']")
+        this.fromsbuField=page.locator("//label[normalize-space()='From SBU']")
+        this.tosbuField=page.locator("//label[normalize-space()='To SBU']")
+        this.sbuprofileField=page.locator("//label[normalize-space()='Profile']")
+        
+        this.sbuchangeexportField=page.locator("//button[normalize-space()='Export']")
         //unauthorized
          this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' });
     }
@@ -155,7 +166,7 @@ export default class ResourceDashboard{
         return await this.calculateField.isVisible({ timeout: 5000 }); 
     }
     async ClickBillTypeChangesInfoTab(){
-        await this.billTypeChangesInfoTab.click();
+        await this.billTypeChangesInfoTab.click({clickCount:2, delay:2000});
     }
     async isClickBillTypeChangesInfoTabvisible(){
         await this.billTypeChangesInfoTab.waitFor({ state: 'visible', timeout: 15000 });
@@ -163,7 +174,8 @@ export default class ResourceDashboard{
     }
     //#region Bill Type Page Common Sections
     async ClickBillTypeChangesdropwon(){
-        await this.BillTypeChangesdropwon.click();
+        await this.billTypeChangesdropwon.click({clickCount:2, delay:2000});
+        
     }
     async isDataFieldVisible(){
         await this.dateField.waitFor({ state: 'visible', timeout: 15000 });
@@ -194,12 +206,35 @@ export default class ResourceDashboard{
     async ClickSbuchangesInfoTab(){
         await this.sbuchangesInfoTab.click();
     }
-    async isSbuchangesInfoTabVisible(){
-        return await this.weeklyScoreCardInfoTab.isVisible({timeout:5000});
+    async Clicksbuchangedropdown(){
+        await this.sbuchangedropdown.click({clickCount:2, delay:2000});
     }
+    async isSbuchangesInfoTabVisible(){
+        return await this.sbuchangesInfoTab.isVisible({timeout:5000});
+    }
+
+     async issbuDateFieldVisible(){
+        await this.sbuchangedateField.waitFor({ state: 'visible', timeout: 15000 });
+        return await this.sbuchangedateField.isVisible({ timeout: 5000 });
+    }
+     async isfromSbuFieldVisible(){
+        await this.fromsbuField.waitFor({ state: 'visible', timeout: 15000 });
+        return await this.fromsbuField.isVisible({ timeout: 5000 });
+
+     }
+     async istoSbuFieldVisible(){
+        await this.tosbuField.waitFor({ state: 'visible', timeout: 15000 });
+        return await this.tosbuField.isVisible({ timeout: 5000 });
+
+     }
+     async isprofileSbuVisible(){
+        await this.profileField.waitFor({ state: 'visible', timeout: 15000 });
+        return await this.profileField.isVisible({ timeout: 5000 });
+
+     }
     async isSbuChangeExportField(){
          await this.sbuchangeexportField.waitFor({ state: 'visible', timeout: 15000 });
-        return await this.sbuField.isVisible({ timeout: 5000 });
+        return await this.sbuchangeexportField.isVisible({ timeout: 5000 });
     }
     // #verify unauthorized text restiatcted url access
     async verifyUnauthorizedText(){
