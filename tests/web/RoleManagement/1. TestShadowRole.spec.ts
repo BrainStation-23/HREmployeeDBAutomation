@@ -369,7 +369,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("Navigate to the Resource Dashbroard ", async () => {
             // Already authenticated via storageState in this describe
             // await page.waitForLoadState('networkidle');
-            await page.waitForTimeout(1000)
+            await page.waitForTimeout(3000)
             expect.soft(await resourceDashboardPage.isResourceDashbroadVisible()).toBeTruthy();
             await resourceDashboardPage.clickResourceDashboardSidebar();
 

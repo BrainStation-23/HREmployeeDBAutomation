@@ -51,7 +51,9 @@ test.describe('Role Management - Test Employee Role.', () => {
 
         await test.step('Verify Dashboard page sections for Employee role.', async () => {
             // Dashboard page section user name verification
+            await page.waitForTimeout(1000)
             const profileName = (await dashboardPage.getUserProfileNameText()) ?? '';
+            //console.log(profileName)
             expect.soft(profileName.trim()).toContain(ENV.TEST_EMPLOYEE_NAME as string);
 
             // Dashboard page section verification
@@ -306,7 +308,6 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     test("Test Employee Role Resource Calendar >> Resource Dashboard.", async ({ page, resourceDashboardPage, utility }) => {
         await test.step("Not able to navigate Resource Dashboard", async () => {
-            await page.waitForTimeout(3000);
             expect.soft(await resourceDashboardPage.isResourceDashbroadVisible()).toBeFalsy();
         })
 
