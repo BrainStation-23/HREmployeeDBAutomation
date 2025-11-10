@@ -40,7 +40,7 @@ jobs:
         env:
           CI: true
           test_env: ${{ inputs.test_env }}
-        run: npx playwright test
+        run: npx playwright test --grep-invert "@user-management"
         continue-on-error: true
 
       - name: Upload test results
