@@ -55,8 +55,6 @@ export default class CvDashboardPage {
         await this.profileStats.waitFor({ state: 'visible', timeout: 15000 });
         return await this.profileStats.isVisible();
     }
-
-
     async isOveralProgressStatsVisible() {
         await this.overallProgressStats.waitFor({ state: 'visible', timeout: 15000 });
         return await this.overallProgressStats.isVisible();

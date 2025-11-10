@@ -9,11 +9,10 @@ export default class EventFlagPage {
     this.eventFlagSideBar = page.getByRole('link', { name: 'Flagged Events' })
     this.unauthorizedText = page.getByRole('heading', { name: 'Unauthorized' })
   }
-
   async isEventFlagVisible() {
     return await this.eventFlagSideBar.isVisible({ timeout: 5000 });
   }
-    // #verify unauthorized text restiatcted url access
+  // #verify unauthorized text restiatcted url access
   async verifyUnauthorizedText() {
     return await this.unauthorizedText.isVisible({ timeout: 5000 });
   }
