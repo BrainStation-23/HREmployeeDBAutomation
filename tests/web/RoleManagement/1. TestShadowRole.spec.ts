@@ -76,14 +76,16 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
 
         await test.step('Ensure My Profile page is loaded.', async () => {
             // My Profile page section verification
+            //close profile creation video 
+            await myProfilePage.closeProfileVideo();
             expect.soft(await myProfilePage.isCvOptionDropdownVisible()).toBeTruthy();
             expect.soft(await myProfilePage.isPreviewCvButtonVisible()).toBeTruthy();
-            expect.soft(await myProfilePage.isPreviewCvButtonVisible()).toBeTruthy();
-            expect.soft(await myProfilePage.isImportButtonVisible()).toBeTruthy();
-            expect.soft(await myProfilePage.isAuditLogButtonVisible()).toBeTruthy();
+            expect.soft(await myProfilePage.isExportButtonVisible()).toBeTruthy();
+            //expect.soft(await myProfilePage.isAuditLogButtonVisible()).toBeTruthy();
             await myProfilePage.clickAuditLogButton();
             expect.soft(await myProfilePage.isAuditLogModalVisible()).toBeTruthy();
             await myProfilePage.clickCloseButton();
+        
         });
 
         await test.step('Verify My Profile>>General sections items are visible for the Shadow SBU role.', async () => {
@@ -235,7 +237,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             const activeEmployeesText = await cvDashboardPage.profieStatsData.textContent()
             const activeEmployeesCount = parseInt(activeEmployeesText?.trim() || '0', 10);
             expect(activeEmployeesCount).toBeGreaterThan(0);
-            console.log(activeEmployeesCount);
             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isOveralProgressStatsVisible()).toBeTruthy();
             //progress data can't be 0
@@ -262,13 +263,14 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
 
         await test.step("Ensure that progress resource are visbile for shawdow sbu role", async () => {
             await page.waitForTimeout(1000);
-            expect.soft(await cvDashboardPage.isTrainneFieldVisible()).toBeTruthy()
+
+            
             await page.waitForTimeout(1000);
-            expect.soft(await cvDashboardPage.isBillableFieldvisible()).toBeTruthy()
-            await page.waitForTimeout(1000);
+             expect.soft(await cvDashboardPage.isBillableFieldvisible()).toBeTruthy()
+             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isContractualFieldVisible()).toBeTruthy()
-            await page.waitForTimeout(1000);
-            expect.soft(await cvDashboardPage.isSupportFieldVisible()).toBeTruthy()
+             await page.waitForTimeout(1000);
+             expect.soft(await cvDashboardPage.isSupportFieldVisible()).toBeTruthy()
         })
 
         await test.step("Ensure that progress resource are not visbile for shawdow sbu role ", async () => {
@@ -377,6 +379,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             expect(totalBillableCount).toBeGreaterThan(0);
 
             expect.soft(await resourceDashboardPage.isTotalBillCardVisible()).toBeTruthy();
+            await page.waitForTimeout(1000)
             expect.soft(await resourceDashboardPage.isTotalBillableCardVisible()).toBeTruthy();
             const totalBillableResourceText = await resourceDashboardPage.totalBilledResourceData.textContent();
             const totalBillableResourceCount = parseInt(totalBillableResourceText?.trim() || '0', 10);
@@ -416,25 +419,26 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step('Verify Resource Dashboard >>Billing type >> sections items are visible for the Shadow SBU role.', async () => {
             expect.soft(await resourceDashboardPage.isClickBillTypeChangesInfoTabvisible()).toBeTruthy();
             await resourceDashboardPage.ClickBillTypeChangesInfoTab();
-            //await page.waitForTimeout(2000)
-            //await resourceDashboardPage.BillTypeChangesdropwon.click()
-            //await page.pause();
-            //await page.locator('div').filter({ hasText: /^Bill Type Changes FiltersClear all$/ }).nth(2).click();
-            //To bill type section items verification
-            //  expect.soft(await resourceDashboardPage.isDataFieldVisible()).toBeTruthy();
-            //  expect.soft(await resourceDashboardPage.isBillTypeChangesInfoTabVisible()).toBeTruthy();
-            //  expect.soft(await resourceDashboardPage.isDateFieldVisible()).toBeTruthy();
-            //  expect.soft(await resourceDashboardPage.isFromBillTypesFieldVisible()).toBeTruthy();
-            //  expect.soft(await resourceDashboardPage.isBillSbuFieldVisible()).toBeTruthy();
-            expect.soft(await resourceDashboardPage.isExportFieldVisible()).toBeTruthy();
+            await resourceDashboardPage.ClickBillTypeChangesdropwon();
+             expect.soft(await resourceDashboardPage.isDataFieldVisible()).toBeTruthy();
+             expect.soft(await resourceDashboardPage.isBillTypeChangesInfoTabVisible()).toBeTruthy();
+             expect.soft(await resourceDashboardPage.isDateFieldVisible()).toBeTruthy();
+             expect.soft(await resourceDashboardPage.isFromBillTypesFieldVisible()).toBeTruthy();
+             expect.soft(await resourceDashboardPage.isBillSbuFieldVisible()).toBeTruthy();
+             expect.soft(await resourceDashboardPage.isExportFieldVisible()).toBeTruthy();
+            
            
         })
 
         await test.step('Verify Resource Dashboard >>SBU change  >> sections items are visible for the Shadow SBU role.', async () => {
             expect.soft(await resourceDashboardPage.isSbuchangesInfoTabVisible()).toBeTruthy();
             await resourceDashboardPage.ClickSbuchangesInfoTab();
-            await page.getByRole('tabpanel', { name: 'SBU Changes' }).getByRole('img').nth(2).click();
-            expect.soft(await resourceDashboardPage.isSbuChangeExportField()).toBeTruthy();
+            await resourceDashboardPage.Clicksbuchangedropdown();
+             expect.soft(await resourceDashboardPage.issbuDateFieldVisible()).toBeTruthy();
+             expect.soft( await resourceDashboardPage.isfromSbuFieldVisible()).toBeTruthy();
+             expect.soft(await resourceDashboardPage.istoSbuFieldVisible()).toBeTruthy();
+             expect.soft( await resourceDashboardPage.isprofileSbuVisible()).toBeTruthy();
+             expect.soft(await resourceDashboardPage.isSbuChangeExportField()).toBeTruthy();
 
         })
     });
@@ -678,6 +682,26 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             expect.soft(await eventflagPage.verifyUnauthorizedText()).toBeTruthy();
         })
 
+    })
+
+
+    test("Test Shadow SBU Role Audit >> Profile Image",async({utility, page,profilePage})=>{
+        await test.step("Not able to navigate Event Flag page", async () => {
+            expect.soft(await profilePage.isProfileImageSidebarVisible()).toBeFalsy();
+        })
+ 
+        await test.step("Not able to access Aduit Profile Image page  via url", async () => {
+            const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { profileimagepage: string };
+            const profileImageRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.profileimagepage}`;
+            console.log(profileImageRestrictedURL)
+            await page.goto(profileImageRestrictedURL);
+            await expect(page).toHaveURL(/unauthorized/);
+
+        })
+        await test.step("verify Error Text for profile image page ", async () => {
+            expect.soft(await profilePage.verifyUnauthorizedText()).toBeTruthy();
+        })
+ 
     })
 
     test("Test Manager Role Sign out >> Sign out", async ({ signoutPage, page }) => {

@@ -19,6 +19,6 @@
     "modulemanagementpage":"/admin/modules",
     "dashboardpage":"/audit/dashboard",
     "flageventpage":"/audit/flagged-events",
-    "profilepage":"/audit/profile-image-warnings"
+    "profileimagepage":"/audit/profile-image-warnings"
 
 }
