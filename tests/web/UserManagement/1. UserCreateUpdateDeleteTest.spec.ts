@@ -53,7 +53,7 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
 
     //#region [Test] Create and delete a new user
 
-    test('Create and delete a new user from the user management.', async ({ page, userManagementPage, userManagementNewUserPage }) => {
+    test('Create and delete a new user from the user management.', { tag: ['@user-management'] }, async ({ page, userManagementPage, userManagementNewUserPage }) => {
 
         let _totalUsers: number = userCreateTestData.users.length;
 
@@ -245,7 +245,7 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
 
     //#region [Test] Update and delete user information
 
-    test('Update and delete user information from the user management.', async ({ page, userManagementPage, userManagementNewUserPage }) => {
+    test('Update and delete user information from the user management.', { tag: ['@user-management'] }, async ({ page, userManagementPage, userManagementNewUserPage }) => {
 
         let _totalUsers: number = userCreateTestData.users.length;
 
@@ -411,7 +411,7 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
 
     //#region [Test] Create, Update and Delete bulk users
 
-    test('Bulk users (Create, Update and Delete)  from the user management.', async ({ page, userManagementPage }) => {
+    test('Bulk users (Create, Update and Delete)  from the user management.', { tag: ['@user-management'] }, async ({ page, userManagementPage }) => {
 
         let userCreateCsvFilePath: string = 'test_data/UserManagementTestData/user_create.csv';
         let userDeleteCsvFilePath: string = 'test_data/UserManagementTestData/employee_ids_delete.csv';
@@ -708,7 +708,7 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
 
     //#region [Test] Search, Filter and Export 
 
-    test('Search, Filter and Export test for the user management.', async ({ page, userManagementPage }) => {
+    test('Search, Filter and Export test for the user management.', { tag: ['@user-management'] }, async ({ page, userManagementPage }) => {
 
         let searchName = userSearchTestData.searchKeyWord.name;
         let searchEmail = userSearchTestData.searchKeyWord.email;
@@ -966,7 +966,7 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
                  * Verify that the total user are exported or not
                  */
                 const exportAllUserCSV = new ExcelCsvReader(filePath);
-                const _totalUserOnCSV = await exportAllUserCSV.getRowCount()-1;
+                const _totalUserOnCSV = await exportAllUserCSV.getRowCount() - 1;
 
                 expect.soft(_totalUserOnCSV).toEqual(_totalUser);
             });

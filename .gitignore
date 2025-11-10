@@ -19,3 +19,6 @@ test-results/
 env/*.env
 **/.env
 **/*.env
+
+#test data ignore
+ExportData/

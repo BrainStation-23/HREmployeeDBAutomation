@@ -93,12 +93,14 @@ export default class UserManagementNewUserPage {
     async selectExpertise(expertiseType: string) {
         await this.expertiseDropdown.click();
         await this.expertiseDropdownSearchOption.fill(expertiseType);
+        await this.page.waitForTimeout(1000);
         await this.dropdownSearchOptionSelectLast.click();
     }
 
     async selectResourceType(resourceType: string) {
         await this.resourceTypeDropdown.click();
         await this.resourceTypeDropdownSearchOption.fill(resourceType);
+        await this.page.waitForTimeout(1000);
         await this.dropdownSearchOptionSelectLast.click();
     }
 
