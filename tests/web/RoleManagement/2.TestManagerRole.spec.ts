@@ -50,6 +50,7 @@ test.describe('Role Management - Test Manager Role.', () => {
 
         await test.step('Verify Dashboard page sections for manager role.', async () => {
             // Dashboard page section user name verification
+           // await page.waitForTimeout(1000)
             const profileName = (await dashboardPage.getUserProfileNameText()) ?? '';
             expect.soft(profileName.trim()).toContain(ENV.TEST_MANAGER_NAME as string);
 

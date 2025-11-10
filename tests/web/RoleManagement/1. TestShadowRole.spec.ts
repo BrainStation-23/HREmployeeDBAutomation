@@ -54,9 +54,11 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
 
         await test.step('Verify Dashboard page sections for Shadow SBU role.', async () => {
             // Dashboard page section user name verification
+            // await page.pause();
+            await page.waitForTimeout(1000)
             const profileName = (await dashboardPage.getUserProfileNameText()) ?? '';
             expect.soft(profileName.trim()).toContain(ENV.TEST_SHADOW_SBU_NAME as string);
-
+            
             // Dashboard page section verification
             expect.soft(await dashboardPage.getDashboardHeaderText()).toBe(dashboardTestData.HeaderText);
             expect.soft(await dashboardPage.isDashboardAreaVisible()).toBeTruthy();
@@ -366,7 +368,8 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
     test('Test Shadow Sbu Role Resource Calendar >> Resource Dashbroard', async ({ page, resourceDashboardPage }) => {
         await test.step("Navigate to the Resource Dashbroard ", async () => {
             // Already authenticated via storageState in this describe
-            await page.waitForLoadState('networkidle');
+            // await page.waitForLoadState('networkidle');
+            await page.waitForTimeout(1000)
             expect.soft(await resourceDashboardPage.isResourceDashbroadVisible()).toBeTruthy();
             await resourceDashboardPage.clickResourceDashboardSidebar();
 
