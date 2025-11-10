@@ -32,7 +32,7 @@ export default defineConfig({
   globalSetup: "utils/global-setup.ts",
 
   /* This is a base timeout for all tests.*/
-  timeout: 5 * 60 * 1000,
+  timeout: 2 * 60 * 1000,
 
   /* This is a base timeout for all tests assertion.*/
   expect:{

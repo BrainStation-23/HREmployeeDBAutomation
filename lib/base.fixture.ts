@@ -33,6 +33,7 @@ import AdmindashboardPage from '../pages/adminDashboard.page';
 import EventFlagPage from '../pages/eventflag.page';
 import SignOutPage from '../pages/singOut.page';
 import ProfilePage from '../pages/profile.page';
+import UserManagementNewUserPage from '../pages/userManagementNewUser.page';
 
 type pages = {
     commonPage: CommonPage;
@@ -65,8 +66,9 @@ type pages = {
     adminDashboardPage:AdmindashboardPage;
     eventflagPage:EventFlagPage;
     planningpage:Planning;
-    signoutPage:SignOutPage
-    profilePage:ProfilePage
+    signoutPage:SignOutPage;
+    profilePage:ProfilePage;
+    userManagementNewUserPage:UserManagementNewUserPage;
 }
     
 const testPages = base.extend<pages>({
@@ -163,6 +165,9 @@ const testPages = base.extend<pages>({
     },
     profilePage:async({page},use)=>{
         await use(new ProfilePage(page))
+    },
+    userManagementNewUserPage:async({page},use)=>{
+        await use(new UserManagementNewUserPage(page))
     }
 })
 

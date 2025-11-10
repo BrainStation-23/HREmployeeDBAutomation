@@ -1,0 +1,5 @@
+userId,email,firstName,lastName,role,password,employeeId,managerEmail,sbuName,expertiseName,resourceTypeName,dateOfJoining,careerStartDate,dateOfBirth,resignationDate,exitDate,active,hasOverhead
+57e5c58f-9d74-4481-ae0d-7eeb4f1fdd45,test.bulk.user1@brainstation-23.com,Test Bulk Update User 1,BS,CV Manager,SecurePass123!,TBU1100,shahin.shanaous@brainstation-23.com,eCommerce,Java,Billable,4/15/2026,4/15/2026,5/20/1998,,,TRUE,TRUE
+76e78688-221c-465c-98e9-5c339eb50c13,test.bulk.user2@brainstation-23.com,Test Bulk Update User 2,BS,Employee,SecurePass124!,TBU1101,shahin.shanaous@brainstation-23.com,JavaScript,Automation Testing,GA & SM,4/15/2026,4/15/2026,12/3/1999,,,TRUE,TRUE
+fbd8af33-0e56-4455-9719-2941237c1c8c,test.bulk.user3@brainstation-23.com,Test Bulk Update User 3,BS,Dev Test,SecurePass125!,TBU1102,shahin.shanaous@brainstation-23.com,Europe,Android,Billable,4/15/2026,4/15/2026,8/15/2001,,,TRUE,TRUE
+662f37b7-a31f-4c2b-9a15-b855a6800a69,test.bulk.user4@brainstation-23.com,Test Bulk Update User 4,BS,BA,SecurePass126!,TBU1103,shahin.shanaous@brainstation-23.com,Support Staff,Flutter,Support,4/15/2026,4/15/2026,8/16/2001,,,TRUE,TRUE

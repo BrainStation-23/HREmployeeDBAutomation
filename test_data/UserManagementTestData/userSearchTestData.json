@@ -1,0 +1,23 @@
+{
+    "searchKeyWord": {
+        "name": "Md Shahin Shanaous",
+        "email": "shahin.shanaous@brainstation-23.com",
+        "employeeID": "BS1229",
+        "verification": {
+            "Expertise": "Automation Testing",
+            "ResourceType": "Billable",
+            "Manager": "Md. Nazmul Ahsan",
+            "SBU": "eCommerce"
+        }
+    },
+    "filterKeyWord": {
+        "filterByRoles": "Employee",
+        "advancedFilter": {
+            "sbu": "eCommerce",
+            "managerName": "Md. Nazmul Ahsan",
+            "managerEmployeeID": "BS0748",
+            "resourceType": "Trainee",
+            "expertise": "Automation Testing"
+        }
+    }
+}
