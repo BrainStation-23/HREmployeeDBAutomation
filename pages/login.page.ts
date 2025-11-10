@@ -16,9 +16,7 @@ export default class LoginPage {
         this.passwordInput = page.locator("#password");
         this.signInButton = page.locator("//button[@type='submit']");
         this.userProfileName = page.locator("(//div[contains(@class,'flex items-center')]//span)[2]");
-
     }
-
     async navigateToLoginPage() {
         await this.page.goto(`${ENV.BASE_URL}/login`);
     }

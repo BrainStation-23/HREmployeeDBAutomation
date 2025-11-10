@@ -4,7 +4,6 @@ import fs from 'fs';
 import path from 'path';
 import LoginPage from '../../../pages/login.page';
 test.describe('Role Management - Test Manager Role.', () => {
-
     const loginEmail = ENV.TEST_MANAGER_EMAIL as string;
     const loginPassword = ENV.TEST_MANAGER_PASSWORD as string;
 
@@ -59,7 +58,6 @@ test.describe('Role Management - Test Manager Role.', () => {
             expect.soft(await dashboardPage.isDashboardAreaVisible()).toBeTruthy();
         });
     });
-
     test('Test Manager Role General >> My Profile Section.', async ({ page, myProfilePage }) => {
         await test.step('Navigate to the My profile section.', async () => {
             // Already authenticated via storageState in this describe

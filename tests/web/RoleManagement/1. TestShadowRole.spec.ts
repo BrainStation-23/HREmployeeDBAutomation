@@ -652,7 +652,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         })
 
     })
-
     test("Test Shadow SBU Role Audit >>Dashboard", async ({ utility, page, adminDashboardPage }) => {
         await test.step("Not able to navigate Dashboard page", async () => {
             expect.soft(await adminDashboardPage.isDashboardVisible()).toBeFalsy();
@@ -686,8 +685,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         })
 
     })
-
-
     test("Test Shadow SBU Role Audit >> Profile Image",async({utility, page,profilePage})=>{
         await test.step("Not able to navigate Event Flag page", async () => {
             expect.soft(await profilePage.isProfileImageSidebarVisible()).toBeFalsy();
@@ -706,7 +703,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         })
  
     })
-
     test("Test Manager Role Sign out >> Sign out", async ({ signoutPage, page }) => {
         await test.step("Navigate to CV Completion", async () => {
             await page.waitForTimeout(3000);

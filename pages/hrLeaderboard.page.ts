@@ -10,7 +10,6 @@ export default class HrleaderboardPage {
     this.hrleaderboardSideBar = page.getByRole('link', { name: 'HR Leaderboard' })
     this.unauthorizedText = page.getByRole('heading', { name: 'Unauthorized' })
   }
-
   async isHrLeaderboardideBarVisible() {
     return await this.hrleaderboardSideBar.isVisible({ timeout: 5000 });
   }

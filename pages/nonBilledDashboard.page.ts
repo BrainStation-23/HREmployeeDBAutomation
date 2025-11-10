@@ -16,6 +16,4 @@ export default class NonBilledDashboardPage{
   async verifyUnauthorizedText(){
     return await this.unauthorizedText.isVisible({timeout:5000});
   }
-
-
 }

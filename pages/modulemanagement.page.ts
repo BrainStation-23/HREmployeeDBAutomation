@@ -10,7 +10,6 @@ export default class ModuleManagementPage {
     this.moduleManagementSideBar = page.getByRole('link', { name: 'User Management' })
     this.unauthorizedText = page.getByRole('heading', { name: 'Unauthorized' })
   }
-
   async isModuleManagementVisible() {
     return await this.moduleManagementSideBar.isVisible({ timeout: 5000 });
   }

@@ -17,9 +17,6 @@ export default class NonBilledSettingsPage {
     async verifyUnauthorizedText() {
         return await this.unauthorizedText.isVisible({ timeout: 5000 });
     }
-
-
-
 }
 
 
