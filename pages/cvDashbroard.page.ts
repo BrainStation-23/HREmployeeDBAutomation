@@ -12,8 +12,6 @@ export default class CvDashboardPage {
     readonly highAchieversData:Locator
     readonly steadyProgressStats: Locator;
     readonly steadyProgressData:Locator;
-    //progress resource
-    readonly traineefield: Locator;
     readonly gasmField: Locator;
     readonly billableField: Locator;
     readonly supportField: Locator;
@@ -34,7 +32,8 @@ export default class CvDashboardPage {
         
         this.steadyProgressStats = page.locator("(//div[@class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6']//div[@class='rounded-lg border bg-card text-card-foreground shadow-sm relative overflow-hidden'])[4]")
         this.steadyProgressData=page.locator("//div[@class='flex items-center justify-between']//p[2]").nth(3);
-        this.traineefield = page.locator("//h4[normalize-space()='Trainee']")
+        //this.traineefield = page.locator("//h4[normalize-space()='Trainee']")
+
         this.gasmField = page.locator(" //h4[normalize-space()='GA & SM']")
         this.billableField = page.locator("//h4[normalize-space()='Billable']")
         this.supportField = page.locator("//h4[normalize-space()='Support']")
@@ -69,11 +68,6 @@ export default class CvDashboardPage {
     async isSteadyProgressStatsVisible() {
         await this.steadyProgressStats.waitFor({ state: 'visible', timeout: 15000 });
         return await this.steadyProgressStats.isVisible();
-    }
-
-    async isTrainneFieldVisible() {
-        await this.traineefield.waitFor({ state: 'visible', timeout: 15000 })
-        return await this.traineefield.isVisible();
     }
 
     async isGasmFieldVisible() {

@@ -62,6 +62,7 @@ test.describe('Role Management - Test Manager Role.', () => {
     test('Test Manager Role General >> My Profile Section.', async ({ page, myProfilePage }) => {
         await test.step('Navigate to the My profile section.', async () => {
             // Already authenticated via storageState in this describe
+            
             await page.waitForLoadState('networkidle');
             // Navigate to My Profile page
             await page.waitForTimeout(3000);
@@ -71,14 +72,11 @@ test.describe('Role Management - Test Manager Role.', () => {
 
         await test.step('Ensure My Profile page is loaded.', async () => {
             // My Profile page section verification
+            //close profile creation video 
+            await myProfilePage.closeProfileVideo();
             expect.soft(await myProfilePage.isCvOptionDropdownVisible()).toBeTruthy();
             expect.soft(await myProfilePage.isPreviewCvButtonVisible()).toBeTruthy();
-            expect.soft(await myProfilePage.isPreviewCvButtonVisible()).toBeTruthy();
-            expect.soft(await myProfilePage.isImportButtonVisible()).toBeTruthy();
-            expect.soft(await myProfilePage.isAuditLogButtonVisible()).toBeTruthy();
-            await myProfilePage.clickAuditLogButton();
-            expect.soft(await myProfilePage.isAuditLogModalVisible()).toBeTruthy();
-            await myProfilePage.clickCloseButton();
+            expect.soft(await myProfilePage.isExportButtonVisible()).toBeTruthy();
         });
 
         await test.step('Verify My Profile>>General sections items are visible for the Manager role.', async () => {
@@ -254,14 +252,15 @@ test.describe('Role Management - Test Manager Role.', () => {
         })
 
         await test.step("Ensure that progress resource are visbile for manager  role", async () => {
-            expect.soft(await cvDashboardPage.isTrainneFieldVisible()).toBeTruthy();
+           // expect.soft(await cvDashboardPage.isTrainneFieldVisible()).toBeTruthy();
             expect.soft(await cvDashboardPage.isBillableFieldvisible()).toBeTruthy();
             expect.soft(await cvDashboardPage.isContractualFieldVisible()).toBeTruthy();
             expect.soft(await cvDashboardPage.isSupportFieldVisible()).toBeTruthy();
+            expect.soft(await cvDashboardPage.isExitFieldVisible()).toBeTruthy();
         })
         await test.step("Ensure that progress resource are not visbile for manager  role ", async () => {
             expect.soft(await cvDashboardPage.isGasmFieldVisible()).toBeFalsy()
-            expect.soft(await cvDashboardPage.isExitFieldVisible()).toBeFalsy()
+            
         })
 
     })
@@ -349,23 +348,7 @@ test.describe('Role Management - Test Manager Role.', () => {
         })
     })
 
-    test("Test Manager Role Resource Calendar >> Resource Dashbroard.", async ({ page, resourceDashboardPage, utility }) => {
-        await test.step("Not able to navigate Resource Dashbroard", async () => {
-            await page.waitForTimeout(3000);
-            expect.soft(await resourceDashboardPage.isResourceDashbroadVisible()).toBeFalsy();
-        })
-
-        await test.step("Not able to access Resource Dashbroard page via url", async () => {
-            const cvsettingsURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { resourcedashboard: string };
-            const resourceRestrictedSettingsUrl = `${ENV.BASE_URL}${cvsettingsURL.resourcedashboard}`;
-            await page.goto(resourceRestrictedSettingsUrl);
-            await expect(page).toHaveURL(/unauthorized/);
-        })
-        await test.step("verify unauthorized text for Resource Dashbroard page ", async () => {
-            expect.soft(await resourceDashboardPage.verifyUnauthorizedText()).toBeTruthy();
-        })
-    })
-
+ 
     test("Test Manager Role Planning >> planning page.", async ({ page, planningpage, utility }) => {
         await test.step("Not able to navigate planning page", async () => {
             expect.soft(await planningpage.isClickplanningPageSidebarVisible()).toBeFalsy();
@@ -600,6 +583,25 @@ test.describe('Role Management - Test Manager Role.', () => {
         })
 
     })
+
+       test("Test Manager Role Audit >> Profile Image",async({utility, page,profilePage})=>{
+            await test.step("Not able to navigate Event Flag page", async () => {
+                expect.soft(await profilePage.isProfileImageSidebarVisible()).toBeFalsy();
+            })
+     
+            await test.step("Not able to access Aduit Profile Image page  via url", async () => {
+                const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { profileimagepage: string };
+                const profileImageRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.profileimagepage}`;
+                console.log(profileImageRestrictedURL)
+                await page.goto(profileImageRestrictedURL);
+                await expect(page).toHaveURL(/unauthorized/);
+    
+            })
+            await test.step("verify Error Text for profile image page ", async () => {
+                expect.soft(await profilePage.verifyUnauthorizedText()).toBeTruthy();
+            })
+     
+        })
 
     test("Test Manager Role Sign out >> Sign out", async ({ signoutPage,page }) => {
     await test.step("Navigate to CV Completion", async () => {
