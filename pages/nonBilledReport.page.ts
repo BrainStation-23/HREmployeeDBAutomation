@@ -57,9 +57,4 @@ export default class NonBilledReportPage{
     async verifyUnauthorizedText(){
          return await this.unauthorizedText.isVisible({timeout:5000});
    }
-
-
-   
-
-
 }

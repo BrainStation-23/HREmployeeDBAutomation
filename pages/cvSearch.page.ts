@@ -19,7 +19,6 @@ export default class CvSearchPage {
   async isCvSearchSidebarvisible() {
      return await this.cvSearchSidebar.isVisible();
   }
-
   async clickCvSearchSidebar() {
     await this.cvSearchSidebar.click()
   }

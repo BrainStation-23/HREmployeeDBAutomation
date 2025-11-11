@@ -9,7 +9,6 @@ export default class AdmindashboardPage {
     this.dashboardSideBar=page.getByRole('link', { name: 'Dashboard', exact: true }).nth(1)
     this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' })
   }
-
   async isDashboardVisible(){
     return await this.dashboardSideBar.isVisible({timeout:5000});
   }

@@ -51,7 +51,9 @@ test.describe('Role Management - Test Employee Role.', () => {
 
         await test.step('Verify Dashboard page sections for Employee role.', async () => {
             // Dashboard page section user name verification
+            await page.waitForTimeout(1000)
             const profileName = (await dashboardPage.getUserProfileNameText()) ?? '';
+            //console.log(profileName)
             expect.soft(profileName.trim()).toContain(ENV.TEST_EMPLOYEE_NAME as string);
 
             // Dashboard page section verification
@@ -170,11 +172,8 @@ test.describe('Role Management - Test Employee Role.', () => {
             await page.waitForLoadState('networkidle');
             await myTeamPage.ClickTeamGraph();
             expect.soft(await myTeamPage.isTeamStructureViewVisible()).toBeTruthy();
-
         });
-
     });
-
     test('Test Employee Role General >> Security Section.', async ({ page, securityPage }) => {
         await test.step('Navigate to the Security section.', async () => {
             // Already authenticated via storageState in this describe
@@ -192,7 +191,6 @@ test.describe('Role Management - Test Employee Role.', () => {
             expect.soft(await securityPage.isUpdatePasswordButtonVisible()).toBeTruthy();
         });
     });
-
     test("Test Employee Role General >> Platform Feedback Section.", async ({ page, platformFeedbackPage }) => {
         await test.step('Navigate to the Platform Feedback section.', async () => {
             // Already authenticated via storageState in this describe
@@ -209,7 +207,6 @@ test.describe('Role Management - Test Employee Role.', () => {
         });
 
     });
-
     test("Test Employee Role Database >> CV Dashboard", async ({ page, cvDashboardPage, utility }) => {
         await test.step("Not able to navigate CV Dashboard", async () => {
             expect.soft(await cvDashboardPage.isCvDashboardSidebarvisible()).toBeFalsy();
@@ -226,7 +223,6 @@ test.describe('Role Management - Test Employee Role.', () => {
             await cvDashboardPage.verifyUnauthorizedText();
         })
     });
-
     test("Test Employee Role Database >> CV Search.", async ({ page, cvSearchPage, utility }) => {
         await test.step("Not able to navigate CV Search", async () => {
             expect.soft(await cvSearchPage.isCvSearchSidebarvisible()).toBeFalsy();
@@ -243,7 +239,6 @@ test.describe('Role Management - Test Employee Role.', () => {
             await cvSearchPage.verifyUnauthorizedText();
         })
     });
-
     test("Test Employee Role Database >> Training and certificate.", async ({ page, trainingCertificatePage, utility }) => {
         await test.step("Not able to navigate training and certificate", async () => {
             expect.soft(await trainingCertificatePage.isTrainningCertificateSiderVisibleForEmployee()).toBeFalsy();
@@ -278,7 +273,6 @@ test.describe('Role Management - Test Employee Role.', () => {
             await cvCompletionPage.verifyUnauthorizedText();
         })
     });
-
     test("Test Empolyee Role Database >> CV Templates.", async ({ page, cvTemplatesPage, utility }) => {
         await test.step("Not able to navigate CV Templates", async () => {
             // Not able navigate to CV Templates and certificate page
@@ -296,7 +290,6 @@ test.describe('Role Management - Test Employee Role.', () => {
             await cvTemplatesPage.verifyUnauthorizedText();
         })
     });
-
     test("Test Employee Role Database >> CV Settings.", async ({ page, cvsettingPage, utility }) => {
         await test.step("Not able to navigate CV Settings", async () => {
             expect.soft(await cvsettingPage.isCvSettingSideBarVisible()).toBeFalsy();
@@ -315,7 +308,6 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     test("Test Employee Role Resource Calendar >> Resource Dashboard.", async ({ page, resourceDashboardPage, utility }) => {
         await test.step("Not able to navigate Resource Dashboard", async () => {
-            await page.waitForTimeout(3000);
             expect.soft(await resourceDashboardPage.isResourceDashbroadVisible()).toBeFalsy();
         })
 
@@ -329,7 +321,6 @@ test.describe('Role Management - Test Employee Role.', () => {
             expect.soft(await resourceDashboardPage.verifyUnauthorizedText()).toBeTruthy();
         })
     })
-
     test("Test Employee Role Planning >> planning page.", async ({ page, planningpage, utility }) => {
         await test.step("Not able to navigate planning page", async () => {
             expect.soft(await planningpage.isClickplanningPageSidebarVisible()).toBeFalsy();

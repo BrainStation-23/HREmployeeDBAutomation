@@ -24,11 +24,9 @@ export default class MyTeamPage {
     async clickMyTeamSidebar() {
         await this.myTeamSidebar.click();
     }
-
     async isMyTeamSidebarVisible() {
         return await this.myTeamSidebar.isVisible({ timeout: 5000 });
     }
-
     async isManagerLabelVisible() {
         await this.managerLabel.waitFor({ state: 'visible', timeout: 15000 });
         return await this.managerLabel.isVisible({ timeout: 5000 });
@@ -44,14 +42,10 @@ export default class MyTeamPage {
         await this.teamGraphView.waitFor({ state: 'visible', timeout: 15000 });
         return await this.teamGraphView.isVisible({ timeout: 5000 });   
     }   
-    
     async ClickTeamGraph(){
         await this.teamGraphView.click();
-
     }
     async isTeamStructureViewVisible(){
         return await this.teamstructureView.isVisible({ timeout: 5000 }); 
     }
-
-
 }

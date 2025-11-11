@@ -22,8 +22,7 @@ export default class PlatformFeedbackPage {
     }
     async isReportBugButtonVisible() {
         await this.reportBugButton.waitFor({ state: 'visible', timeout: 15000 });
-        return await this.reportBugButton.isVisible();
-        
+        return await this.reportBugButton.isVisible();   
     }
     async isRequestFeatureButtonVisible() {
         await this.requestFeatureButton.waitFor({ state: 'visible', timeout: 15000 });

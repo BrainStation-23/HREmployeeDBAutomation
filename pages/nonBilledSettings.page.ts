@@ -4,7 +4,6 @@ export default class NonBilledSettingsPage {
     readonly page: Page;
     readonly nonbilledSettingSidebar: Locator;
     readonly unauthorizedText: Locator;
-
     constructor(page: Page) {
         this.page = page;
         this.nonbilledSettingSidebar = page.getByRole('link', { name: 'Non-Billed Settings' })
@@ -17,9 +16,6 @@ export default class NonBilledSettingsPage {
     async verifyUnauthorizedText() {
         return await this.unauthorizedText.isVisible({ timeout: 5000 });
     }
-
-
-
 }
 
 

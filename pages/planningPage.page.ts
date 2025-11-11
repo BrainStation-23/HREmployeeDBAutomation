@@ -16,11 +16,9 @@ export default class Planning {
     this.textField = page.locator("(//button[@data-lov-name='Button'])[3]")
     this.unauthorizedText = page.getByRole('heading', { name: 'Unauthorized' })
   }
-
   async ClickplanningPageSidebar() {
      await this.planningPageSidebar.click();
   }
-
   async isClickplanningPageSidebarVisible() {
       return await this.planningPageSidebar.isVisible({ timeout: 5000 });
   }

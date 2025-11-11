@@ -3,7 +3,6 @@ export default class NonBilledDashboardPage{
     readonly page: Page;
     readonly nonbilleddashboardSidebar:Locator;
     readonly unauthorizedText:Locator;
-
     constructor(page: Page) {
         this.page = page;
         this.nonbilleddashboardSidebar=page.getByRole('link', { name: 'Non-Billed Dashboard' });     
@@ -16,6 +15,4 @@ export default class NonBilledDashboardPage{
   async verifyUnauthorizedText(){
     return await this.unauthorizedText.isVisible({timeout:5000});
   }
-
-
 }

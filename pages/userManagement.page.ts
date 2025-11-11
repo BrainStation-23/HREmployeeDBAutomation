@@ -49,8 +49,7 @@ export default class UserManagementPage {
   readonly resourceTypeDropdown: Locator;
   readonly totalUserCountXpath: Locator;
   readonly exportAllButton: Locator;
-
-
+  
   constructor(page: Page) {
     this.page = page;
     this.userManagementSideBar = page.getByRole('link', { name: 'User Management' });

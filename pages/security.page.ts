@@ -7,8 +7,6 @@ export default class SecurityPage {
     readonly newPasswordInput: Locator;
     readonly confirmNewPasswordInput: Locator;
     readonly updatePasswordButton: Locator;
-
-
     constructor(page: Page) {
         this.page = page;
         this.securitySidebar = page.getByRole('link', { name: 'Security' });

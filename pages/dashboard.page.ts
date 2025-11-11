@@ -17,11 +17,9 @@ export default class DashboardPage {
     async getUserProfileNameText() {
         return await this.userProfileName.textContent();
     }
-
     async getDashboardHeaderText() {
         return await this.dashboardHeader.textContent();
     }
-
     async isDashboardAreaVisible() {
         return await this.dashboardArea.isVisible();
     }

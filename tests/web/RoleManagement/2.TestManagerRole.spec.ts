@@ -4,7 +4,6 @@ import fs from 'fs';
 import path from 'path';
 import LoginPage from '../../../pages/login.page';
 test.describe('Role Management - Test Manager Role.', () => {
-
     const loginEmail = ENV.TEST_MANAGER_EMAIL as string;
     const loginPassword = ENV.TEST_MANAGER_PASSWORD as string;
 
@@ -58,7 +57,6 @@ test.describe('Role Management - Test Manager Role.', () => {
             expect.soft(await dashboardPage.isDashboardAreaVisible()).toBeTruthy();
         });
     });
-
     test('Test Manager Role General >> My Profile Section.', async ({ page, myProfilePage }) => {
         await test.step('Navigate to the My profile section.', async () => {
             // Already authenticated via storageState in this describe
@@ -71,9 +69,9 @@ test.describe('Role Management - Test Manager Role.', () => {
         });
 
         await test.step('Ensure My Profile page is loaded.', async () => {
-            // My Profile page section verification
             //close profile creation video 
             await myProfilePage.closeProfileVideo();
+            // My Profile page section verification
             expect.soft(await myProfilePage.isCvOptionDropdownVisible()).toBeTruthy();
             expect.soft(await myProfilePage.isPreviewCvButtonVisible()).toBeTruthy();
             expect.soft(await myProfilePage.isExportButtonVisible()).toBeTruthy();
@@ -144,7 +142,6 @@ test.describe('Role Management - Test Manager Role.', () => {
             expect.soft(await myProfilePage.isProjectListItemVisible()).toBeTruthy();
             expect.soft(await myProfilePage.isAddProjectButtonVisible()).toBeTruthy();
         });
-
     });
 
     test('Test Manager Role General >> My Team Section.', async ({ page, myTeamPage }) => {
@@ -173,7 +170,6 @@ test.describe('Role Management - Test Manager Role.', () => {
             expect.soft(await myTeamPage.isTeamStructureViewVisible()).toBeTruthy();
 
         });
-
     });
 
     test('Test Manager Role General >> Security Section.', async ({ page, securityPage }) => {
@@ -209,7 +205,6 @@ test.describe('Role Management - Test Manager Role.', () => {
             expect.soft(await platformFeedbackPage.isRequestFeatureButtonVisible()).toBeTruthy();
             expect.soft(await platformFeedbackPage.isViewAllFeedbackButtonVisible()).toBeTruthy();
         });
-
     });
 
     test('Test Manager Role Database >> CV Dashboard Section.', async ({ page, cvDashboardPage }) => {
@@ -220,7 +215,6 @@ test.describe('Role Management - Test Manager Role.', () => {
             expect.soft(await cvDashboardPage.isCvDashboardSidebarvisible()).toBeTruthy();
             await cvDashboardPage.clickCvDashboardSidebar();
         })
-
         await test.step("Ensure progress stats are visible", async () => {
             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isProfileStatsVisible()).toBeTruthy();
@@ -262,7 +256,6 @@ test.describe('Role Management - Test Manager Role.', () => {
             expect.soft(await cvDashboardPage.isGasmFieldVisible()).toBeFalsy()
             
         })
-
     })
     test("Test Manager Role Database >> CV Search Section.", async ({ page, cvSearchPage }) => {
         await test.step('Navigate to the CV Search section.', async () => {
@@ -295,7 +288,6 @@ test.describe('Role Management - Test Manager Role.', () => {
             await page.waitForTimeout(2000);
             expect.soft(await trainingCertificatePage.isExportBtnVisible()).toBeFalsy();
         })
-
     })
 
     test("Test Manager Role Database >> CV Completion.", async ({ page, cvCompletionPage }) => {
@@ -311,7 +303,6 @@ test.describe('Role Management - Test Manager Role.', () => {
             expect.soft(await cvCompletionPage.isResourcesFieldVisible()).toBeTruthy();
             expect.soft(await cvCompletionPage.isEditBtnVisible()).toBeTruthy()
         })
-
     });
 
     test("Test Manager Role Database >> CV Templates.", async ({ page, cvTemplatesPage, utility }) => {
@@ -428,9 +419,7 @@ test.describe('Role Management - Test Manager Role.', () => {
         await test.step("verify Error Text for Non-Billed Dashboard", async () => {
             expect.soft(await nonBilledDashboardPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
-
     test("Test Manager Role Non Billed Report>>Non-Billed Report page", async ({ utility, page, nonBilledReportPage }) => {
         await test.step("Not able to navigate Non-Billed Report page", async () => {
             expect.soft(await nonBilledReportPage.isNonBilledReportsidebarVisible()).toBeFalsy();
@@ -445,7 +434,6 @@ test.describe('Role Management - Test Manager Role.', () => {
         await test.step("verify Error Text for Non-Billed Report page", async () => {
             expect.soft(await nonBilledReportPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
     test("Test Manager  Role Non Billed Management>>Non-Billed Setting", async ({ utility, page, nonBilledSettingPage }) => {
@@ -462,7 +450,6 @@ test.describe('Role Management - Test Manager Role.', () => {
         await test.step("verify Error Text for Non-Billed Setting ", async () => {
             expect.soft(await nonBilledSettingPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
     test("Test Manager Role Admin Configuration >>User Management", async ({ utility, page, userManagementPage }) => {
@@ -479,7 +466,6 @@ test.describe('Role Management - Test Manager Role.', () => {
         await test.step("verify Error Text for User Management Page  ", async () => {
             expect.soft(await userManagementPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
     test("Test Manager Role Admin Configuration >>Project", async ({ utility, page, projectPage }) => {
@@ -496,7 +482,6 @@ test.describe('Role Management - Test Manager Role.', () => {
         await test.step("verify Error Text for project page   ", async () => {
             expect.soft(await projectPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
     test("Test Manager Role Admin Configuration >>System setting", async ({ utility, page, systemsettingPage }) => {
@@ -513,7 +498,6 @@ test.describe('Role Management - Test Manager Role.', () => {
         await test.step("verify Error Text for System setting  page   ", async () => {
             expect.soft(await systemsettingPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
     test("Test Manager Role Admin Configuration >>Role Management", async ({ utility, page, roleManagementPage }) => {
@@ -530,7 +514,6 @@ test.describe('Role Management - Test Manager Role.', () => {
         await test.step("verify Error Text for Role Management page   ", async () => {
             expect.soft(await roleManagementPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
     test("Test Manager Role Admin Configuration >>Module Management", async ({ utility, page, moduleManagementPage }) => {
@@ -547,7 +530,6 @@ test.describe('Role Management - Test Manager Role.', () => {
         await test.step("verify Error Text for Role Management page   ", async () => {
             expect.soft(await moduleManagementPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
     test("Test Manager Role Audit >>Dashboard", async ({ utility, page, adminDashboardPage }) => {
@@ -564,7 +546,6 @@ test.describe('Role Management - Test Manager Role.', () => {
         await test.step("verify Error Text for  Dashboard page   ", async () => {
             expect.soft(await adminDashboardPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
     test("Test Manager Role Audit >>Event Flag", async ({ utility, page, eventflagPage }) => {
@@ -581,7 +562,6 @@ test.describe('Role Management - Test Manager Role.', () => {
         await test.step("verify Error Text for  Event Flag page ", async () => {
             expect.soft(await eventflagPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
        test("Test Manager Role Audit >> Profile Image",async({utility, page,profilePage})=>{
@@ -600,7 +580,6 @@ test.describe('Role Management - Test Manager Role.', () => {
             await test.step("verify Error Text for profile image page ", async () => {
                 expect.soft(await profilePage.verifyUnauthorizedText()).toBeTruthy();
             })
-     
         })
 
     test("Test Manager Role Sign out >> Sign out", async ({ signoutPage,page }) => {

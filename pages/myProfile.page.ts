@@ -125,7 +125,6 @@ export default class MyProfilePage {
     async isAuditLogButtonVisible() {
         return await this.auditLogButton.isVisible({ timeout: 5000 });
     }
-
     async clickAuditLogButton() {
         await this.auditLogButton.click();
     }
