@@ -54,7 +54,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
 
         await test.step('Verify Dashboard page sections for Shadow SBU role.', async () => {
             // Dashboard page section user name verification
-            // await page.pause();
             await page.waitForTimeout(1000)
             const profileName = (await dashboardPage.getUserProfileNameText()) ?? '';
             expect.soft(profileName.trim()).toContain(ENV.TEST_SHADOW_SBU_NAME as string);
@@ -83,7 +82,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             expect.soft(await myProfilePage.isCvOptionDropdownVisible()).toBeTruthy();
             expect.soft(await myProfilePage.isPreviewCvButtonVisible()).toBeTruthy();
             expect.soft(await myProfilePage.isExportButtonVisible()).toBeTruthy();
-            //expect.soft(await myProfilePage.isAuditLogButtonVisible()).toBeTruthy();
             await myProfilePage.clickAuditLogButton();
             expect.soft(await myProfilePage.isAuditLogModalVisible()).toBeTruthy();
             await myProfilePage.clickCloseButton();
@@ -125,7 +123,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             await myProfilePage.clickEducationTab();
             // Education section items verification
             expect.soft(await myProfilePage.isAddEducationButtonVisible()).toBeTruthy();
-            //expect.soft(await myProfilePage.isEducationListItemVisible()).toBeTruthy();
         });
 
         await test.step('Verify My Profile>>Training sections items are visible for the Shadow SBU role.', async () => {
@@ -178,7 +175,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
 
         test.step('Navigate to the Graph View section.', async () => {
             // Already authenticated via storageState in this describe
-            await page.waitForLoadState('networkidle');
+            //await page.waitForLoadState('networkidle');
             await myTeamPage.ClickTeamGraph();
             //verify team structure is visible
             expect.soft(await myTeamPage.isTeamStructureViewVisible()).toBeTruthy();
@@ -265,14 +262,11 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
 
         await test.step("Ensure that progress resource are visbile for shawdow sbu role", async () => {
             await page.waitForTimeout(1000);
-
-            
+            expect.soft(await cvDashboardPage.isBillableFieldvisible()).toBeTruthy()
             await page.waitForTimeout(1000);
-             expect.soft(await cvDashboardPage.isBillableFieldvisible()).toBeTruthy()
-             await page.waitForTimeout(1000);
             expect.soft(await cvDashboardPage.isContractualFieldVisible()).toBeTruthy()
-             await page.waitForTimeout(1000);
-             expect.soft(await cvDashboardPage.isSupportFieldVisible()).toBeTruthy()
+            await page.waitForTimeout(1000);
+            expect.soft(await cvDashboardPage.isSupportFieldVisible()).toBeTruthy()
         })
 
         await test.step("Ensure that progress resource are not visbile for shawdow sbu role ", async () => {
@@ -368,7 +362,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
     test('Test Shadow Sbu Role Resource Calendar >> Resource Dashbroard', async ({ page, resourceDashboardPage }) => {
         await test.step("Navigate to the Resource Dashbroard ", async () => {
             // Already authenticated via storageState in this describe
-            // await page.waitForLoadState('networkidle');
             await page.waitForTimeout(3000)
             expect.soft(await resourceDashboardPage.isResourceDashbroadVisible()).toBeTruthy();
             await resourceDashboardPage.clickResourceDashboardSidebar();
@@ -416,7 +409,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             expect.soft(await resourceDashboardPage.isEndDateFieldVisible()).toBeTruthy();
             expect.soft(await resourceDashboardPage.isClearField()).toBeTruthy();
             expect.soft(await resourceDashboardPage.isCalculateField()).toBeTruthy();
-
         })
 
         await test.step('Verify Resource Dashboard >>Billing type >> sections items are visible for the Shadow SBU role.', async () => {
@@ -428,9 +420,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
              expect.soft(await resourceDashboardPage.isDateFieldVisible()).toBeTruthy();
              expect.soft(await resourceDashboardPage.isFromBillTypesFieldVisible()).toBeTruthy();
              expect.soft(await resourceDashboardPage.isBillSbuFieldVisible()).toBeTruthy();
-             expect.soft(await resourceDashboardPage.isExportFieldVisible()).toBeTruthy();
-            
-           
+             expect.soft(await resourceDashboardPage.isExportFieldVisible()).toBeTruthy(); 
         })
 
         await test.step('Verify Resource Dashboard >>SBU change  >> sections items are visible for the Shadow SBU role.', async () => {
@@ -442,7 +432,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
              expect.soft(await resourceDashboardPage.istoSbuFieldVisible()).toBeTruthy();
              expect.soft( await resourceDashboardPage.isprofileSbuVisible()).toBeTruthy();
              expect.soft(await resourceDashboardPage.isSbuChangeExportField()).toBeTruthy();
-
         })
     });
 
@@ -452,8 +441,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             await page.waitForLoadState('networkidle');
             expect.soft(await planningpage.isClickplanningPageSidebarVisible()).toBeTruthy();
             await planningpage.ClickplanningPageSidebar();
-
-
         })
         await test.step("Ensure that required options are visible.", async () => {
             expect.soft(await planningpage.isUpdateBtnVisible()).toBeTruthy();
@@ -474,7 +461,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             await page.waitForTimeout(1000)
             await calendarViewPage.ClickCalendarViewSidebar();
         })
-
         await test.step("Ensure that required options are visible.", async () => {
             expect.soft(await calendarViewPage.isSearchEmplyeeFieldVisible()).toBeTruthy();
             expect.soft(await calendarViewPage.isFilterBySbuFieldVisible()).toBeTruthy();
@@ -486,7 +472,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("Not able to navigate CV Settings", async () => {
             expect.soft(await resourceSettingPage.isResourceSettingSideBarVisible()).toBeFalsy();
         })
-
         await test.step("Not able to access Resource Setting via url", async () => {
             const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { resourcesettingspage: string };
             const resourceSettingRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.resourcesettingspage}`;
@@ -517,7 +502,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("Not able to navigate Non-Billed Dashboard", async () => {
             expect.soft(await nonBilledDashboardPage.isNonBilledDashboradSideBarVisible()).toBeFalsy();
         })
-
         await test.step("Not able to access Non-Billed Dashboard via url", async () => {
             const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { nonbilledpage: string };
             const nonBilledDashboardRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.nonbilledpage}`;
@@ -527,7 +511,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("verify Error Text for Non-Billed Dashboard", async () => {
             expect.soft(await nonBilledDashboardPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
     test('Test Shadow Sbu Role Non Billed Management >> Non Billed Report', async ({ page, nonBilledReportPage }) => {
@@ -572,7 +555,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("Not able to navigate User Management", async () => {
             expect.soft(await userManagementPage.isUserManagementVisible()).toBeFalsy();
         })
-
         await test.step("Not able to access User Management via url", async () => {
             const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { usermanagementpage: string };
             const userManagementRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.usermanagementpage}`;
@@ -582,9 +564,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("verify Error Text for User Management  ", async () => {
             expect.soft(await userManagementPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
-
     test("Test Shadow SBU Role Admin Configuration >>Project", async ({ utility, page, projectPage }) => {
         await test.step("Not able to navigate Project", async () => {
             expect.soft(await projectPage.isProjectVisible()).toBeFalsy();
@@ -599,14 +579,12 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("verify Error Text for project page   ", async () => {
             expect.soft(await projectPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
     test("Test Shadow SBU Role Admin Configuration >>System setting", async ({ utility, page, systemsettingPage }) => {
         await test.step("Not able to navigate System setting page", async () => {
             expect.soft(await systemsettingPage.isSystemSettingVisible()).toBeFalsy();
         })
-
         await test.step("Not able to access System setting page  via url", async () => {
             const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { systemsettingpage: string };
             const systemSettingRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.systemsettingpage}`;
@@ -616,14 +594,12 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("verify Error Text for System setting  page   ", async () => {
             expect.soft(await systemsettingPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
     test("Test Shadow SBU Role Admin Configuration >>Role Management", async ({ utility, page, roleManagementPage }) => {
         await test.step("Not able to navigate Role Management page", async () => {
             expect.soft(await roleManagementPage.isRoleManagementVisible()).toBeFalsy();
         })
-
         await test.step("Not able to access Role Management page  via url", async () => {
             const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { rolemanagementpage: string };
             const roleManagementRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.rolemanagementpage}`;
@@ -633,14 +609,12 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("verify Error Text for Role Management page   ", async () => {
             expect.soft(await roleManagementPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
     test("Test Shadow SBU Role Admin Configuration >>Module Management", async ({ utility, page, moduleManagementPage }) => {
         await test.step("Not able to navigate Module Management page", async () => {
             expect.soft(await moduleManagementPage.isModuleManagementVisible()).toBeFalsy();
         })
-
         await test.step("Not able to access Role Management page  via url", async () => {
             const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { modulemanagementpage: string };
             const moduleManagementRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.modulemanagementpage}`;
@@ -650,13 +624,11 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("verify Error Text for Role Management page   ", async () => {
             expect.soft(await moduleManagementPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
     test("Test Shadow SBU Role Audit >>Dashboard", async ({ utility, page, adminDashboardPage }) => {
         await test.step("Not able to navigate Dashboard page", async () => {
             expect.soft(await adminDashboardPage.isDashboardVisible()).toBeFalsy();
         })
-
         await test.step("Not able to access Aduit Dashboard page  via url", async () => {
             const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { dashboardpage: string };
             const dashboardRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.dashboardpage}`;
@@ -666,7 +638,6 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("verify Error Text for  Dashboard page   ", async () => {
             expect.soft(await adminDashboardPage.verifyUnauthorizedText()).toBeTruthy();
         })
-
     })
 
     test("Test Shadow SBU Role Audit >>Flagged Events", async ({ utility, page, eventflagPage }) => {
@@ -685,6 +656,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         })
 
     })
+    
     test("Test Shadow SBU Role Audit >> Profile Image",async({utility, page,profilePage})=>{
         await test.step("Not able to navigate Event Flag page", async () => {
             expect.soft(await profilePage.isProfileImageSidebarVisible()).toBeFalsy();

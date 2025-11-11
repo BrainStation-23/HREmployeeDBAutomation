@@ -95,11 +95,8 @@ export default class ResourceDashboard{
         await this.resourceDashboardSidebar.click();
     }
     async isResourceDashbroadVisible(){
-       // return await this.resourceDashboardSidebar.isVisible({timeout:5000});
-       // await this.resourceDashboardSidebar.waitFor({ state: 'visible', timeout: 15000 });
         return await this.resourceDashboardSidebar.isVisible({timeout:5000});
-        // await this.resourceDashboardSidebar.waitFor({ state: 'visible', timeout: 15000 });
-        //  return true;
+       
     }
     //#region overview Page Common Sections
     async isOverviewInfoTabvisible(){

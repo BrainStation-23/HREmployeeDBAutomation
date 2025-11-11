@@ -18,6 +18,4 @@ export default class CvSettingPage {
   async verifyUnauthorizedText(){
     return await this.unauthorizedText.isVisible({timeout:5000});
   }
-
-
 }

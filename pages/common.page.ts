@@ -8,5 +8,4 @@ export default class CommonPage {
     async getPageTitle() {
         return await this.page.title();
     }
-
 }

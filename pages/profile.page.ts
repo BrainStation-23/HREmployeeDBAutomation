@@ -11,7 +11,6 @@ export default class ProfilePage {
     this.ProfileImageSideBar=page.getByRole('link', { name: 'Profile Image' })
     this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' })
   }
-
   async isProfileImageSidebarVisible(){
     return await this.ProfileImageSideBar.isVisible({timeout:5000});
   }

@@ -67,7 +67,6 @@ export default class CvDashboardPage {
         await this.steadyProgressStats.waitFor({ state: 'visible', timeout: 15000 });
         return await this.steadyProgressStats.isVisible();
     }
-
     async isGasmFieldVisible() {
         return await this.gasmField.isVisible({ timeout: 5000 });
     }
@@ -75,11 +74,9 @@ export default class CvDashboardPage {
         await this.billableField.waitFor({ state: 'visible', timeout: 15000 })
         return await this.billableField.isVisible();
     }
-
     async isSupportFieldVisible() {
         await this.supportField.waitFor({ state: 'visible', timeout: 15000 })
         return await this.supportField.isVisible();
-
     }
     async isExitFieldVisible() {
         return await this.exitField.isVisible({ timeout: 5000 });
@@ -91,6 +88,5 @@ export default class CvDashboardPage {
     // #verify unauthorized text restiatcted url access
     async verifyUnauthorizedText() {
         return await this.unauthorizedText.isVisible({ timeout: 5000 });
-
     }
 }

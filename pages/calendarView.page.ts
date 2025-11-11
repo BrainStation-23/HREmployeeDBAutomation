@@ -23,7 +23,6 @@ export default class CalendarViewPage {
     async ClickCalendarViewSidebar(){
         await this.calendarViewSidebar.click();
     }
-
     async isSearchEmplyeeFieldVisible(){
         await this.searchemployeeBox.waitFor({ state: 'visible', timeout: 15000 });
          return await this.searchemployeeBox.isVisible();

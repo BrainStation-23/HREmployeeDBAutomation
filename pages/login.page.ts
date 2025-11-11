@@ -8,7 +8,6 @@ export default class LoginPage {
     readonly passwordInput: Locator;
     readonly signInButton: Locator;
     readonly userProfileName: Locator;
-
     constructor(page: Page) {
         this.page = page;
         this.signInHeader = page.locator("//h3[@data-lov-name='CardTitle']");
@@ -20,11 +19,9 @@ export default class LoginPage {
     async navigateToLoginPage() {
         await this.page.goto(`${ENV.BASE_URL}/login`);
     }
-
     async getSignInHeaderText() {
         return await this.signInHeader.textContent();
     }
-
     async loginToCvSite(email: string, password: string) {
         await this.emailInput.fill(email);
         await this.passwordInput.fill(password);
@@ -32,7 +29,5 @@ export default class LoginPage {
         await this.userProfileName.waitFor({ state: 'visible', timeout: 5000 });
         await this.page.waitForLoadState('networkidle');
     }
-    //await page.getByText('Md. Taskinur Rahman', { exact: true }).click();
-
-
+    
 }

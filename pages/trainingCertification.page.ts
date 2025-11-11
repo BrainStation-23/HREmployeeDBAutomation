@@ -7,7 +7,6 @@ export default class TrainingCertificatePage {
     readonly bulkuploadBtn: Locator;
     readonly exportBtn: Locator;
     readonly unauthorizedText: Locator;
-
     constructor(page: Page) {
         this.page = page;
         this.trainningCertificateSidebar = page.getByRole('link', { name: 'Training and Certification' })
@@ -16,7 +15,6 @@ export default class TrainingCertificatePage {
         this.exportBtn = page.locator("(//div[@class='flex items-center gap-3']/button[3])")
         this.unauthorizedText = page.getByRole('heading', { name: 'Unauthorized' })
     }
-
     async isTrainningCertificateSiderVisible() {
         await this.trainningCertificateSidebar.waitFor({ state: 'visible', timeout: 15000 });
         return await this.trainningCertificateSidebar.isVisible({ timeout: 5000 });

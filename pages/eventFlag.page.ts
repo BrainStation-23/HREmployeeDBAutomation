@@ -1,5 +1,4 @@
 import { Page, Locator } from "@playwright/test";
-
 export default class EventFlagPage {
   readonly page: Page;
   readonly eventFlagSideBar: Locator;
@@ -16,5 +15,4 @@ export default class EventFlagPage {
   async verifyUnauthorizedText() {
     return await this.unauthorizedText.isVisible({ timeout: 5000 });
   }
-
 }

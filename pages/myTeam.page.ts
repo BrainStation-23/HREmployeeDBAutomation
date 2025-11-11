@@ -42,7 +42,6 @@ export default class MyTeamPage {
         await this.teamGraphView.waitFor({ state: 'visible', timeout: 15000 });
         return await this.teamGraphView.isVisible({ timeout: 5000 });   
     }   
-    
     async ClickTeamGraph(){
         await this.teamGraphView.click();
     }

@@ -4,14 +4,11 @@ export default class systemsettingPage {
   readonly page: Page;
   readonly systemSettingSideBar:Locator;
   readonly unauthorizedText:Locator;
-
-
   constructor(page: Page) {
     this.page = page;
     this.systemSettingSideBar=page.getByRole('link', { name: 'System Settings' })
     this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' })
   }
-
   async isSystemSettingVisible(){
     return await this.systemSettingSideBar.isVisible({timeout:5000});
   }

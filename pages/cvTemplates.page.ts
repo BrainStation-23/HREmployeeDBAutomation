@@ -3,7 +3,6 @@ export default class CvTemplatesPage {
  readonly page: Page;
  readonly cvTemplatesSidebar: Locator;
  readonly unauthorizedText:Locator;
-
  constructor(page: Page) {
     this.page=page;
     this.cvTemplatesSidebar=page.getByRole('link', { name: 'CV Templates' })
