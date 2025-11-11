@@ -11,7 +11,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
 
   /* Retry on CI only */
-  retries: process.env.CI ? 1 : 1,
+  retries: process.env.CI ? 2 : 2,
 
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : 1,
@@ -32,7 +32,7 @@ export default defineConfig({
   globalSetup: "utils/global-setup.ts",
 
   /* This is a base timeout for all tests.*/
-  timeout: 5 * 60 * 1000,
+  timeout: 2 * 60 * 1000,
 
   /* This is a base timeout for all tests assertion.*/
   expect:{

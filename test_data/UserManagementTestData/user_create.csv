@@ -1,0 +1,5 @@
+email,firstName,lastName,role,password,employeeId,managerEmail,sbuName,expertiseName,resourceTypeName,dateOfJoining,careerStartDate,dateOfBirth,resignationDate,exitDate,active,hasOverhead
+test.bulk.user1@brainstation-23.com,Test Bulk User 1,BS,Employee,SecurePass123!,TBU1100,shahin.shanaous@brainstation-23.com,eCommerce,Android,Trainee,4/15/2026,4/15/2026,5/20/1998,,,TRUE,TRUE
+test.bulk.user2@brainstation-23.com,Test Bulk User 2,BS,Employee,SecurePass124!,TBU1101,shahin.shanaous@brainstation-23.com,eCommerce,Flutter,Trainee,4/15/2026,4/15/2026,12/3/1999,,,TRUE,TRUE
+test.bulk.user3@brainstation-23.com,Test Bulk User 3,BS,Employee,SecurePass125!,TBU1102,shahin.shanaous@brainstation-23.com,eCommerce,Java,Trainee,4/15/2026,4/15/2026,8/15/2001,,,TRUE,TRUE
+test.bulk.user4@brainstation-23.com,Test Bulk User 4,BS,Employee,SecurePass126!,TBU1103,shahin.shanaous@brainstation-23.com,eCommerce,Automation Testing,Trainee,4/15/2026,4/15/2026,8/16/2001,,,TRUE,TRUE

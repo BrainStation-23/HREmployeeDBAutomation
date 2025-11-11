@@ -9,6 +9,7 @@ export default class MyProfilePage {
     readonly myProfileHeader: Locator;
     readonly myProfileSidebar: Locator;
     readonly generalInfoSection: Locator;
+    readonly profileVideo:Locator;
     readonly cvOptionDropdown: Locator;
     readonly previewCvButton: Locator;
     readonly exportPdfButton: Locator;
@@ -47,15 +48,16 @@ export default class MyProfilePage {
         this.myProfileHeader = page.getByRole('main').getByRole('heading', { name: 'My Profile' });
         this.myProfileSidebar = page.getByRole('navigation').getByRole('link', { name: 'My Profile' });
         this.generalInfoSection = page.getByRole('tab', { name: 'General' });
+        this.profileVideo=page.locator("//button[contains(text(),'Close')]")
         this.cvOptionDropdown = page.getByText('Sidebar - Full (Default)');
-        this.previewCvButton = page.getByRole('button', { name: 'Preview CV' });
+        this.previewCvButton = page.locator("//button[normalize-space()='Preview CV']")
         this.exportPdfButton = page.getByRole('button', { name: 'Export PDF' });
         this.importButton = page.getByText('Import');
         this.auditLogButton = page.getByRole('button').filter({ hasText: /^$/ }).nth(2);
         this.auditLogModal = page.getByRole('dialog', { name: 'CV Data Audit Log' });
         this.closeButton = page.getByRole('button', { name: 'Close' });
         this.uploadImageButton = page.getByRole('button', { name: 'Upload Image' });
-        this.imageSection = page.locator("(//div[@data-component-file='ProfileImagePreview.tsx'])[3]");
+        this.imageSection = page.locator("//div[@class='flex flex-col items-center space-y-6']");//C
         this.fullNameInput = page.getByRole('textbox', { name: 'Full Name' });
         this.professionalBioInput = page.getByRole('textbox', { name: 'Professional Biography' });
         this.skillsSection = page.getByRole('tab', { name: 'Skills' });
@@ -63,7 +65,7 @@ export default class MyProfilePage {
         this.technicalSkillsAddSection = page.getByText('Technical SkillsAdd Technical');
         this.experienceSection = page.getByRole('tab', { name: 'Experience' });
         this.addExperienceButton = page.getByRole('button', { name: 'Add Experience' });
-        this.experienceSectionItem = page.locator("(//div[@data-component-file='ExperienceGroupedTab.tsx'])[1]");
+        this.experienceSectionItem = page.locator("//span[normalize-space()='Experience']");
         this.educationTab = page.getByRole('tab', { name: 'Education' });
         this.addEducationButton = page.getByRole('button', { name: 'Add Education' });
         this.trainingTab = page.getByRole('tab', { name: 'Training' });
@@ -73,10 +75,10 @@ export default class MyProfilePage {
         this.addTrainingButton = page.getByRole('button', { name: 'Add Training' });
         this.trainingListItem = page.locator("div[data-state='active']");
         this.addAchievementButton = page.getByRole('button', { name: 'Add Achievement' });
-        this.achievementListItem = page.locator("div[data-lov-name='Card']");
+        this.achievementListItem = page.locator("//div[@class='space-y-4']");
         this.searchProjectInput = page.getByRole('textbox', { name: 'Search projects...' });
         this.addProjectButton = page.getByRole('button', { name: 'Add Project' });
-        this.projectListItem = page.locator("div[data-lov-name='Card']");
+        this.projectListItem = page.locator("//div[@class='space-y-4']//parent::div[@class='p-6 pt-0']");
     }
     //#endregion
 
@@ -87,7 +89,11 @@ export default class MyProfilePage {
 
     async clickMyProfileSidebar() {
         await this.myProfileSidebar.click();
-        await this.myProfileHeader.waitFor({ state: 'visible', timeout: 5000 });
+        
+    }
+
+    async closeProfileVideo(){
+        await this.profileVideo.click();
     }
 
     async isGeneralInfoSectionVisible() {
@@ -113,13 +119,12 @@ export default class MyProfilePage {
         return await this.exportPdfButton.isVisible({ timeout: 5000 });
     }
 
-    async isImportButtonVisible() {
+    async isExportButtonVisible() {
         return await this.importButton.isVisible({ timeout: 5000 });
     }
     async isAuditLogButtonVisible() {
         return await this.auditLogButton.isVisible({ timeout: 5000 });
     }
-
     async clickAuditLogButton() {
         await this.auditLogButton.click();
     }

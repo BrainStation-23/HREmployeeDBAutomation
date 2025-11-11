@@ -1,0 +1,24 @@
+{
+    "cvdashboard":"/cv-database/dashboard",
+    "cvsearchpage":"/cv-database/employee-data",
+    "traininngandcertificatepage":"/cv-database/training-certification",
+    "cvcompletionpage":"/cv-database/employee-data-management",
+    "cvtemplates":"/cv-database/cv-templates",
+    "cvsettings":"/cv-database/cv-template-settings",
+    "resourcedashboard":"/resource-calendar/dashboard",
+    "planningpage":"/resource-calendar/planning",
+    "calendarviewpage":"/resource-calendar/calendar",
+    "resourcesettingspage":"/resource-calendar/settings",
+    "hrleaderboard":"/resource-calendar/leaderboard",
+    "nonbilledpage":"/non-billed/dashboard",
+    "nonbilledsettingpage":"/non-billed/settings",
+    "usermanagementpage":"/users",
+    "projectpage":"/projects",
+    "systemsettingpage":"/system-settings",
+    "rolemanagementpage":"/admin/roles",
+    "modulemanagementpage":"/admin/modules",
+    "dashboardpage":"/audit/dashboard",
+    "flageventpage":"/audit/flagged-events",
+    "profileimagepage":"/audit/profile-image-warnings"
+
+}
