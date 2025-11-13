@@ -1,7 +1,7 @@
 import { expect, test } from "../../../lib/base.fixture";
 import ENV from '../../../utils/env';
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import LoginPage from '../../../pages/login.page';
 test.describe('Role Management - Test Manager Role.', () => {
     const loginEmail = ENV.TEST_MANAGER_EMAIL as string;
