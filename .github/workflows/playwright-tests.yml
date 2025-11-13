@@ -1,22 +1,37 @@
 name: Playwright Tests
 
+# Environment Variable Loading Precedence:
+# 1. GitHub Secrets (highest priority) - Variables set in this workflow from repository secrets
+# 2. .env files (fallback) - Loaded by global-setup.ts from env/{test_env}.env
+#
+# The global-setup.ts file uses dotenv.config({ override: false }), which ensures that
+# environment variables already set (from GitHub Secrets) are NOT overwritten by .env files.
+# This allows:
+# - GitHub Secrets to take precedence in CI/CD environments
+# - .env files to provide fallback values for local development
+# - Partial GitHub Secrets configuration with .env fallback for missing values
+
 on:
   workflow_dispatch:
     branches:
       - main
     inputs:
       test_env:
-        description: 'Test environment to run'
+        description: 'Test environment (local or prod)'
         required: true
         default: 'prod'
         type: choice
         options:
           - local
           - prod
+      test_tags:
+        description: 'Test tags to filter (e.g., @user-management, @role-management)'
+        required: false
+        type: string
 
 jobs:
   test:
-    name: Playwright Tests
+    name: Playwright Tests - ${{ inputs.test_env }} environment
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -36,21 +51,195 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright tests
+      - name: Validate environment variables
         env:
           CI: true
           test_env: ${{ inputs.test_env }}
-        run: npx playwright test --grep-invert "@user-management"
+          BASE_URL: ${{ secrets.BASE_URL }}
+          TEST_SUPER_ADMIN_EMAIL: ${{ secrets.TEST_SUPER_ADMIN_EMAIL }}
+          TEST_SUPER_ADMIN_PASSWORD: ${{ secrets.TEST_SUPER_ADMIN_PASSWORD }}
+          TEST_ADMIN_EMAIL: ${{ secrets.TEST_ADMIN_EMAIL }}
+          TEST_ADMIN_PASSWORD: ${{ secrets.TEST_ADMIN_PASSWORD }}
+          TEST_MANAGER_EMAIL: ${{ secrets.TEST_MANAGER_EMAIL }}
+          TEST_MANAGER_PASSWORD: ${{ secrets.TEST_MANAGER_PASSWORD }}
+          TEST_EMPLOYEE_EMAIL: ${{ secrets.TEST_EMPLOYEE_EMAIL }}
+          TEST_EMPLOYEE_PASSWORD: ${{ secrets.TEST_EMPLOYEE_PASSWORD }}
+          TEST_SHADOW_SBU_EMAIL: ${{ secrets.TEST_SHADOW_SBU_EMAIL }}
+          TEST_SHADOW_SBU_NAME: ${{ secrets.TEST_SHADOW_SBU_NAME }}
+          TEST_SHADOW_SBU_PASSWORD: ${{ secrets.TEST_SHADOW_SBU_PASSWORD }}
+        run: |
+          echo "Validating required environment variables..."
+          
+          # Define required environment variables
+          required_vars="BASE_URL TEST_SUPER_ADMIN_EMAIL TEST_SUPER_ADMIN_PASSWORD TEST_ADMIN_EMAIL TEST_ADMIN_PASSWORD TEST_MANAGER_EMAIL TEST_MANAGER_PASSWORD TEST_EMPLOYEE_EMAIL TEST_EMPLOYEE_PASSWORD TEST_SHADOW_SBU_EMAIL TEST_SHADOW_SBU_NAME TEST_SHADOW_SBU_PASSWORD"
+          
+          missing_vars=""
+          missing_count=0
+          
+          # Check each required variable
+          for var in $required_vars; do
+            if [ -z "${!var}" ]; then
+              missing_vars="$missing_vars\n  - $var"
+              missing_count=$((missing_count + 1))
+              echo "::error::Missing required environment variable: $var"
+            else
+              echo "✓ $var is set"
+            fi
+          done
+          
+          # If any variables are missing, provide helpful error message and exit
+          if [ $missing_count -gt 0 ]; then
+            echo ""
+            echo "::error::❌ $missing_count required environment variable(s) are missing"
+            echo ""
+            echo "Missing variables:$missing_vars"
+            echo ""
+            echo "To fix this issue:"
+            echo "1. Configure GitHub Secrets in your repository settings"
+            echo "2. Navigate to: Settings → Secrets and variables → Actions → New repository secret"
+            echo "3. Add each missing variable with its corresponding value"
+            echo ""
+            echo "Alternatively, ensure the appropriate .env file exists:"
+            echo "  - For 'prod' environment: env/prod.env"
+            echo "  - For 'local' environment: env/local.env"
+            echo ""
+            echo "For detailed setup instructions, see the README.md file in the repository."
+            exit 1
+          fi
+          
+          echo ""
+          echo "✅ All required environment variables are configured"
+
+      - name: Run Playwright tests
+        id: tests
+        env:
+          CI: true
+          test_env: ${{ inputs.test_env }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+          TEST_SUPER_ADMIN_EMAIL: ${{ secrets.TEST_SUPER_ADMIN_EMAIL }}
+          TEST_SUPER_ADMIN_PASSWORD: ${{ secrets.TEST_SUPER_ADMIN_PASSWORD }}
+          TEST_ADMIN_EMAIL: ${{ secrets.TEST_ADMIN_EMAIL }}
+          TEST_ADMIN_PASSWORD: ${{ secrets.TEST_ADMIN_PASSWORD }}
+          TEST_MANAGER_EMAIL: ${{ secrets.TEST_MANAGER_EMAIL }}
+          TEST_MANAGER_PASSWORD: ${{ secrets.TEST_MANAGER_PASSWORD }}
+          TEST_EMPLOYEE_EMAIL: ${{ secrets.TEST_EMPLOYEE_EMAIL }}
+          TEST_EMPLOYEE_PASSWORD: ${{ secrets.TEST_EMPLOYEE_PASSWORD }}
+          TEST_SHADOW_SBU_EMAIL: ${{ secrets.TEST_SHADOW_SBU_EMAIL }}
+          TEST_SHADOW_SBU_NAME: ${{ secrets.TEST_SHADOW_SBU_NAME }}
+          TEST_SHADOW_SBU_PASSWORD: ${{ secrets.TEST_SHADOW_SBU_PASSWORD }}
+        run: |
+          if [ -n "${{ inputs.test_tags }}" ]; then
+            npx playwright test --grep "${{ inputs.test_tags }}"
+          else
+            npx playwright test
+          fi
         continue-on-error: true
+
+      - name: Generate test execution summary
+        if: always()
+        run: |
+          echo "# 🎭 Playwright Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Display execution parameters
+          echo "## 📋 Execution Details" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Parameter | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Environment** | \`${{ inputs.test_env }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Test Tags** | \`${{ inputs.test_tags || 'All tests' }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Workflow Run** | #${{ github.run_number }} (attempt ${{ github.run_attempt }}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Triggered By** | @${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Branch** | \`${{ github.ref_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Parse JUnit XML report for test statistics
+          if [ -f "playwright-report/result.xml" ]; then
+            echo "## 📊 Test Statistics" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Extract test counts from JUnit XML
+            total_tests=$(grep -oP '(?<=tests=")[^"]*' playwright-report/result.xml | head -1)
+            failures=$(grep -oP '(?<=failures=")[^"]*' playwright-report/result.xml | head -1)
+            errors=$(grep -oP '(?<=errors=")[^"]*' playwright-report/result.xml | head -1)
+            skipped=$(grep -oP '(?<=skipped=")[^"]*' playwright-report/result.xml | head -1)
+            time=$(grep -oP '(?<=time=")[^"]*' playwright-report/result.xml | head -1)
+            
+            # Calculate passed tests
+            passed=$((total_tests - failures - errors - skipped))
+            
+            # Determine status emoji
+            if [ "$failures" -eq 0 ] && [ "$errors" -eq 0 ]; then
+              status_emoji="✅"
+              status_text="All tests passed"
+            else
+              status_emoji="❌"
+              status_text="Some tests failed"
+            fi
+            
+            echo "### $status_emoji $status_text" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Count |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| ✅ **Passed** | $passed |" >> $GITHUB_STEP_SUMMARY
+            echo "| ❌ **Failed** | $failures |" >> $GITHUB_STEP_SUMMARY
+            echo "| ⚠️ **Errors** | $errors |" >> $GITHUB_STEP_SUMMARY
+            echo "| ⏭️ **Skipped** | $skipped |" >> $GITHUB_STEP_SUMMARY
+            echo "| 📝 **Total** | $total_tests |" >> $GITHUB_STEP_SUMMARY
+            echo "| ⏱️ **Duration** | ${time}s |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Calculate pass rate
+            if [ "$total_tests" -gt 0 ]; then
+              pass_rate=$(awk "BEGIN {printf \"%.1f\", ($passed / $total_tests) * 100}")
+              echo "**Pass Rate:** ${pass_rate}%" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "## ⚠️ Test Statistics" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Test results file not found. Tests may not have executed properly." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Include custom summary if available
+          if [ -f "playwright-report/custom-summary.txt" ]; then
+            echo "## 📄 Detailed Summary" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat playwright-report/custom-summary.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Add artifact information
+          echo "## 📦 Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Test artifacts have been uploaded and will be retained for 30 days:" >> $GITHUB_STEP_SUMMARY
+          echo "- 📊 HTML Report" >> $GITHUB_STEP_SUMMARY
+          echo "- 📸 Screenshots" >> $GITHUB_STEP_SUMMARY
+          echo "- 🎬 Traces" >> $GITHUB_STEP_SUMMARY
+          echo "- 📋 Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Artifact Name:** \`playwright-results-${{ inputs.test_env }}-${{ github.run_number }}-${{ github.run_attempt }}\`" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-test-results
+          name: playwright-results-${{ inputs.test_env }}-${{ github.run_number }}-${{ github.run_attempt }}
           path: |
             playwright-report/
             test-results/
+            **/*.png
+            **/*.jpg
+            **/*.jpeg
+            **/trace.zip
+            **/traces/
           retention-days: 30
           if-no-files-found: warn
+
+      - name: Fail workflow if tests failed
+        if: steps.tests.outcome == 'failure'
+        run: exit 1
 

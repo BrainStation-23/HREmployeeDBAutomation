@@ -276,45 +276,245 @@ The framework provides comprehensive reporting:
 
 ### GitHub Actions Workflow
 
-The project includes a GitHub Actions workflow (`.github/workflows/playwright-tests.yml`) for automated test execution:
+The project includes a comprehensive GitHub Actions workflow (`.github/workflows/playwright-tests.yml`) for automated test execution with flexible configuration options.
 
-#### Features
-- **Manual Trigger**: Workflow can be manually triggered on the `main` branch
-- **Environment Selection**: Choose between `local` or `prod` environment
+#### Workflow Features
+
+- **Manual Trigger (workflow_dispatch)**: Manually trigger tests on the `main` branch with custom parameters
+- **Environment Selection**: Choose between `local` or `prod` environment configurations
+- **Test Filtering**: Optionally filter tests by tags (e.g., `@user-management`, `@role-management`)
+- **Environment Variable Validation**: Automatic validation of required environment variables before test execution
+- **Secure Credential Management**: Uses GitHub Secrets for sensitive credentials with .env file fallback
 - **Automated Setup**: 
-  - Node.js 20 setup with npm dependency caching
+  - Node.js 20 with npm dependency caching for faster execution
   - Playwright browser installation with system dependencies
-  - Automatic dependency installation
-- **Test Execution**: Runs Playwright tests with CI environment configuration
-- **Artifact Upload**: Automatically uploads test results, reports, screenshots, and traces
-- **Artifact Retention**: Test artifacts are retained for 30 days
+  - Clean dependency installation using `npm ci`
+- **Test Execution**: Runs Playwright tests with CI-optimized configuration
+- **Test Summary Generation**: Automatic generation of detailed test execution summaries with pass/fail statistics
+- **Artifact Upload**: Comprehensive artifact collection including reports, screenshots, and traces
+- **Artifact Retention**: Test artifacts retained for 30 days
 - **Error Handling**: Continues execution even on test failures to ensure artifact collection
+- **Job Timeout**: 60-minute timeout to prevent hanging workflows
 
-#### How to Use GitHub Actions
+#### How to Manually Trigger the Workflow
 
-1. Navigate to the **Actions** tab in your GitHub repository
-2. Select **Playwright Tests** workflow
-3. Click **Run workflow**
-4. Select the test environment (`local` or `prod`)
-5. Click **Run workflow** to start execution
+1. **Navigate to Actions Tab**
+   - Go to your GitHub repository
+   - Click on the **Actions** tab in the top navigation
 
-#### Artifacts
+2. **Select Workflow**
+   - In the left sidebar, click on **Playwright Tests** workflow
 
-After workflow execution, the following artifacts are available:
-- `playwright-test-results` - Contains:
-  - HTML test reports
-  - JUnit XML reports
-  - Custom summary reports
-  - Screenshots (if any)
-  - Trace files (if any)
-  - Test result data
+3. **Run Workflow**
+   - Click the **Run workflow** dropdown button (top right)
+   - Configure the workflow inputs:
 
-Artifacts can be downloaded from the workflow run page and are retained for 30 days.
+4. **Configure Workflow Inputs**
+   
+   **Test Environment** (required):
+   - Select `prod` for production environment (default)
+   - Select `local` for local/development environment
+   
+   **Test Tags** (optional):
+   - Leave empty to run all tests
+   - Enter `@user-management` to run only user management tests
+   - Enter `@role-management` to run only role management tests
+   - Use any custom tags defined in your test files
 
-### CI/CD Environment Variable Precedence
-- CI/CD variables and secrets take precedence over `.env` files. In `utils/global-setup.ts` we call DotEnv with `override: false`, so values already present in the environment are preserved, and missing ones are filled from `env/<TEST_ENV>.env`.
-- Set `TEST_ENV=prod` to load `env/prod.env` as fallback values in CI.
-- The GitHub Actions workflow automatically sets `CI=true` and `test_env` based on the workflow input.
+5. **Start Execution**
+   - Click the green **Run workflow** button
+   - Workflow will start executing immediately
+
+#### Workflow Execution Examples
+
+**Example 1: Run all tests in production environment**
+```
+Test environment: prod
+Test tags: (leave empty)
+```
+
+**Example 2: Run user management tests in local environment**
+```
+Test environment: local
+Test tags: @user-management
+```
+
+**Example 3: Run role management tests in production**
+```
+Test environment: prod
+Test tags: @role-management
+```
+
+**Example 4: Run multiple tagged tests**
+```
+Test environment: prod
+Test tags: @user-management|@role-management
+```
+
+#### Viewing Workflow Results
+
+After triggering the workflow:
+
+1. **Monitor Execution**
+   - The workflow run appears at the top of the Actions page
+   - Click on the run to view real-time logs
+   - Job name displays the selected environment: "Playwright Tests - prod environment"
+
+2. **View Test Summary**
+   - Scroll to the bottom of the workflow run page
+   - The summary section displays:
+     - Execution details (environment, tags, triggered by)
+     - Test statistics (passed, failed, errors, skipped)
+     - Pass rate percentage
+     - Execution duration
+     - Artifact information
+
+3. **Check Individual Steps**
+   - Click on the "test" job to expand all steps
+   - Review logs for each step:
+     - Environment variable validation
+     - Test execution output
+     - Summary generation
+     - Artifact upload confirmation
+
+#### Accessing Test Artifacts
+
+Test artifacts are automatically uploaded after every workflow run (success or failure):
+
+**Artifact Contents:**
+- `playwright-report/` - HTML test reports and JUnit XML
+- `test-results/` - Detailed test output and metadata
+- Screenshots (`.png`, `.jpg`, `.jpeg`) - Visual evidence of test failures
+- Traces (`trace.zip`, `traces/`) - Detailed execution traces for debugging
+
+**Artifact Naming Convention:**
+```
+playwright-results-{environment}-{run_number}-{run_attempt}
+```
+
+Example: `playwright-results-prod-42-1`
+
+**How to Download Artifacts:**
+
+1. Navigate to the workflow run page
+2. Scroll to the **Artifacts** section at the bottom
+3. Click on the artifact name to download as a ZIP file
+4. Extract the ZIP file locally
+5. Open `playwright-report/index.html` in a browser to view the HTML report
+
+**Artifact Retention:**
+- Artifacts are retained for **30 days** from the workflow run date
+- After 30 days, artifacts are automatically deleted by GitHub
+- Download important artifacts before expiration if long-term storage is needed
+
+#### GitHub Secrets Configuration
+
+The workflow uses GitHub Secrets to securely manage sensitive credentials. Secrets take precedence over `.env` files.
+
+**Required Secrets:**
+- `BASE_URL` - Application base URL
+- `TEST_SUPER_ADMIN_EMAIL` - Super admin email
+- `TEST_SUPER_ADMIN_PASSWORD` - Super admin password
+- `TEST_ADMIN_EMAIL` - Admin email
+- `TEST_ADMIN_PASSWORD` - Admin password
+- `TEST_MANAGER_EMAIL` - Manager email
+- `TEST_MANAGER_PASSWORD` - Manager password
+- `TEST_EMPLOYEE_EMAIL` - Employee email
+- `TEST_EMPLOYEE_PASSWORD` - Employee password
+- `TEST_SHADOW_SBU_EMAIL` - Shadow SBU email
+- `TEST_SHADOW_SBU_NAME` - Shadow SBU name
+- `TEST_SHADOW_SBU_PASSWORD` - Shadow SBU password
+
+**Setup Instructions:**
+
+For detailed step-by-step instructions on configuring GitHub Secrets, see:
+📖 **[GitHub Secrets Setup Guide](docs/GITHUB_SECRETS_SETUP.md)**
+
+The guide includes:
+- How to access GitHub Secrets settings
+- Complete list of required secrets with descriptions
+- Step-by-step secret configuration process
+- Environment variable precedence explanation
+- Verification steps
+- Troubleshooting common issues
+
+**Quick Setup:**
+1. Go to repository **Settings** → **Secrets and variables** → **Actions**
+2. Click **New repository secret**
+3. Add each of the 12 required secrets listed above
+4. Run the workflow to verify configuration
+
+#### Environment Variable Precedence
+
+The workflow uses a two-tier system for loading environment variables:
+
+**Precedence Order (Highest to Lowest):**
+
+1. **GitHub Secrets** (Highest Priority)
+   - Values configured in GitHub repository settings
+   - Encrypted and secure
+   - Override any other source
+   - Recommended for CI/CD environments
+
+2. **.env Files** (Fallback)
+   - Located in `env/` directory (`env/prod.env`, `env/local.env`)
+   - Used when GitHub Secrets are not configured
+   - Loaded based on `test_env` workflow input
+   - Useful for local development
+
+**How It Works:**
+
+The `utils/global-setup.ts` file uses `dotenv.config({ override: false })`, which means:
+- Variables already set in the environment (from GitHub Secrets) are **preserved**
+- Missing variables are **loaded from** the appropriate .env file based on `test_env`
+
+**Configuration Scenarios:**
+
+- **Full GitHub Secrets**: All secrets configured → .env files ignored (recommended for CI/CD)
+- **Partial GitHub Secrets**: Some secrets configured → Missing values loaded from .env files
+- **No GitHub Secrets**: All values loaded from .env files (local development only)
+
+**Environment Selection:**
+- `test_env: prod` → Falls back to `env/prod.env` for missing secrets
+- `test_env: local` → Falls back to `env/local.env` for missing secrets
+
+#### Workflow Validation
+
+The workflow includes automatic validation of required environment variables:
+
+- **Pre-execution Check**: Validates all required variables before running tests
+- **Clear Error Messages**: Lists missing variables with helpful instructions
+- **Fail Fast**: Stops execution immediately if critical variables are missing
+- **Guidance**: Provides links to setup documentation
+
+If validation fails, the workflow will display:
+- List of missing environment variables
+- Instructions for configuring GitHub Secrets
+- Alternative .env file setup instructions
+
+#### Troubleshooting Workflow Issues
+
+**Issue: "Missing required environment variables" error**
+- **Solution**: Configure all 12 required GitHub Secrets or ensure appropriate .env file exists
+- **See**: [GitHub Secrets Setup Guide](docs/GITHUB_SECRETS_SETUP.md)
+
+**Issue: Tests run against wrong environment**
+- **Solution**: Verify `BASE_URL` secret value matches your intended environment
+- **Check**: Selected `test_env` input when triggering workflow
+
+**Issue: Workflow times out**
+- **Solution**: Review test execution time; consider splitting tests or increasing timeout
+- **Current Timeout**: 60 minutes
+
+**Issue: Artifacts not uploaded**
+- **Solution**: Check test execution logs; ensure tests generate output files
+- **Verify**: `playwright-report/` and `test-results/` directories exist after test run
+
+**Issue: Cannot trigger workflow**
+- **Solution**: Ensure you have write access to the repository
+- **Check**: Workflow file exists at `.github/workflows/playwright-tests.yml`
+
+For more troubleshooting help, see the [GitHub Secrets Setup Guide](docs/GITHUB_SECRETS_SETUP.md#troubleshooting).
 
 ## Contributing
 
