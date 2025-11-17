@@ -66,7 +66,7 @@ export default class ResourceDashboard{
         this.weeklyScoreCardInfoTab=page.getByRole('tab', { name: 'Weekly Score Card' })
         //weekly field
         this.weeklycardFilterdropdown=page.locator("//div[@class='flex flex-col space-y-1.5 p-6 cursor-pointer hover:bg-muted/50 transition-colors']")
-        this.startdateField=page.getByRole('button', { name: 'Select start date' })
+        this.startdateField=page.getByRole('button', { name: 'Select date range' })
         this.enddateField=page.getByRole('button', { name: 'Select end date' })
         this.clearField=page.getByRole('button', { name: 'Clear Filters' })
         this.calculateField=page.getByRole('button', { name: 'Calculate New' })
@@ -154,10 +154,10 @@ export default class ResourceDashboard{
         await this.startdateField.waitFor({ state: 'visible', timeout: 15000 });
         return await this.startdateField.isVisible({ timeout: 5000 });
     }
-    async isEndDateFieldVisible(){
-       await this.enddateField.waitFor({ state: 'visible', timeout: 15000 });
-       return await this.enddateField.isVisible({ timeout: 5000 });
-    }
+    // async isEndDateFieldVisible(){
+    //    await this.enddateField.waitFor({ state: 'visible', timeout: 15000 });
+    //    return await this.enddateField.isVisible({ timeout: 5000 });
+    // }
     async isClearField(){
         await this.clearField.waitFor({ state: 'visible', timeout: 15000 });
         return await this.clearField.isVisible({ timeout: 5000 });  

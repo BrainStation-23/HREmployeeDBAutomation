@@ -49,10 +49,12 @@ test.describe('Role Management - Test Manager Role.', () => {
 
         await test.step('Verify Dashboard page sections for manager role.', async () => {
             // Dashboard page section user name verification
-            const profileName = (await dashboardPage.getUserProfileNameText()) ?? '';
+            await page.waitForTimeout(2000)
+            const profileName = (await dashboardPage.getUserProfileNameText()) ?? ''; 
             expect.soft(profileName.trim()).toContain(ENV.TEST_MANAGER_NAME as string);
 
             // Dashboard page section verification
+            await page.waitForTimeout(1000)
             expect.soft(await dashboardPage.getDashboardHeaderText()).toBe(dashboardTestData.HeaderText);
             expect.soft(await dashboardPage.isDashboardAreaVisible()).toBeTruthy();
         });
@@ -149,7 +151,6 @@ test.describe('Role Management - Test Manager Role.', () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             // Navigate to My Team page
-            await page.waitForTimeout(3000);
             expect.soft(await myTeamPage.isMyTeamSidebarVisible()).toBeTruthy();
             await myTeamPage.clickMyTeamSidebar();
         });
@@ -164,7 +165,7 @@ test.describe('Role Management - Test Manager Role.', () => {
 
         test.step('Navigate to the Graph View section.', async () => {
             // Already authenticated via storageState in this describe
-            await page.waitForLoadState('networkidle');
+            //await page.waitForLoadState('networkidle');
             await myTeamPage.ClickTeamGraph();
             //verify team structure is visible
             expect.soft(await myTeamPage.isTeamStructureViewVisible()).toBeTruthy();

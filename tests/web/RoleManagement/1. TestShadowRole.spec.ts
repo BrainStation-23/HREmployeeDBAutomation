@@ -406,7 +406,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             await resourceDashboardPage.ClickWeeklyCardFiltersdropwon();
             //weekly score card section items verification
             expect.soft(await resourceDashboardPage.isStartDateFieldVisible()).toBeTruthy();
-            expect.soft(await resourceDashboardPage.isEndDateFieldVisible()).toBeTruthy();
+            //expect.soft(await resourceDashboardPage.isEndDateFieldVisible()).toBeTruthy();
             expect.soft(await resourceDashboardPage.isClearField()).toBeTruthy();
             expect.soft(await resourceDashboardPage.isCalculateField()).toBeTruthy();
         })
@@ -439,6 +439,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("Navigate to the planningPage ", async () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
+            await page.waitForTimeout(1000)
             expect.soft(await planningpage.isClickplanningPageSidebarVisible()).toBeTruthy();
             await planningpage.ClickplanningPageSidebar();
         })
@@ -457,6 +458,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
         await test.step("Navigate to the calendar view", async () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
+            await page.waitForTimeout(2000)
             expect.soft(await calendarViewPage.isCalendarViewSidebarVisible()).toBeTruthy();
             await page.waitForTimeout(1000)
             await calendarViewPage.ClickCalendarViewSidebar();

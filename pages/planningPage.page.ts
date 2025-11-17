@@ -21,6 +21,8 @@ export default class Planning {
   }
   async isClickplanningPageSidebarVisible() {
       return await this.planningPageSidebar.isVisible({ timeout: 5000 });
+    //   await this.planningPageSidebar.waitFor({ state: 'visible', timeout: 15000 });
+    //   return await this.planningPageSidebar.isVisible({ timeout: 5000 });
   }
   async isUpdateBtnVisible() {
       await this.updatecsvBtn.waitFor({ state: 'visible', timeout: 15000 });

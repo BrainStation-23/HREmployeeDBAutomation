@@ -169,7 +169,8 @@ test.describe('Role Management - Test Employee Role.', () => {
         });
 
         test.step('Navigate to the Graph View section.', async () => {
-            await page.waitForLoadState('networkidle');
+           // await page.waitForLoadState('networkidle');
+           // await page.waitForTimeout(2000)
             await myTeamPage.ClickTeamGraph();
             expect.soft(await myTeamPage.isTeamStructureViewVisible()).toBeTruthy();
         });
@@ -196,6 +197,7 @@ test.describe('Role Management - Test Employee Role.', () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             // Navigate to Platform Feedback page
+            await page.waitForTimeout(2000)
             expect.soft(await platformFeedbackPage.isPlatformFeedbackSidebarVisible()).toBeTruthy();
             await platformFeedbackPage.clickPlatformFeedbackSidebar();
         });
@@ -489,6 +491,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     test("Test Employee RoleAdmin Configuration >>Role Management", async ({ utility, page, roleManagementPage }) => {
         await test.step("Not able to navigate Role Management page", async () => {
+            await page.waitForTimeout(1000)
             expect.soft(await roleManagementPage.isRoleManagementVisible()).toBeFalsy();
         })
 
@@ -506,6 +509,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     test("Test Employee Role Admin Configuration >>Module Management", async ({ utility, page, moduleManagementPage }) => {
         await test.step("Not able to navigate Module Management page", async () => {
+            await page.waitForTimeout(1000)
             expect.soft(await moduleManagementPage.isModuleManagementVisible()).toBeFalsy();
         })
 

@@ -17,7 +17,6 @@ export default class CalendarViewPage {
         this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' })
     }
     async isCalendarViewSidebarVisible(){
-         //await this.calendarViewSidebar.waitFor({ state: 'visible', timeout: 15000 });
          return await this.calendarViewSidebar.isVisible({timeout:5000});
     }
     async ClickCalendarViewSidebar(){
