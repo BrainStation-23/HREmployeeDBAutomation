@@ -48,7 +48,7 @@ test.describe('Role Management - Test Employee Role.', () => {
         await test.step('Ensure dashboard is loaded.', async () => {
             await page.waitForLoadState('networkidle');
         });
-
+        
         await test.step('Verify Dashboard page sections for Employee role.', async () => {
             // Dashboard page section user name verification
             await page.waitForTimeout(1000)
