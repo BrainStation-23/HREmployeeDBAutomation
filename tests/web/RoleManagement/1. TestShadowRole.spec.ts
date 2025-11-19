@@ -284,6 +284,7 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
             expect.soft(await cvSearchPage.isCvSearchSidebarvisible()).toBeTruthy();
             await cvSearchPage.clickCvSearchSidebar();
         })
+        
         await test.step("Ensure cv search page is loaded and the permission options are visible.", async () => {
             expect.soft(await cvSearchPage.isSearchBtnVisible()).toBeTruthy();
             expect.soft(await cvSearchPage.isBulkImportDataVisible()).toBeTruthy();

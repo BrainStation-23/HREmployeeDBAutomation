@@ -23,7 +23,8 @@ export default class CvSearchPage {
     await this.cvSearchSidebar.click()
   }
   async isSearchBtnVisible(){
-   return await this.cvSearchSidebar.isVisible({timeout:5000});
+    await this.searchBtn.waitFor({ state: 'visible', timeout: 5000 });
+    return await this.searchBtn.isVisible();
   }
   async isBulkImportDataVisible(){
     await this.bulkImportData.waitFor({ state: 'visible', timeout: 15000 });
