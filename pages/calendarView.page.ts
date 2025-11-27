@@ -13,11 +13,10 @@ export default class CalendarViewPage {
         this.calendarViewSidebar=page.getByRole('link', { name: 'Calendar View' })
         this.searchemployeeBox=page.getByRole('textbox', { name: 'Search' })
         this.filterbySbu=page.getByText('Select SBU...')
-        this.fillterbyManager=page.getByText('Select manager...')
+        this.fillterbyManager=page.getByText('Select employee...')
         this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' })
     }
     async isCalendarViewSidebarVisible(){
-         //await this.calendarViewSidebar.waitFor({ state: 'visible', timeout: 15000 });
          return await this.calendarViewSidebar.isVisible({timeout:5000});
     }
     async ClickCalendarViewSidebar(){

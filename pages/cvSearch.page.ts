@@ -11,7 +11,7 @@ export default class CvSearchPage {
     this.page = page;
     this.cvSearchSidebar = page.getByRole('link', { name: 'CV Search' });
     this.bulkImportData=page.getByRole('button', { name: 'Bulk Import Data' })
-    this.bulkImportImage=page.getByRole('button', { name: 'Bulk Import Images' })
+    this.bulkImportImage=page.locator("//button[normalize-space()='Bulk Import Images']")
     this.searchBtn=page.getByRole('button', { name: 'Search' })
     this.unauthorizedText=page.getByRole('heading', { name: 'Unauthorized' })
   }
@@ -23,6 +23,7 @@ export default class CvSearchPage {
     await this.cvSearchSidebar.click()
   }
   async isSearchBtnVisible(){
+    //verify cv search with timer
    return await this.cvSearchSidebar.isVisible({timeout:5000});
   }
   async isBulkImportDataVisible(){

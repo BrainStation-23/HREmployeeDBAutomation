@@ -18,13 +18,19 @@ test.describe('Role Management - Test Employee Role.', () => {
     test.use({ storageState: storageStatePath });
 
     test.beforeAll(async ({ browser }) => {
+
         if (!fs.existsSync(authDir)) {
             fs.mkdirSync(authDir, { recursive: true });
         }
-        if (fs.existsSync(storageStatePath)) return;
+        if (fs.existsSync(storageStatePath)) {
+            return;
+        }
 
         const context = await browser.newContext({ storageState: undefined });
         const page = await context.newPage();
+        const baseUrl: string = ENV.BASE_URL as string;
+        await page.goto(baseUrl);
+
         const login = new LoginPage(page);
         await login.navigateToLoginPage();
         await login.loginToCvSite(loginEmail, loginPassword);
@@ -169,7 +175,8 @@ test.describe('Role Management - Test Employee Role.', () => {
         });
 
         test.step('Navigate to the Graph View section.', async () => {
-            await page.waitForLoadState('networkidle');
+            // await page.waitForLoadState('networkidle');
+            // await page.waitForTimeout(2000)
             await myTeamPage.ClickTeamGraph();
             expect.soft(await myTeamPage.isTeamStructureViewVisible()).toBeTruthy();
         });
@@ -196,6 +203,7 @@ test.describe('Role Management - Test Employee Role.', () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             // Navigate to Platform Feedback page
+            await page.waitForTimeout(2000)
             expect.soft(await platformFeedbackPage.isPlatformFeedbackSidebarVisible()).toBeTruthy();
             await platformFeedbackPage.clickPlatformFeedbackSidebar();
         });
@@ -489,6 +497,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     test("Test Employee RoleAdmin Configuration >>Role Management", async ({ utility, page, roleManagementPage }) => {
         await test.step("Not able to navigate Role Management page", async () => {
+            await page.waitForTimeout(1000)
             expect.soft(await roleManagementPage.isRoleManagementVisible()).toBeFalsy();
         })
 
@@ -506,6 +515,7 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     test("Test Employee Role Admin Configuration >>Module Management", async ({ utility, page, moduleManagementPage }) => {
         await test.step("Not able to navigate Module Management page", async () => {
+            await page.waitForTimeout(1000)
             expect.soft(await moduleManagementPage.isModuleManagementVisible()).toBeFalsy();
         })
 
@@ -554,23 +564,23 @@ test.describe('Role Management - Test Employee Role.', () => {
 
     })
 
-       test("Test Empolyee Role  Audit >> Profile Image",async({utility, page,profilePage})=>{
-                await test.step("Not able to navigate Event Flag page", async () => {
-                    expect.soft(await profilePage.isProfileImageSidebarVisible()).toBeFalsy();
-                })
-                await test.step("Not able to access Aduit Profile Image page  via url", async () => {
-                    const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { profileimagepage: string };
-                    const profileImageRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.profileimagepage}`;
-                    console.log(profileImageRestrictedURL)
-                    await page.goto(profileImageRestrictedURL);
-                    await expect(page).toHaveURL(/unauthorized/);
-        
-                })
-                await test.step("verify Error Text for profile image page ", async () => {
-                    expect.soft(await profilePage.verifyUnauthorizedText()).toBeTruthy();
-                })
-         
-            })
-    
+    test("Test Empolyee Role  Audit >> Profile Image", async ({ utility, page, profilePage }) => {
+        await test.step("Not able to navigate Event Flag page", async () => {
+            expect.soft(await profilePage.isProfileImageSidebarVisible()).toBeFalsy();
+        })
+        await test.step("Not able to access Aduit Profile Image page  via url", async () => {
+            const resourcesettingURL = await utility.readJsonFile('test_data/urlExpectedData.json') as { profileimagepage: string };
+            const profileImageRestrictedURL = `${ENV.BASE_URL}${resourcesettingURL.profileimagepage}`;
+            console.log(profileImageRestrictedURL)
+            await page.goto(profileImageRestrictedURL);
+            await expect(page).toHaveURL(/unauthorized/);
+
+        })
+        await test.step("verify Error Text for profile image page ", async () => {
+            expect.soft(await profilePage.verifyUnauthorizedText()).toBeTruthy();
+        })
+
+    })
+
 
 });

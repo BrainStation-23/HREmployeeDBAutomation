@@ -21,11 +21,14 @@ export default class MyTeamPage {
         this.teamstructureView=page.locator("//h3[normalize-space()='Team Structure']");
     }
 
-    async clickMyTeamSidebar() {
-        await this.myTeamSidebar.click();
-    }
+   
     async isMyTeamSidebarVisible() {
-        return await this.myTeamSidebar.isVisible({ timeout: 5000 });
+        await this.myTeamSidebar.waitFor({ state: 'visible', timeout: 15000 });
+        return await this.myTeamSidebar.isVisible({timeout: 5000})
+    }
+
+     async clickMyTeamSidebar() {
+        await this.myTeamSidebar.click();
     }
     async isManagerLabelVisible() {
         await this.managerLabel.waitFor({ state: 'visible', timeout: 15000 });
@@ -39,7 +42,6 @@ export default class MyTeamPage {
         return await this.directReportsLabel.isVisible({ timeout: 5000 });
     }
     async isTeamGraphViewVisible() {
-        await this.teamGraphView.waitFor({ state: 'visible', timeout: 15000 });
         return await this.teamGraphView.isVisible({ timeout: 5000 });   
     }   
     async ClickTeamGraph(){

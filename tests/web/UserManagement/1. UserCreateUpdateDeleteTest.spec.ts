@@ -23,13 +23,19 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
     test.use({ storageState: storageStatePath });
 
     test.beforeAll(async ({ browser }) => {
+
         if (!fs.existsSync(authDir)) {
             fs.mkdirSync(authDir, { recursive: true });
         }
-        if (fs.existsSync(storageStatePath)) return;
+        if (fs.existsSync(storageStatePath)) {
+            return;
+        }
 
         const context = await browser.newContext({ storageState: undefined });
         const page = await context.newPage();
+        const baseUrl: string = ENV.BASE_URL as string;
+        await page.goto(baseUrl);
+
         const login = new LoginPage(page);
         await login.navigateToLoginPage();
         await login.loginToCvSite(loginEmail, loginPassword);
@@ -571,17 +577,19 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
                 // await userManagementPage.clickToasterCrossButton();
                 // await userManagementPage.toasterMessageConfirmation.hover();
 
-                await page.waitForTimeout(2000);
+                await page.waitForTimeout(5000);
 
                 // expect.soft(await userManagementPage.getToasterMessageConfirmation()).toContain(`${_totalCreateUser} users updated`);
             });
 
             await test.step('Verify all the users are update successfully.', async () => {
 
+                await page.reload();
+
                 for (let i: number = 2; i <= _totalUpdateUser + 1; i++) {
                     let userEmail: string = await userUpdateCsvReader.getCellData("email", i, userUpdateSheetName);
                     let userName: string = await userUpdateCsvReader.getCellData("firstName", i, userUpdateSheetName);
-                    let userRole: string = await userUpdateCsvReader.getCellData("role", i, userUpdateSheetName);
+                    let userRole: string = await userUpdateCsvReader.getCellData("customRoleName", i, userUpdateSheetName);
                     let userEmployeeID: string = await userUpdateCsvReader.getCellData("employeeId", i, userUpdateSheetName);
                     let userSbuName: string = await userUpdateCsvReader.getCellData("sbuName", i, userUpdateSheetName);
                     let userExpertiseName: string = await userUpdateCsvReader.getCellData("expertiseName", i, userUpdateSheetName);
@@ -600,7 +608,7 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
                             return;
                         }
 
-                        await userManagementPage.expandUserInfo(userEmail);
+                        // await userManagementPage.expandUserInfo(userEmail);
                         await userManagementPage.expandUserInfo(userEmail);
 
                         await test.step('Verify the user name', async () => {
