@@ -190,7 +190,7 @@ testPages.beforeEach(async ({ page, utility }) => {
         // await page.coverage.startCSSCoverage();
     }
     // Always start from the environment base URL so each test has a clean landing point
-    // await utility.navigateToBaseUrl(page);
+    await utility.navigateToBaseUrl(page);
 });
 
 testPages.afterEach(async ({ page }, testInfo) => {

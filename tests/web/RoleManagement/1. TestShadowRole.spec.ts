@@ -19,17 +19,19 @@ test.describe('Role Management - Test Shadow SBU Role.', () => {
     //#region Login Authentication Storage Setup
     test.use({ storageState: storageStatePath });
 
-    test.beforeAll(async ({ browser, utility }) => {
+    test.beforeAll(async ({ browser }) => {
 
-        const context = await browser.newContext({ storageState: undefined });
-        const page = await context.newPage();
-        await utility.navigateToBaseUrl(page);
-        
         if (!fs.existsSync(authDir)) {
             fs.mkdirSync(authDir, { recursive: true });
         }
-        if (fs.existsSync(storageStatePath)) return;
+        if (fs.existsSync(storageStatePath)) {
+            return;
+        }
 
+        const context = await browser.newContext({ storageState: undefined });
+        const page = await context.newPage();
+        const baseUrl: string = ENV.BASE_URL as string;
+        await page.goto(baseUrl);
 
         const login = new LoginPage(page);
         await login.navigateToLoginPage();

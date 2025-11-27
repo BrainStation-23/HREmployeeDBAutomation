@@ -22,16 +22,19 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
 
     test.use({ storageState: storageStatePath });
 
-    test.beforeAll(async ({ browser, utility }) => {
-
-        const context = await browser.newContext({ storageState: undefined });
-        const page = await context.newPage();
-        await utility.navigateToBaseUrl(page);
+    test.beforeAll(async ({ browser }) => {
 
         if (!fs.existsSync(authDir)) {
             fs.mkdirSync(authDir, { recursive: true });
         }
-        if (fs.existsSync(storageStatePath)) return;
+        if (fs.existsSync(storageStatePath)) {
+            return;
+        }
+
+        const context = await browser.newContext({ storageState: undefined });
+        const page = await context.newPage();
+        const baseUrl: string = ENV.BASE_URL as string;
+        await page.goto(baseUrl);
 
         const login = new LoginPage(page);
         await login.navigateToLoginPage();
@@ -580,7 +583,7 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
             });
 
             await test.step('Verify all the users are update successfully.', async () => {
-                
+
                 await page.reload();
 
                 for (let i: number = 2; i <= _totalUpdateUser + 1; i++) {
@@ -977,7 +980,7 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
             });
 
         });
-        
+
     });
     //#endregion
 });    
