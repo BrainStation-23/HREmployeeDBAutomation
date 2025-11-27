@@ -22,14 +22,17 @@ test.describe("User Management - User Create, Update, Delete Test", () => {
 
     test.use({ storageState: storageStatePath });
 
-    test.beforeAll(async ({ browser }) => {
+    test.beforeAll(async ({ browser, utility }) => {
+
+        const context = await browser.newContext({ storageState: undefined });
+        const page = await context.newPage();
+        await utility.navigateToBaseUrl(page);
+
         if (!fs.existsSync(authDir)) {
             fs.mkdirSync(authDir, { recursive: true });
         }
         if (fs.existsSync(storageStatePath)) return;
 
-        const context = await browser.newContext({ storageState: undefined });
-        const page = await context.newPage();
         const login = new LoginPage(page);
         await login.navigateToLoginPage();
         await login.loginToCvSite(loginEmail, loginPassword);
