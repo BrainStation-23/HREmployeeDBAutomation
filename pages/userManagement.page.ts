@@ -325,6 +325,7 @@ export default class UserManagementPage {
     await this.dropdownSearchOptionSelectLast.click();
   }
 
+  
   async clickAdvanceFiltersButton() {
     await this.advanceFiltersButton.click();
   }

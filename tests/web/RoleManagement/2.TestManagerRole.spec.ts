@@ -16,13 +16,19 @@ test.describe('Role Management - Test Manager Role.', () => {
     test.use({ storageState: storageStatePath });
 
     test.beforeAll(async ({ browser }) => {
+
         if (!fs.existsSync(authDir)) {
             fs.mkdirSync(authDir, { recursive: true });
         }
-        if (fs.existsSync(storageStatePath)) return;
+        if (fs.existsSync(storageStatePath)) {
+            return;
+        }
 
         const context = await browser.newContext({ storageState: undefined });
         const page = await context.newPage();
+        const baseUrl: string = ENV.BASE_URL as string;
+        await page.goto(baseUrl);
+
         const login = new LoginPage(page);
         await login.navigateToLoginPage();
         await login.loginToCvSite(loginEmail, loginPassword);
@@ -49,10 +55,12 @@ test.describe('Role Management - Test Manager Role.', () => {
 
         await test.step('Verify Dashboard page sections for manager role.', async () => {
             // Dashboard page section user name verification
-            const profileName = (await dashboardPage.getUserProfileNameText()) ?? '';
+            await page.waitForTimeout(2000)
+            const profileName = (await dashboardPage.getUserProfileNameText()) ?? ''; 
             expect.soft(profileName.trim()).toContain(ENV.TEST_MANAGER_NAME as string);
 
             // Dashboard page section verification
+            await page.waitForTimeout(1000)
             expect.soft(await dashboardPage.getDashboardHeaderText()).toBe(dashboardTestData.HeaderText);
             expect.soft(await dashboardPage.isDashboardAreaVisible()).toBeTruthy();
         });
@@ -149,7 +157,6 @@ test.describe('Role Management - Test Manager Role.', () => {
             // Already authenticated via storageState in this describe
             await page.waitForLoadState('networkidle');
             // Navigate to My Team page
-            await page.waitForTimeout(3000);
             expect.soft(await myTeamPage.isMyTeamSidebarVisible()).toBeTruthy();
             await myTeamPage.clickMyTeamSidebar();
         });
@@ -164,7 +171,7 @@ test.describe('Role Management - Test Manager Role.', () => {
 
         test.step('Navigate to the Graph View section.', async () => {
             // Already authenticated via storageState in this describe
-            await page.waitForLoadState('networkidle');
+            //await page.waitForLoadState('networkidle');
             await myTeamPage.ClickTeamGraph();
             //verify team structure is visible
             expect.soft(await myTeamPage.isTeamStructureViewVisible()).toBeTruthy();
@@ -581,7 +588,7 @@ test.describe('Role Management - Test Manager Role.', () => {
                 expect.soft(await profilePage.verifyUnauthorizedText()).toBeTruthy();
             })
         })
-
+        
     test("Test Manager Role Sign out >> Sign out", async ({ signoutPage,page }) => {
     await test.step("Navigate to CV Completion", async () => {
         await page.waitForTimeout(3000);

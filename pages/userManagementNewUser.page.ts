@@ -35,7 +35,7 @@ export default class UserManagementNewUserPage {
         this.roleDropdownEmployeeSearch = page.locator("//input[contains(@placeholder,'Search role')]");
         this.managerDropdown = page.locator("//button[contains(text(),'Select manager')]");
         this.managerDropdownSearchOption = page.locator("//input[contains(@placeholder,'Search manager')]");
-        this.dropdownSearchOptionSelectLast = page.locator("//div[@role='option'][last()]");
+        this.dropdownSearchOptionSelectLast = this.page.locator("//div[@cmdk-item and @role='option']").last();
         this.sbuDropdown = page.locator("//label[text()='SBU *']/following-sibling::button");
         this.sbuDropdownSearchOption = page.locator("//input[contains(@placeholder,'Search SBU')]");
         this.expertiseDropdown = page.locator("//button[contains(text(),'Select expertise')]");

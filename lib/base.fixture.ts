@@ -30,7 +30,7 @@ import SystemsettingPage from '../pages/systemsetting.page';
 import RoleManagementPage from '../pages/roleManagement.page';
 import ModuleManagementPage from '../pages/modulemanagement.page';
 import AdmindashboardPage from '../pages/adminDashboard.page';
-import EventFlagPage from '../pages/eventflag.page';
+import EventFlagPage from '../pages/eventFlag.page';
 import SignOutPage from '../pages/singOut.page';
 import ProfilePage from '../pages/profile.page';
 import UserManagementNewUserPage from '../pages/userManagementNewUser.page';
